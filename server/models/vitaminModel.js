@@ -11,5 +11,5 @@ const vitaminSchema = new mongoose.Schema({
   },
 });
 
-const vitamin = mongoose.model("vitamins", vitaminSchema);
-export default vitamin;
+const vitaminModel = mongoose.model("vitamins", vitaminSchema);
+export default vitaminModel;

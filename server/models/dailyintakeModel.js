@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const dailyintakeSchema = new mongoose.Schema({
+const dailyIntakeSchema = new mongoose.Schema({
   vitamin_name: {
     type: String,
     required: true,
@@ -32,5 +32,5 @@ const dailyintakeSchema = new mongoose.Schema({
   ],
 });
 
-const dailyintake = mongoose.model("dailyIntake", dailyintakeSchema);
-export default dailyintake;
+const dailyIntakeModel = mongoose.model("dailyIntake", dailyIntakeSchema);
+export default dailyIntakeModel;

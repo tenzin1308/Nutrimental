@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const foodSchema = new mongoose.Schema({
-  email: {
+const foodHistorySchema = new mongoose.Schema({
+  user_email: {
     type: String,
     requried: true,
   },
@@ -39,5 +39,5 @@ const foodSchema = new mongoose.Schema({
   ],
 });
 
-const food = mongoose.model("foodHistory", foodSchema);
-export default food;
+const foodHistoryModel = mongoose.model("foodHistory", foodHistorySchema);
+export default foodHistoryModel;
