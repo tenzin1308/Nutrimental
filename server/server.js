@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import userRouter from "./routers/userRouter.js";
+import dailyIntakeRouter from "./routers/dailyIntakeRouter.js";
+import vitaminRouter from "./routers/vitaminRouter.js";
+import foodHistoryRouter from "./routers/foodHistoryRouter.js";
 
 dotenv.config();
 
@@ -31,7 +34,10 @@ app.get("/", (req, res) => {
   res.send("Server is ready");
 });
 
-app.use("/api", userRouter);
+app.use("/api/user", userRouter);
+app.use("/api/daily-intake", dailyIntakeRouter);
+app.use("/api/vitamin", vitaminRouter);
+app.use("/api/food-history", foodHistoryRouter);
 
 // Connection
 

@@ -7,7 +7,7 @@ const userRouter = express.Router();
 const cryptr = new Cryptr("SomethingSecretKeyAAA");
 
 userRouter.get(
-  "/get/user/",
+  "/get/",
   expressAsyncHandler(async (req, res, err) => {
     // Some Code in here
     const users_email = await userModel.find({
@@ -21,7 +21,7 @@ userRouter.get(
 );
 
 userRouter.post(
-  "/post/user",
+  "/post/",
   expressAsyncHandler(async (req, res, err) => {
 
     // Some Code in here

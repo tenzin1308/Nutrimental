@@ -1,6 +1,6 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
-import foodHistoryModel from "../models/foodHistoryModel";
+import foodHistoryModel from "../models/foodHistoryModel.js";
 
 const foodHistoryRouter = express.Router();
 
