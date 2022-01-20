@@ -5,10 +5,11 @@ const vitaminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  vitamain_function: {
+  function: {
     type: String,
     requried: true,
   },
+  foods: [{ type: String, requried: true }],
 });
 
 const vitaminModel = mongoose.model("vitamins", vitaminSchema);
