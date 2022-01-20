@@ -32,5 +32,5 @@ const dailyIntakeSchema = new mongoose.Schema({
   ],
 });
 
-const dailyIntakeModel = mongoose.model("dailyIntake", dailyIntakeSchema);
+const dailyIntakeModel = mongoose.model("dailyintakes", dailyIntakeSchema);
 export default dailyIntakeModel;

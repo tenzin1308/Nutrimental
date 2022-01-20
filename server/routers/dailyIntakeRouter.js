@@ -8,8 +8,8 @@ dailyIntakeRouter.get(
   "/get/",
   expressAsyncHandler(async (req, res, err) => {
     // Some Code in here
-    const item_type = await dailyIntakeModel.find({});
-    return res.send('item_type');
+    const nut = await dailyIntakeModel.find();
+    return res.send(nut);
   })
 );
 

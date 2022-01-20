@@ -1,10 +1,8 @@
-import Cryptr from "cryptr";
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import userModel from "../models/userModel.js";
 
 const userRouter = express.Router();
-const cryptr = new Cryptr("SomethingSecretKeyAAA");
 
 userRouter.get(
   "/get/",

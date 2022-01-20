@@ -11,7 +11,7 @@ const userSchemaModel = new mongoose.Schema({
     required: true,
   },
   dob: {
-    type: String,
+    type: Date,
     required: true,
   },
   weight: {
@@ -27,7 +27,8 @@ const userSchemaModel = new mongoose.Schema({
     required: true,
   },
   signup_date: {
-    type: String,
+    type: Date,
+    default: Date,
     required: true,
   },
 });
