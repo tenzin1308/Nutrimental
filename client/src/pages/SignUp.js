@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Col, Container, Row } from "react-bootstrap";
-import Final from './forms/Final';
-import StepOne from './forms/StepOne';
-import StepTwo from './forms/StepTwo';
+import Final from '../components/forms/Final';
+import StepOne from '../components/forms/StepOne';
+import StepTwo from '../components/forms/StepTwo';
 
 export default function SignUp() {
       //state for steps
