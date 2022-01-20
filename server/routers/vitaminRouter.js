@@ -8,13 +8,14 @@ vitaminRouter.get(
   "/get/",
   expressAsyncHandler(async (req, res, err) => {
     // Some Code in here
-    const item = await vitaminModel.find({});
-    if (item) {
-      return res.send(item);
+    const vitamin = await vitaminModel.find({
+      vitamin_name: { $regex: req.body.vitamin_name, $options: "i" },
+    });
+    if (vitamin) {
+      return res.send(vitamin);
     }
     return res.status(404).send(err.stack);
   })
 );
-
 
 export default vitaminRouter;
