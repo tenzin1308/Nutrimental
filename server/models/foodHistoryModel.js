@@ -39,5 +39,5 @@ const foodHistorySchema = new mongoose.Schema({
   ],
 });
 
-const foodHistoryModel = mongoose.model("foodHistory", foodHistorySchema);
+const foodHistoryModel = mongoose.model("foodhistories", foodHistorySchema);
 export default foodHistoryModel;
