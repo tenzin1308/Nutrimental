@@ -6,24 +6,29 @@ import StepTwo from '../components/forms/StepTwo';
 
 export default function SignUp() {
       //state for steps
-  const [step, setstep] = useState(1);
+  const [step, setStep] = useState(1);
 
   //state for form data
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    age: "",
-    email: ""
+    email: "",
+    password: "",
+    confirmPassword: "",
+    dob: "",
+    weight: "",
+    height: "",
+    diet: ""
   })
 
   // function for going to next step by increasing step state by 1
   const nextStep = () => {
-    setstep(step + 1);
+    setStep(step + 1);
   };
 
   // function for going to previous step by decreasing step state by 1
   const prevStep = () => {
-    setstep(step - 1);
+    setStep(step - 1);
   };
 
   // handling form input data by taking onchange value and updating our previous form data state
@@ -44,7 +49,7 @@ export default function SignUp() {
     // case 1 to show stepOne form and passing nextStep, prevStep, and handleInputData as handleFormData method as prop and also formData as value to the fprm
     case 1:
       return (
-        <div className="App">
+        <div>
           <Container>
             <Row>
               <Col  md={{ span: 6, offset: 3 }} className="custom-margin">
@@ -70,7 +75,7 @@ export default function SignUp() {
       // Only formData is passed as prop to show the final value at form submit
     case 3:
       return (
-        <div className="App">
+        <div>
           <Container>
             <Row>
               <Col  md={{ span: 6, offset: 3 }} className="custom-margin">
