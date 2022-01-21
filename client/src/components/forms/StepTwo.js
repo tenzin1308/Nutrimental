@@ -4,19 +4,11 @@ import validator from "validator";
 
 // creating functional component ans getting props from app.js and destucturing them
 const StepTwo = ({ nextStep, handleFormData, prevStep, values }) => {
-   //creating error state for validation
-  const [error, setError] = useState(false);
 
     // after form submit validating the form data using validator
   const submitFormData = (e) => {
     e.preventDefault();
-
-     // checking if value of first name and last name is empty show error else take to next step
-    if (validator.isEmpty(values.age) || validator.isEmpty(values.email)) {
-      setError(true);
-    } else {
-      nextStep();
-    }
+    nextStep();
   };
   return (
     <>
@@ -26,34 +18,47 @@ const StepTwo = ({ nextStep, handleFormData, prevStep, values }) => {
             <Form.Group className="mb-3">
               <Form.Label>DOB</Form.Label>
               <Form.Control
-                style={{ border: error ? "2px solid red" : "" }}
-                type="number"
-                placeholder="Age"
-                onChange={handleFormData("age")}
+                required
+                name="dob"
+                defaultValue={values.dob}
+                max="2022-01-0"
+                type="date"
+                placeholder="dob"
+                onChange={handleFormData("dob")}
               />
-              {error ? (
-                <Form.Text style={{ color: "red" }}>
-                  This is a required field
-                </Form.Text>
-              ) : (
-                ""
-              )}
+              
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Email</Form.Label>
+              <Form.Label>Weight in (lbs) </Form.Label>
               <Form.Control
-                style={{ border: error ? "2px solid red" : "" }}
-                type="email"
-                placeholder="email"
-                onChange={handleFormData("email")}
+                required
+                type="number"
+                placeholder="Weight"
+                onChange={handleFormData("weight")}
               />
-              {error ? (
-                <Form.Text style={{ color: "red" }}>
-                  This is a required field
-                </Form.Text>
-              ) : (
-                ""
-              )}
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Height</Form.Label>
+              <Form.Control
+                required
+                type="number"
+                placeholder="Height"
+                onChange={handleFormData("height")}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Diet (Optional)</Form.Label>
+              <Form.Select
+                id="diet"
+                name="diet"
+                placeholder="diet"
+                onChange={handleFormData("diet")}
+              >
+              <option selected>Select Diet</option>
+              <option value="1">Option 1</option>
+              <option value="2">Option 2</option>
+              <option value="3">Option 3</option>
+              </Form.Select>
             </Form.Group>
             <div style={{ display: "flex", justifyContent: "space-around" }}>
               <Button variant="light" onClick={prevStep}>
