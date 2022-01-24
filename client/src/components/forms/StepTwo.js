@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import validator from "validator";
+import UserPool from "../../UserPool";
 
 // creating functional component ans getting props from app.js and destucturing them
-const StepTwo = ({ nextStep, handleFormData, prevStep, values }) => {
+const StepTwo = ({ handleFormData, prevStep, values }) => {
+
+  const { firstName, lastName, password, email } = values;
 
     // after form submit validating the form data using validator
   const submitFormData = (e) => {
     e.preventDefault();
-    nextStep();
+    UserPool.signUp(email, password, [], null, (err, data) => {
+      if (err) {
+        console.error(err);
+      }
+      console.log(data);
+    });
   };
   return (
     <>
@@ -54,7 +61,7 @@ const StepTwo = ({ nextStep, handleFormData, prevStep, values }) => {
                 placeholder="diet"
                 onChange={handleFormData("diet")}
               >
-              <option selected>Select Diet</option>
+              <option defaultValue="Select Diet">Select Diet</option>
               <option value="1">Option 1</option>
               <option value="2">Option 2</option>
               <option value="3">Option 3</option>
