@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AccountContext } from "../components/Account";
@@ -9,12 +10,26 @@ export default function SignIn() {
 
   const { authenticate } = useContext(AccountContext);
 
+  const getUserDBInfo = async () => {
+    console.log("email: ", email);
+    await axios.get("/api/user/get", {
+      "user_email": email
+    })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
 
     authenticate(email, password)
       .then((data) => {
         console.log("Logged in!", data);
+        getUserDBInfo();
       })
       .catch((err) => {
         console.error("Failed to login", err);

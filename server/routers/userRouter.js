@@ -8,13 +8,20 @@ userRouter.get(
   "/get/",
   expressAsyncHandler(async (req, res, err) => {
     // Some Code in here
-    const users_email = await userModel.find({
-      user_email: req.body.user_email,
-    });
-    if (users_email) {
-      return res.status(200).send(users_email);
+    try {
+      await userModel.find({ user_email: req.body.user_email }, function (err, doc) {
+        if (err) {
+          console.log(err);
+          res.send(err);
+        } else {
+          res.status(200).send(doc);
+        }
+      });
+      
+    } catch (err) {
+      console.log(err);
+      res.send(err);
     }
-    return res.status(400).send(err.stack);
   })
 );
 

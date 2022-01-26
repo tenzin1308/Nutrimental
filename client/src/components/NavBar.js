@@ -6,7 +6,7 @@ import { AccountContext } from "./Account";
 export default function NavBar() {
 
   const [status, setStatus] = useState(false);
-  const { getSession } = useContext(AccountContext);
+  const { getSession, logout } = useContext(AccountContext);
 
   useEffect(() => {
     getSession()
@@ -14,6 +14,7 @@ export default function NavBar() {
           console.log('Session: ', session);
           setStatus(true);
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -24,21 +25,20 @@ export default function NavBar() {
         </Link>
         <div>
           {status ? (<>
-            <Link to="/login">
+            <Link to="/dashboard">
               <button type="button" className="btn btn-light">
-                Sign In
+                Welcome "username"
               </button>
             </Link>
-            <Link to="/signup">
-              <button type="button" className="btn btn-light">
-                Sign Up
+            <Link to="/">
+              <button type="button" className="btn btn-light" onClick={logout}>
+                Log Out
               </button>
             </Link>
           </>
 
-          ) : (
-          <>
-          {/* If logged in */}
+          ) : (<>
+              
           <Link to="/login">
             <button type="button" className="btn btn-light">
               Sign In

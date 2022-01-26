@@ -1,5 +1,5 @@
+import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import React, { createContext } from "react";
-import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import Pool from "../UserPool";
 
 const AccountContext = createContext();
@@ -30,7 +30,6 @@ const Account = (props) => {
 
       user.authenticateUser(authDetails, {
         onSuccess: (data) => {
-          console.log("onSuccess: ", data);
           resolve(data);
         },
         onFailure: (err) => {
@@ -38,7 +37,6 @@ const Account = (props) => {
           reject(err);
         },
         newPasswordRequired: (data) => {
-          console.log("newPasswordRequired: ", data);
           resolve(data);
         },
       });
@@ -49,6 +47,7 @@ const Account = (props) => {
     const user = Pool.getCurrentUser();
     if (user) {
       user.signOut();
+      window.location.reload();
     }
   };
   return (
