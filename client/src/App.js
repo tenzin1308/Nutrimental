@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import Tracker from "./pages/Tracker";
 import AccountInfo from "./pages/AccountInfo";
 import Home from "./pages/Home.js";
+import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 
