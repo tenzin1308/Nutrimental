@@ -17,7 +17,7 @@ export default function SignIn({ authProps, setAuthProps }) {
     authenticate(email, password)
       .then((data) => {
         console.log("Logged in!", data);
-        window.location.href = "/";
+        window.location.href = "/tracker";
       })
       .catch((err) => {
         console.error("Failed to login", err);
