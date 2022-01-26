@@ -1,7 +1,29 @@
-// import logo from "../nutrimental-logo.png";
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import { AccountContext } from "../components/Account";
 import bg_logo from "../healthy-food-bg2.png";
 
-export default function SignIn() {
+export default function SignIn({ authProps, setAuthProps }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { authenticate } = useContext(AccountContext);
+
+  
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    authenticate(email, password)
+      .then((data) => {
+        console.log("Logged in!", data);
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        console.error("Failed to login", err);
+      });
+  };
+
   return (
     <div
       className="bg-cover bg-center h-full"
@@ -15,7 +37,12 @@ export default function SignIn() {
                 Sign in to your account
               </h2>
             </div>
-            <form className="space-y-6" action="#" method="POST">
+            <form
+              className="space-y-6"
+              action="#"
+              method="POST"
+              onSubmit={onSubmit}
+            >
               <div>
                 <label
                   htmlFor="email"
@@ -28,9 +55,11 @@ export default function SignIn() {
                     id="email"
                     name="email"
                     type="email"
+                    value={email}
                     autoComplete="email"
                     required
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    onChange={(event) => setEmail(event.target.value)}
                   />
                 </div>
               </div>
@@ -47,9 +76,11 @@ export default function SignIn() {
                     id="password"
                     name="password"
                     type="password"
+                    value={password}
                     autoComplete="current-password"
                     required
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    onChange={(event) => setPassword(event.target.value)}
                   />
                 </div>
               </div>
@@ -72,7 +103,7 @@ export default function SignIn() {
 
                 <div className="text-sm">
                   <a
-                    href="#"
+                    href="!#"
                     className="font-medium text-indigo-600 hover:text-indigo-500"
                   >
                     Forgot your password?
@@ -89,12 +120,13 @@ export default function SignIn() {
                 </button>
               </div>
               <div>
-                <button
-                  type="submit"
+                <Link
+                  to="/signup"
+                  type="button"
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Sign Up
-                </button>
+                </Link>
               </div>
             </form>
 
@@ -113,7 +145,7 @@ export default function SignIn() {
               <div className="mt-6 grid grid-cols-3 gap-3">
                 <div>
                   <a
-                    href="#"
+                    href="!#"
                     className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                   >
                     <span className="sr-only">Sign in with Facebook</span>
@@ -134,7 +166,7 @@ export default function SignIn() {
 
                 <div>
                   <a
-                    href="#"
+                    href="!#"
                     className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                   >
                     <span className="sr-only">Sign in with Twitter</span>
@@ -151,7 +183,7 @@ export default function SignIn() {
 
                 <div>
                   <a
-                    href="#"
+                    href="!#"
                     className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                   >
                     <span className="sr-only">Sign in with GitHub</span>
