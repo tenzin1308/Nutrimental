@@ -14,7 +14,8 @@ export default function Profile({ authProps }) {
 
   return (
     authProps.isAuthenticated &&
-    authProps.session && (
+    authProps.session &&
+    selectedTab === "Account Information" && (
       <AccountLayout
         tabsLst={TABS}
         handleTabUpdate={setSelectedTab}
