@@ -1,14 +1,42 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import validator from "validator";
+import UserPool from "../../UserPool";
 
 // creating functional component ans getting props from app.js and destucturing them
-const StepTwo = ({ nextStep, handleFormData, prevStep, values }) => {
+const StepTwo = ({ handleFormData, prevStep, values }) => {
+  const { firstName, lastName, password, email, dob, weight, height, diet } =
+    values;
 
-    // after form submit validating the form data using validator
+  // after form submit validating the form data using validator
   const submitFormData = (e) => {
     e.preventDefault();
-    nextStep();
+    UserPool.signUp(email, password, [], null, async (err, data) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log(data);
+        // after signup on cognito we are creating user in MongoDB
+        await axios
+          .post("/api/user/post", {
+            user_email: email,
+            first_name: firstName,
+            last_name: lastName,
+            dob: dob,
+            weight: weight,
+            height: height,
+            diet: diet,
+          })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        // redirecting to home page after signup
+        window.location.href = "/";
+      }
+    });
   };
   return (
     <>
@@ -26,7 +54,6 @@ const StepTwo = ({ nextStep, handleFormData, prevStep, values }) => {
                 placeholder="dob"
                 onChange={handleFormData("dob")}
               />
-              
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Weight in (lbs) </Form.Label>
@@ -54,10 +81,10 @@ const StepTwo = ({ nextStep, handleFormData, prevStep, values }) => {
                 placeholder="diet"
                 onChange={handleFormData("diet")}
               >
-              <option selected>Select Diet</option>
-              <option value="1">Option 1</option>
-              <option value="2">Option 2</option>
-              <option value="3">Option 3</option>
+                <option defaultValue="Select Diet">Select Diet</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
               </Form.Select>
             </Form.Group>
             <div style={{ display: "flex", justifyContent: "space-around" }}>

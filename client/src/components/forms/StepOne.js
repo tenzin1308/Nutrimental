@@ -13,6 +13,9 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
   const submitFormData = (e) => {
     e.preventDefault();
 
+    // var email = "test@123test.com";
+    // var password ="Test@1234";
+
     // checking if value of first name and last name is empty show error else take to step 2
     if (!validator.equals(values.password, values.confirmPassword)) {
       setNotMatchingError(true);
@@ -20,9 +23,9 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
       setLengthError(true);
     } else if (!validator.isAlphanumeric(values.password)){
       setAlphaNumericError(true);
-    } else {
-      nextStep();
-    }
+     } else {
+       nextStep();
+     }
   };
 
   return (
