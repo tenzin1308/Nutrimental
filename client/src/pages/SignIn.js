@@ -1,27 +1,15 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AccountContext } from "../components/Account";
 import bg_logo from "../healthy-food-bg2.png";
 
-export default function SignIn() {
+export default function SignIn({ authProps, setAuthProps }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const { authenticate } = useContext(AccountContext);
 
-  const getUserDBInfo = async () => {
-    console.log("email: ", email);
-    await axios.get("/api/user/get", {
-      "user_email": email
-    })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -29,7 +17,7 @@ export default function SignIn() {
     authenticate(email, password)
       .then((data) => {
         console.log("Logged in!", data);
-        getUserDBInfo();
+        window.location.href = "/";
       })
       .catch((err) => {
         console.error("Failed to login", err);

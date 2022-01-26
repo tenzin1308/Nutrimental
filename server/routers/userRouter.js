@@ -4,26 +4,12 @@ import userModel from "../models/userModel.js";
 
 const userRouter = express.Router();
 
-userRouter.get(
-  "/get/",
-  expressAsyncHandler(async (req, res, err) => {
-    // Some Code in here
-    try {
-      await userModel.find({ user_email: req.body.user_email }, function (err, doc) {
-        if (err) {
-          console.log(err);
-          res.send(err);
-        } else {
-          res.status(200).send(doc);
-        }
-      });
-      
-    } catch (err) {
-      console.log(err);
-      res.send(err);
-    }
-  })
-);
+userRouter.route("/get/").get(async (req, res) => {
+  const user = await userModel.findOne({
+    user_email: req.query.user_email,
+  });
+  res.json(user);
+});
 
 userRouter.post(
   "/post/",

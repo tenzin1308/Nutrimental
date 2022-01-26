@@ -1,18 +1,36 @@
-import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../nutrimental-logo.png";
 import { AccountContext } from "./Account";
 
-export default function NavBar() {
+export default function NavBar({ authProps, setAuthProps }) {
 
-  const [status, setStatus] = useState(false);
   const { getSession, logout } = useContext(AccountContext);
+
+  const getUserDBInfo = async (session) => {
+    await axios.get(`/api/user/get?user_email=${session.idToken.payload.email}`, {
+      headers: {
+        "Content-Type": "application/json",
+      }})
+      .then(res => {
+        setAuthProps({
+          isAuthenticated: true,
+          session: true,
+          user: res.data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     getSession()
       .then((session) => {
-          console.log('Session: ', session);
-          setStatus(true);
+        if (session) {
+          getUserDBInfo(session)
+        }
       })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -24,10 +42,10 @@ export default function NavBar() {
           <img src={logo} alt="logo" className="w-20 h-16 -mt-2 -mb-4 -ml-2 rounded-full" />
         </Link>
         <div>
-          {status ? (<>
+          {authProps.session && authProps.isAuthenticated && authProps.user ? (<>
             <Link to="/dashboard">
               <button type="button" className="btn btn-light">
-                Welcome "username"
+                Welcome {authProps.user.first_name}
               </button>
             </Link>
             <Link to="/">
