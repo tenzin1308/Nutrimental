@@ -36,7 +36,7 @@ function App() {
               <Route exact path="/" element={<Home authProps={authProps} setAuthProps={setAuthProps} />} />
               <Route exact path="/login" element={<Account><SignIn authProps={authProps} setAuthProps={setAuthProps} /></Account>} />
               <Route exact path="/signup" element={<Account><SignUp authProps={authProps} setAuthProps={setAuthProps} /></Account>} />
-              <Route exact path="/dashboard" element={<Dashboard authProps={authProps} setAuthProps={setAuthProps} />} />
+              <Route exact path="/tracker" element={<Dashboard authProps={authProps} setAuthProps={setAuthProps} />} />
               <Route exact path="/profile" element={<Profile authProps={authProps} setAuthProps={setAuthProps} />} />
             </Routes>
           </div>
