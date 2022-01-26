@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Account } from "./components/Account";
 import NavBar from "./components/NavBar";
 import Tracker from "./pages/Tracker";
-import AccountInfo from "./pages/AccountInfo";
 import Home from "./pages/Home.js";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
@@ -67,12 +66,9 @@ function App() {
               />
               <Route
                 exact
-                path="/account-info"
+                path="/profile"
                 element={
-                  <AccountInfo
-                    authProps={authProps}
-                    setAuthProps={setAuthProps}
-                  />
+                  <Profile authProps={authProps} setAuthProps={setAuthProps} />
                 }
               />
             </Routes>
