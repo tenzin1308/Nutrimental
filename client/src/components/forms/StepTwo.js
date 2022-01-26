@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import UserPool from "../../UserPool";
@@ -5,16 +6,36 @@ import UserPool from "../../UserPool";
 // creating functional component ans getting props from app.js and destucturing them
 const StepTwo = ({ handleFormData, prevStep, values }) => {
 
-  const { firstName, lastName, password, email } = values;
+  const { firstName, lastName, password, email, dob, weight, height, diet } = values;
 
     // after form submit validating the form data using validator
   const submitFormData = (e) => {
     e.preventDefault();
-    UserPool.signUp(email, password, [], null, (err, data) => {
+    UserPool.signUp(email, password, [], null, async (err, data) => {
       if (err) {
         console.error(err);
+      } else {
+        console.log(data);
+        // after signup on cognito we are creating user in MongoDB
+        await axios.post('/api/user/post', {
+          "user_email": email,
+          "first_name": firstName,
+          "last_name": lastName,
+          "dob": dob,
+          "weight": weight,
+          "height": height,
+          "diet": diet
+        })
+          .then(res => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        // redirecting to home page after signup
+        window.location.href = "/";
       }
-      console.log(data);
+      
     });
   };
   return (

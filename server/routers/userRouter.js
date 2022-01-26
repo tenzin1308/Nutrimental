@@ -12,14 +12,35 @@ userRouter.get(
       user_email: req.body.user_email,
     });
     if (users_email) {
-      return res.send(users_email);
+      return res.status(200).send(users_email);
     }
-    return res.status(404).send(err.stack);
+    return res.status(400).send(err.stack);
   })
 );
 
 userRouter.post(
   "/post/",
+  expressAsyncHandler(async (req, res, err) => {
+
+    // Some Code in here
+    try {
+      if (await userModel.exists({ user_email: req.body.user_email })) {
+        return res.status(400).send("user already exist");
+      }
+      else {
+        const newUser = userModel(req.body);
+        newUser.save();
+      }
+    } catch (err) {
+      console.log(err);
+      return res.status(400).send(err);
+    }
+    return res.status(200).send("A Ok");
+  })
+);
+
+userRouter.put(
+  "/put/",
   expressAsyncHandler(async (req, res, err) => {
 
     // Some Code in here
@@ -34,9 +55,9 @@ userRouter.post(
       );
     } catch (err) {
       console.log(err);
-      return res.send(err);
+      return res.status(400).send(err);
     }
-    return res.send("A Ok");
+    return res.status(200).send("A Ok");
   })
 );
 
