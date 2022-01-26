@@ -1,6 +1,5 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
-import mongoose from "mongoose";
 import foodHistoryModel from "../models/foodHistoryModel.js";
 
 const foodHistoryRouter = express.Router();
@@ -8,7 +7,6 @@ const foodHistoryRouter = express.Router();
 foodHistoryRouter.get(
   "/get/",
   expressAsyncHandler(async (req, res, err) => {
-    // Some Code in here
     const users_email = await foodHistoryModel.findOne({
       user_email: req.body.user_email,
     });
@@ -23,8 +21,6 @@ foodHistoryRouter.get(
 foodHistoryRouter.post(
   "/post/",
   expressAsyncHandler(async (req, res, err) => {
-    // Some Code in here
-
     foodHistoryModel.exists(
       { user_email: req.body.user_email },
       function (err, result) {
