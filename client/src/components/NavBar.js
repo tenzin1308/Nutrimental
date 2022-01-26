@@ -42,7 +42,7 @@ export default function NavBar({ authProps, setAuthProps }) {
           <img src={logo} alt="logo" className="w-20 h-16 -mt-2 -mb-4 -ml-2 rounded-full" />
         </Link>
         <div>
-          {authProps.session && authProps.isAuthenticated && authProps.user ? (<>
+          {authProps.session && authProps.isAuthenticated && authProps.user ? (<div className="flex justify-between">
             <Link to="/dashboard">
               <button type="button" className="btn btn-light">
                 Welcome {authProps.user.first_name}
@@ -53,7 +53,10 @@ export default function NavBar({ authProps, setAuthProps }) {
                 Log Out
               </button>
             </Link>
-          </>
+            <Link to="/profile">
+              <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg" width="40" height="40" class="rounded-circle" alt="" />
+            </Link>
+          </div>
 
           ) : (<>
               
