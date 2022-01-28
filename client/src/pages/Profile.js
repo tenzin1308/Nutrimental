@@ -7,7 +7,7 @@ const getDate = (date) => {
   return Date(date).split(" ").splice(1, 3).join(" ");
 };
 
-export default function Profile({ authProps }) {
+export default function Profile({ authProps, setAuthProps }) {
   const [selectedTab, setSelectedTab] = React.useState(TABS[0]);
 
   React.useEffect(() => {}, [selectedTab]);
