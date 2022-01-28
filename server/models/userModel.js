@@ -28,7 +28,7 @@ const userSchemaModel = new mongoose.Schema({
   },
   gender: {
     type: String,
-    required: true,
+    enum: ["male", "female"]
   },
   diet: {
     type: String,
