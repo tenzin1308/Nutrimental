@@ -26,6 +26,10 @@ const userSchemaModel = new mongoose.Schema({
     type: String,
     required: true,
   },
+  gender: {
+    type: String,
+    required: true,
+  },
   diet: {
     type: String,
     required: true,
