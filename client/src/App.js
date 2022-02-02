@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Account } from "./components/Account";
 import NavBar from "./components/NavBar";
-import Tracker from "./pages/Tracker";
 import Home from "./pages/Home.js";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Tracker from "./pages/Tracker";
 
 function App() {
   const [authProps, setAuthProps] = useState({
@@ -61,7 +61,7 @@ function App() {
                 exact
                 path="/tracker"
                 element={
-                  <Tracker authProps={authProps} setAuthProps={setAuthProps} />
+                  <Tracker authProps={authProps} />
                 }
               />
               <Route
