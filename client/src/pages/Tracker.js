@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import AccountLayout from "../components/AccountLayout";
+import MacroTracker from "../components/track/MacroTracker";
 
 const TABS = [
   "Macro Tracker",
@@ -15,7 +16,7 @@ const Tracker = ({ authProps }) => {
 
   return (
     authProps.isAuthenticated &&
-    authProps.session &&(
+    authProps.session && (
       <AccountLayout
         tabsLst={TABS}
         handleTabUpdate={setSelectedTab}
@@ -24,13 +25,9 @@ const Tracker = ({ authProps }) => {
         <div className="p-4">
           <h1 className=" text-5xl">ITS WORKING!! THE TRACKER PAGE</h1>
           <br />
-          {selectedTab === "Macro Tracker" ? (
+          {selectedTab === "Nutrient Tracker" ? (
             <div>
-              <h1>{selectedTab}</h1>
-            </div>
-          ) : selectedTab === "Nutrient Tracker" ? (
-            <div>
-              <h1>{selectedTab}</h1>
+              <MacroTracker user_email={authProps.user.user_email} />
             </div>
           ) : selectedTab === "Nutrient Advice" ? (
             <div>
