@@ -1,4 +1,7 @@
 import React from 'react';
+import Hafsa_Resume from '../assets/resume/Hafsa_Resume.pdf';
+import Tanzil_Resume from '../assets/resume/Tanzil_Resume.pdf';
+import Tenzin_Resume from '../assets/resume/Tenzin_Resume.pdf';
 import DevInfo from '../components/DevInfo';
 
 export default function AboutUs() {
@@ -10,8 +13,8 @@ export default function AboutUs() {
             authorImg: 'https://source.unsplash.com/random',
             gitHub: 'https://github.com/tenzin1308',
             linkedIn: 'https://www.linkedin.com/in/tenzin-tashi-bb520510a/',
-            resume: '',
-            portfolio: '',
+            resume: Tenzin_Resume,
+            portfolio: 'https://tenzinportfolio.netlify.app',
         },
         {
             authorInitial: 'JP',
@@ -30,7 +33,7 @@ export default function AboutUs() {
             authorImg: 'https://source.unsplash.com/random',
             gitHub: 'https://github.com/HAFSAnCR7',
             linkedIn: 'https://www.linkedin.com/in/hafsa-nadim-b2385413b/',
-            resume: '',
+            resume: Hafsa_Resume,
             portfolio: '',
         },
         {
@@ -40,7 +43,7 @@ export default function AboutUs() {
             authorImg: 'https://source.unsplash.com/random',
             gitHub: 'https://github.com/tanzil7',
             linkedIn: 'https://www.linkedin.com/in/tanzil-b-47855b130/',
-            resume: '',
+            resume: Tanzil_Resume,
             portfolio: '',
         },
         {

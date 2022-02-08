@@ -12,8 +12,9 @@ import { red } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
-export default function DevInfo({ authorInitial, authorName, authorBio, authorImg, gitHub, linkedIn }) {
+export default function DevInfo({ authorInitial, authorName, authorBio, authorImg, gitHub, linkedIn, resume, portfolio }) {
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -43,12 +44,16 @@ export default function DevInfo({ authorInitial, authorName, authorBio, authorIm
         <IconButton aria-label="linkedin">
           <LinkedInIcon onClick={() => window.open(linkedIn, "_blank")} />
         </IconButton>
-        <IconButton aria-label="resume">
-          <AttachFileIcon />
-        </IconButton>
+        <Link to={resume} target="_blank" download={`${authorName} Resume.pdf`}>
+            <IconButton aria-label="resume">
+                <AttachFileIcon />
+            </IconButton>
+        </Link>
+        {portfolio && 
         <IconButton aria-label="portfolio">
-          <ShareIcon />
+          <ShareIcon onClick={() => window.open(portfolio, "_blank")}/>
         </IconButton>
+        }
         
       </CardActions>
     </Card>
