@@ -13,15 +13,17 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
   const submitFormData = (e) => {
     e.preventDefault();
 
-    // var email = "test@123test.com";
-    // var password ="Test@1234";
+    // RegExp for password validation
+    var pattern = new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
+    );
 
     // checking if value of first name and last name is empty show error else take to step 2
     if (!validator.equals(values.password, values.confirmPassword)) {
       setNotMatchingError(true);
     } else if (values.password.length < 8 ){
       setLengthError(true);
-    } else if (!validator.isAlphanumeric(values.password)){
+    } else if (pattern.test(values.password) === false) {
       setAlphaNumericError(true);
      } else {
        nextStep();
