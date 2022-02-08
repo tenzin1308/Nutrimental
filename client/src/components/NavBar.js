@@ -4,6 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../nutrimental-logo.png";
 import { AccountContext } from "./Account";
+import SearchBar from "./SearchBar";
 
 function stringToColor(string) {
   let hash = 0;
@@ -76,6 +77,7 @@ export default function NavBar({ authProps, setAuthProps }) {
           />
         </Link>
         <div className="flex flex-row">
+          <SearchBar />
           {authProps.session && authProps.isAuthenticated && authProps.user ? (
             <>
               <Link to="/tracker">
