@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Account } from "./components/Account";
 import NavBar from "./components/NavBar";
+import AboutUs from "./pages/AboutUs";
 import Home from "./pages/Home.js";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
@@ -69,6 +70,13 @@ function App() {
                 path="/profile"
                 element={
                   <Profile authProps={authProps} setAuthProps={setAuthProps} />
+                }
+              />
+              <Route
+                exact
+                path="/aboutus"
+                element={
+                  <AboutUs />
                 }
               />
             </Routes>

@@ -98,7 +98,7 @@ export default function Profile({ authProps, setAuthProps }) {
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Gender</div>
-                      <div className="px-4 py-2">Female</div>
+                      <div className="px-4 py-2">{authProps.user.gender}</div>
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Weight</div>
@@ -131,6 +131,11 @@ export default function Profile({ authProps, setAuthProps }) {
                     </div>
                   </div>
                 </div>
+                {/* <!-- End of edit section --> */}
+                <button class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
+                  Edit Information
+                </button>
+                {/* <!-- End of edit section --> */}
               </div>
               {/* <!-- End of about section --> */}
 

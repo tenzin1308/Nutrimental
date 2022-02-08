@@ -114,6 +114,11 @@ export default function NavBar({ authProps, setAuthProps }) {
                   Sign Up
                 </button>
               </Link>
+              <Link to="/aboutus">
+                <button type="button" className="btn btn-light">
+                  About Us
+                </button>
+              </Link>
             </>
           )}
         </div>
