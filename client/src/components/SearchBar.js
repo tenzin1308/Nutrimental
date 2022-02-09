@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const SearchBar = ({}) => {
+const SearchBar = () => {
   const [searchTxt, setSearchTxt] = useState("");
   const [sendData, setSendData] = useState({});
   const [vitaminData, setVitaminData] = useState({});
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Logic made to check vitamin DB first.
   // If not in vitamin DB, checks the gov DB
@@ -15,9 +17,10 @@ const SearchBar = ({}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(searchTxt);
     if (searchTxt.trim().length !== 0) {
       getVitaminDbData();
+    } else {
+      setSendData([]);
     }
   };
 
@@ -33,6 +36,7 @@ const SearchBar = ({}) => {
       )
       .then((res) => {
         setSendData(res.data.foods);
+        setLoading(false);
       })
       .catch((err) => {
         toast.error(err.message);
@@ -50,17 +54,21 @@ const SearchBar = ({}) => {
       });
   };
 
+  const handlePush = () => {
+    navigate("/searched", { state: { items: sendData, loading: loading } });
+  };
+
   useEffect(() => {
     if (vitaminData.length === 0) {
       getGovApiData();
     } else {
       setSendData(vitaminData);
+      setLoading(false);
     }
   }, [vitaminData]);
 
   useEffect(() => {
-    console.log("sendData ", sendData);
-    setLoading(false);
+    handlePush();
   }, [sendData]);
 
   return (

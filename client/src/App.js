@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Tracker from "./pages/Tracker";
 import toast, { Toaster } from "react-hot-toast";
+import Searched from "./pages/Searched";
 
 function App() {
   const [authProps, setAuthProps] = useState({
@@ -98,13 +99,8 @@ function App() {
                   <Profile authProps={authProps} setAuthProps={setAuthProps} />
                 }
               />
-              <Route
-                exact
-                path="/aboutus"
-                element={
-                  <AboutUs />
-                }
-              />
+              <Route exact path="/aboutus" element={<AboutUs />} />
+              <Route exact path="/searched" element={<Searched />} />
             </Routes>
           </div>
         </div>
