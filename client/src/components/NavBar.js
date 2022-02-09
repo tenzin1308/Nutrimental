@@ -69,15 +69,22 @@ export default function NavBar({ authProps, setAuthProps }) {
   return (
     <div className="w-screen ">
       <nav className="navbar navbar-expand-lg navbar-light bg-light flex justify-between">
-        <Link className="navbar-brand h1 fw-bold" to="/">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-20 h-16 -mt-2 -mb-4 -ml-2 rounded-full"
-          />
-        </Link>
         <div className="flex flex-row">
+          <Link className="navbar-brand h1 fw-bold" to="/">
+            <img
+              src={logo}
+              alt="logo"
+              className="w-20 h-16 -mt-2 -mb-4 -ml-2 rounded-full"
+            />
+          </Link>
+          <Link className="navbar-brand h1 fw-bold mt-1 h-11" to="/">
+            <button type="button" className="btn btn-light">
+              Home
+            </button>
+          </Link>
           <SearchBar />
+        </div>
+        <div className="flex flex-row">
           {authProps.session && authProps.isAuthenticated && authProps.user ? (
             <>
               <Link to="/tracker">

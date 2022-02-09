@@ -64,7 +64,7 @@ const SearchBar = ({}) => {
 
   return (
     <form
-      className="relative flex flex-row gap-x-2 mr-4 justify-center items-center focus-within:border-blue-700 border-2"
+      className="relative flex flex-row justify-center items-center focus-within:border-blue-700 border-2 my-2 h-11"
       action="#"
       onSubmit={handleSubmit}
     >
