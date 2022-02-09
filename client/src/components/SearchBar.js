@@ -29,7 +29,7 @@ const SearchBar = ({}) => {
     await axios
       .get(
         // pageSize range = [1, 200]
-        `https://api.nal.usda.gov/fdc/v1/foods/search?query=${searchTxt}&pageSize=10&api_key=${process.env.REACT_APP_USDA_GOV_API_KEY}`
+        `https://api.nal.usda.gov/fdc/v1/foods/search?query=${searchTxt}&pageSize=200&api_key=${process.env.REACT_APP_USDA_GOV_API_KEY}`
       )
       .then((res) => {
         setSendData(res.data.foods);
