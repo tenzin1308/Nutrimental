@@ -35,7 +35,7 @@ const SearchBar = () => {
         `https://api.nal.usda.gov/fdc/v1/foods/search?query=${searchTxt}&pageSize=200&api_key=${process.env.REACT_APP_USDA_GOV_API_KEY}`
       )
       .then((res) => {
-        setSendData(res.data.foods);
+        setSendData([].concat(vitaminData, res.data.foods));
         setLoading(false);
       })
       .catch((err) => {
@@ -58,13 +58,9 @@ const SearchBar = () => {
     navigate("/searched", { state: { items: sendData, loading: loading } });
   };
 
+  // Tried using Callback setState(updater, callback()) to avoid messiness but there is delay, needs 2-3 clicks for adjustments
   useEffect(() => {
-    if (vitaminData.length === 0) {
-      getGovApiData();
-    } else {
-      setSendData(vitaminData);
-      setLoading(false);
-    }
+    getGovApiData();
   }, [vitaminData]);
 
   useEffect(() => {
