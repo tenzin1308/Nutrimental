@@ -16,17 +16,10 @@ const SearchBar = ({}) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(searchTxt);
-
-    getVitaminDbData();
-  };
-
-  useEffect(() => {
-    if (vitaminData.length === 0) {
-      getGovApiData();
-    } else {
-      setSendData(vitaminData);
+    if (searchTxt.trim().length !== 0) {
+      getVitaminDbData();
     }
-  }, [vitaminData]);
+  };
 
   const handleChange = (event) => {
     setSearchTxt(event.target.value);
@@ -56,6 +49,14 @@ const SearchBar = ({}) => {
         toast.error(err.message);
       });
   };
+
+  useEffect(() => {
+    if (vitaminData.length === 0) {
+      getGovApiData();
+    } else {
+      setSendData(vitaminData);
+    }
+  }, [vitaminData]);
 
   useEffect(() => {
     console.log("sendData ", sendData);
