@@ -24,6 +24,7 @@ const SearchedItem = ({ data }) => {
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+    console.log(data);
   };
 
   return (
@@ -43,6 +44,7 @@ const SearchedItem = ({ data }) => {
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
+          className="focus:outline-none"
         >
           <ExpandMoreIcon />
         </ExpandMore>
