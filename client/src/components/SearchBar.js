@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -55,7 +55,9 @@ const SearchBar = () => {
   };
 
   const handlePush = () => {
-    navigate("/searched", { state: { items: sendData, loading: loading } });
+    if (searchTxt.trim() !== "") {
+      navigate(`/searched?id=${searchTxt}`, { state: { items: sendData, loading: loading } });
+    }
   };
 
   // Tried using Callback setState(updater, callback()) to avoid messiness but there is delay, needs 2-3 clicks for adjustments
