@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../nutrimental-logo.png";
 import { AccountContext } from "./Account";
-import SearchBar from "./SearchBar";
+import SearchBar from './SearchBar';
 
 function stringToColor(string) {
   let hash = 0;
@@ -69,20 +69,27 @@ export default function NavBar({ authProps, setAuthProps }) {
   return (
     <div className="w-screen ">
       <nav className="navbar navbar-expand-lg navbar-light bg-light flex justify-between">
-        <div className="flex flex-row">
-          <Link className="navbar-brand h1 fw-bold" to="/">
+        <div className="flex flex-row justify-center text-center">
+          <Link className="navbar-brand h1 fw-bold flex" to="/">
             <img
               src={logo}
               alt="logo"
-              className="w-20 h-16 -mt-2 -mb-4 -ml-2 rounded-full"
+              className="w-12 h-12 -mt-2 -mb-4 -ml-2 rounded-full mr-2"
             />
+            <button type="button" className="btn btn-light">Nutrimental</button>
           </Link>
-          <Link className="navbar-brand h1 fw-bold mt-1 h-11" to="/">
-            <button type="button" className="btn btn-light">
-              Home
-            </button>
-          </Link>
+
           <SearchBar />
+          <Link to='/contact' className="navbar-brand flex justify-center text-center ml-2">
+            <button type="button" className="btn btn-light">Contact</button>
+          </Link>
+          <Link to='/faq' className="navbar-brand flex justify-center text-center">
+            <button type="button" className="btn btn-light">FAQ</button>
+          </Link>
+          <Link to='/aboutus' className="navbar-brand flex justify-center text-center">
+            <button type="button" className="btn btn-light">About</button>  
+          </Link>
+          
         </div>
         <div className="flex flex-row">
           {authProps.session && authProps.isAuthenticated && authProps.user ? (
