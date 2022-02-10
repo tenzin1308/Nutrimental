@@ -9,7 +9,7 @@ vitaminRouter.get(
   expressAsyncHandler(async (req, res, err) => {
     // Some Code in here
     const vitamin = await vitaminModel.find({
-      vitamin_name: { $regex: req.body.vitamin_name, $options: "i" },
+      vitamin_name: { $regex: req.query.vitamin_name, $options: "i" },
     });
     if (vitamin) {
       return res.status(200).send(vitamin);
