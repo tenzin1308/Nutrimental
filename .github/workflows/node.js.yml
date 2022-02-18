@@ -22,11 +22,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies for client
-        run: npm i
-        working-directory: ./client/
+        run: |
+          cd client
+          npm i
       - name: Install dependencies for server
-        run: npm i
-        working-directory: ./server/
+        run: |
+          cd server
+          npm i
       - run: sudo pm2 restart client
       - run: sudo pm2 restart server
       - run: sudo pm2 save
