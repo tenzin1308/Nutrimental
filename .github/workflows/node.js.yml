@@ -22,9 +22,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies for client
-        run: |
-          cd client
-          npm i
+        working-directory: ./client
+        run: npm i
       - name: Install dependencies for server
         run: |
           cd server
