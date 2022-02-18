@@ -22,11 +22,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: cd client && npm i
-      - run: cd server && npm i
-      - run: sudo pm2 stop client
-      - run: sudo pm2 stop server
-      - run: sudo pm2 start client
-      - run: sudo pm2 start server
+      - name: Install dependencies for client
+        run: npm i
+        working-directory: ./client/
+      - name: Install dependencies for server
+        run: npm i
+        working-directory: ./server/
+      - run: sudo pm2 restart client
+      - run: sudo pm2 restart server
       - run: sudo pm2 save
       - run: sudo service nginx restart
