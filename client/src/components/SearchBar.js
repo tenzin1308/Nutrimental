@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const SearchBar = () => {
     await axios
       .get(
         // pageSize range = [1, 200]
-        `https://api.nal.usda.gov/fdc/v1/foods/search?query=${searchTxt}&pageSize=200&api_key=${process.env.REACT_APP_USDA_GOV_API_KEY}`
+        `https://api.nal.usda.gov/fdc/v1/foods/search?query=${searchTxt}&pageSize=200&api_key=8lipwf66SSWRVtn5S063QWheTJMSbN0ZySSf73Xv`
       )
       .then((res) => {
         setSendData([].concat(vitaminData, res.data.foods));
@@ -45,7 +45,7 @@ const SearchBar = () => {
 
   const getVitaminDbData = async () => {
     await axios
-      .get(`http://localhost:8000/api/vitamin/get?vitamin_name=${searchTxt}`)
+      .get(`/api/vitamin/get?vitamin_name=${searchTxt}`)
       .then((res) => {
         setVitaminData(res.data);
       })
@@ -55,7 +55,9 @@ const SearchBar = () => {
   };
 
   const handlePush = () => {
-    navigate("/searched", { state: { items: sendData, loading: loading } });
+    if (searchTxt.trim() !== "") {
+      navigate(`/searched?id=${searchTxt}`, { state: { items: sendData, loading: loading } });
+    }
   };
 
   // Tried using Callback setState(updater, callback()) to avoid messiness but there is delay, needs 2-3 clicks for adjustments

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Oval } from 'react-loader-spinner';
 import { useLocation } from "react-router-dom";
 import AccountLayout from "../components/AccountLayout";
 import SearchedItem from "../components/SearchedItem";
@@ -21,7 +22,10 @@ const Searched = () => {
   const location = useLocation();
 
   useEffect(() => {
-    setLoading(false);
+    setTimeout(() => {
+      <Oval color="#00BFFF" height={80} width={80} />;
+      setLoading(false);
+    }, 3000);
   }, []);
 
   useEffect(() => {
