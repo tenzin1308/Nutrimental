@@ -25,9 +25,8 @@ jobs:
         working-directory: ./client
         run: npm i
       - name: Install dependencies for server
-        run: |
-          cd server
-          npm i
+        working-directory: ./server
+        run: npm i
       - run: sudo pm2 restart client
       - run: sudo pm2 restart server
       - run: sudo pm2 save
