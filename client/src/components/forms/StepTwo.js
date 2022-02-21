@@ -1,19 +1,28 @@
 import axios from "axios";
 import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import toast from "react-hot-toast";
 import UserPool from "../../UserPool";
-
 // creating functional component ans getting props from app.js and destucturing them
 const StepTwo = ({ handleFormData, prevStep, values }) => {
-  const { firstName, lastName, password, email, dob, weight, height, diet } =
-    values;
+  const {
+    firstName,
+    lastName,
+    password,
+    email,
+    dob,
+    weight,
+    height,
+    diet,
+    gender,
+  } = values;
 
   // after form submit validating the form data using validator
   const submitFormData = (e) => {
     e.preventDefault();
     UserPool.signUp(email, password, [], null, async (err, data) => {
       if (err) {
-        console.error(err);
+        toast.error(err.message);
       } else {
         console.log(data);
         // after signup on cognito we are creating user in MongoDB
@@ -26,18 +35,20 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
             weight: weight,
             height: height,
             diet: diet,
+            gender: gender,
           })
           .then((res) => {
             console.log(res);
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(err.message);
           });
         // redirecting to home page after signup
         window.location.href = "/";
       }
     });
   };
+
   return (
     <>
       <Card style={{ marginTop: 100 }}>
@@ -54,6 +65,27 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
                 placeholder="dob"
                 onChange={handleFormData("dob")}
               />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Gender</Form.Label>
+              <Form.Group className="flex">
+                <Form.Check
+                  className="mr-3"
+                  value="male"
+                  name="gender"
+                  type="radio"
+                  label="Male"
+                  onChange={handleFormData("gender")}
+                />
+                <Form.Check
+                  className="mr-3"
+                  value="female"
+                  name="gender"
+                  type="radio"
+                  label="Female"
+                  onChange={handleFormData("gender")}
+                />
+              </Form.Group>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Weight in (lbs) </Form.Label>

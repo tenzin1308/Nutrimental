@@ -8,10 +8,10 @@ foodHistoryRouter.get(
   "/get/",
   expressAsyncHandler(async (req, res, err) => {
     const users_email = await foodHistoryModel.findOne({
-      user_email: req.query.user_email,
+      user_email: req.body.user_email,
     });
     if (users_email) {
-      return res.status(200).json(users_email.history);
+      return res.status(200).send(users_email.history);
     }
 
     return res.status(400).send(err.stack);

@@ -18,6 +18,7 @@ export default function SignUp() {
     weight: "",
     height: "",
     diet: "",
+    gender: ""
   });
 
   // function for going to next step by increasing step state by 1
