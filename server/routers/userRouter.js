@@ -39,7 +39,7 @@ userRouter.put(
     // Some Code in here
     try {
       await userModel.findOneAndUpdate(
-        { user_email: req.body.user_email },
+        { user_email: req.query.user_email },
         req.body,
         {
           new: true,
