@@ -10,6 +10,7 @@ import Searched from "./pages/Searched";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Tracker from "./pages/Tracker";
+import SuccessfulSignUp from "./pages/SuccessfulSignUp";
 
 function App() {
   const [authProps, setAuthProps] = useState({
@@ -101,6 +102,7 @@ function App() {
               />
               <Route exact path="/aboutus" element={<AboutUs />} />
               <Route exact path="/searched" element={<Searched />} />
+              <Route exact path="/successfulsignup" element={<SuccessfulSignUp />} />
             </Routes>
           </div>
         </div>
