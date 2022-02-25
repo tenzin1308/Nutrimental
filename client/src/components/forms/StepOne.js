@@ -6,7 +6,7 @@ import validator from "validator";
 const StepOne = ({ nextStep, handleFormData, values }) => {
   //creating error state for validation
   const [lengthError, setLengthError] = useState(false);
-  const [alphaNumericError, setAlphaNumericError] = useState(false);
+  const [isStrongPassword, setIsStrongPassword] = useState(false);
   const [notMatchingError, setNotMatchingError] = useState(false);
 
   // after form submit validating the form data using validator
@@ -23,9 +23,10 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
       setNotMatchingError(true);
     } else if (values.password.length < 8 ){
       setLengthError(true);
-    } else if (pattern.test(values.password) === false) {
-      setAlphaNumericError(true);
-     } else {
+    } else if (!validator.isStrongPassword(values.password)){
+      setIsStrongPassword(true);
+    }
+      else {
        nextStep();
      }
   };
@@ -73,7 +74,7 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
               <Form.Label>Password</Form.Label>
               <Form.Control
                 required
-                style={{ border: notMatchingError || lengthError || alphaNumericError  ? "2px solid red" : "" }}
+                style={{ border: notMatchingError || lengthError || isStrongPassword  ? "2px solid red" : "" }}
                 name="password"
                 defaultValue={values.password}
                 type="password"
@@ -94,9 +95,9 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
               ) : (
                 ""
               )}
-              {alphaNumericError ? (
+              {isStrongPassword ? (
                 <Form.Text style={{ color: "red" }}>
-                  Password should contain Alpha-Numeric characters
+                  Password should contain Alpha-Numeric characters and a special character
                 </Form.Text>
               ) : (
                 ""
@@ -106,7 +107,7 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
                 required
-                style={{ border: notMatchingError || lengthError || alphaNumericError ? "2px solid red" : "" }}
+                style={{ border: notMatchingError || lengthError || isStrongPassword ? "2px solid red" : "" }}
                 name="confirmPassword"
                 defaultValue={values.confirmPassword}
                 type="password"
@@ -127,9 +128,9 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
               ) : (
                 ""
               )}
-              {alphaNumericError ? (
+              {isStrongPassword ? (
                 <Form.Text style={{ color: "red" }}>
-                  Password should contain Alpha-Numeric characters
+                  Password should contain Alpha-Numeric characters and a special character
                 </Form.Text>
               ) : (
                 ""
