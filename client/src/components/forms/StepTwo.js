@@ -39,6 +39,8 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
           })
           .then((res) => {
             console.log(res);
+            // redirecting to home page after signup
+            window.location.href = "/";
           })
           .catch((err) => {
             toast.error(err.message);
