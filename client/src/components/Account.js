@@ -1,5 +1,6 @@
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import React, { createContext } from "react";
+import toast from "react-hot-toast";
 import Pool from "../UserPool";
 
 const AccountContext = createContext();
@@ -33,7 +34,7 @@ const Account = (props) => {
           resolve(data);
         },
         onFailure: (err) => {
-          console.error("onFailure: ", err);
+          toast.error(err.message);
           reject(err);
         },
         newPasswordRequired: (data) => {

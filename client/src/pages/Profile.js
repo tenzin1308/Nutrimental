@@ -60,7 +60,7 @@ export default function Profile({ authProps }) {
             diet: authProps.user.diet,
           })
           .then((res) => {
-            console.log(res);
+            toast.success("Successfully updated your profile");
           })
           .catch((err) => {
             toast.error(err.message);

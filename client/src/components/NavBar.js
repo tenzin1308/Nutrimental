@@ -1,6 +1,7 @@
 import Avatar from "@mui/material/Avatar";
 import axios from "axios";
 import React, { useContext, useEffect } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import logo from "../nutrimental-logo.png";
 import { AccountContext } from "./Account";
@@ -53,7 +54,7 @@ export default function NavBar({ authProps, setAuthProps }) {
         });
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err.message);
       });
   };
 
