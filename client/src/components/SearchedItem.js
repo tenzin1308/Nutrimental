@@ -1,12 +1,12 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import * as React from "react";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -24,7 +24,7 @@ const SearchedItem = ({ data }) => {
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
-    console.log(data);
+    // console.log(data);
   };
 
   return (

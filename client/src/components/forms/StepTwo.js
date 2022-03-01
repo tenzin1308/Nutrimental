@@ -27,7 +27,6 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
       if (err) {
         toast.error(err.message);
       } else {
-        console.log(data);
         // after signup on cognito we are creating user in MongoDB
         await axios
           .post("/api/user/post", {
@@ -41,7 +40,6 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
             gender: gender,
           })
           .then((res) => {
-            console.log(res);
             toast.success("Sign up successful!")
           })
           .catch((err) => {

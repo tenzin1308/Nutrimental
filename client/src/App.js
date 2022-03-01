@@ -9,8 +9,8 @@ import Profile from "./pages/Profile";
 import Searched from "./pages/Searched";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Tracker from "./pages/Tracker";
 import SuccessfulSignUp from "./pages/SuccessfulSignUp";
+import Tracker from "./pages/Tracker";
 
 function App() {
   const [authProps, setAuthProps] = useState({
@@ -23,7 +23,6 @@ function App() {
     try {
       // do something
     } catch (error) {
-      // console.log(error);
       toast.error(error.message);
     }
   }, []);
