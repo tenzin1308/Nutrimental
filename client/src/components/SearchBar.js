@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -56,7 +57,9 @@ const SearchBar = () => {
 
   const handlePush = () => {
     if (searchTxt.trim() !== "") {
-      navigate(`/searched?id=${searchTxt}`, { state: { items: sendData, loading: loading } });
+      navigate(`/searched?id=${searchTxt}`, {
+        state: { items: sendData, loading: loading },
+      });
     }
   };
 
@@ -71,7 +74,7 @@ const SearchBar = () => {
 
   return (
     <form
-      className="relative flex flex-row justify-center items-center focus-within:border-blue-700 border-2 my-2 h-11"
+      className="relative flex flex-row justify-center items-center focus-within:border-blue-700 border-2 m-2 h-11"
       action="#"
       onSubmit={handleSubmit}
     >

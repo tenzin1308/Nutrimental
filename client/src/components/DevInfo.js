@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 export default function DevInfo({ authorInitial, authorName, authorBio, authorImg, gitHub, linkedIn, resume, portfolio }) {
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345 }} className="p-1 m-2" >
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">

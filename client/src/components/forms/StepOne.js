@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import validator from "validator";
 
-// creating functional component ans getting props from app.js and destucturing them
+// creating functional component ans getting props from app.js and destructuring them
 const StepOne = ({ nextStep, handleFormData, values }) => {
   //creating error state for validation
-  const [lengthError, setLengthError] = useState(false);
   const [isStrongPassword, setIsStrongPassword] = useState(false);
   const [notMatchingError, setNotMatchingError] = useState(false);
 
@@ -13,20 +12,17 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
   const submitFormData = (e) => {
     e.preventDefault();
 
-    // RegExp for password validation
-    var pattern = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
-    );
+    // // RegExp for password validation
+    // var pattern = new RegExp(
+    //   "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
+    // );
 
     // checking if value of first name and last name is empty show error else take to step 2
     if (!validator.equals(values.password, values.confirmPassword)) {
       setNotMatchingError(true);
-    } else if (values.password.length < 8 ){
-      setLengthError(true);
     } else if (!validator.isStrongPassword(values.password)){
       setIsStrongPassword(true);
-    }
-      else {
+    } else {
        nextStep();
      }
   };
@@ -74,7 +70,7 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
               <Form.Label>Password</Form.Label>
               <Form.Control
                 required
-                style={{ border: notMatchingError || lengthError || isStrongPassword  ? "2px solid red" : "" }}
+                style={{ border: notMatchingError || isStrongPassword  ? "2px solid red" : "" }}
                 name="password"
                 defaultValue={values.password}
                 type="password"
@@ -88,16 +84,23 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
               ) : (
                 ""
               )}
-              {lengthError ? (
-                <Form.Text style={{ color: "red" }}>
-                  Password length should be 8 or greater
-                </Form.Text>
-              ) : (
-                ""
-              )}
               {isStrongPassword ? (
                 <Form.Text style={{ color: "red" }}>
-                  Password should contain Alpha-Numeric characters and a special character
+                  Password should contain <br />
+                  <ul>
+                    <li>
+                      At least one lowercase letter (a-z)
+                    </li> 
+                    <li>
+                      At least one uppercase letter (A-Z)
+                    </li>
+                    <li>
+                      At least one number (0-9)
+                    </li>
+                    <li>
+                      At least one special character (e.g. !@#$%^&*)
+                    </li>
+                  </ul>
                 </Form.Text>
               ) : (
                 ""
@@ -107,7 +110,7 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
                 required
-                style={{ border: notMatchingError || lengthError || isStrongPassword ? "2px solid red" : "" }}
+                style={{ border: notMatchingError || isStrongPassword ? "2px solid red" : "" }}
                 name="confirmPassword"
                 defaultValue={values.confirmPassword}
                 type="password"
@@ -121,16 +124,24 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
               ) : (
                 ""
               )}
-              {lengthError ? (
-                <Form.Text style={{ color: "red" }}>
-                  Password length should be 8 or greater
-                </Form.Text>
-              ) : (
-                ""
-              )}
               {isStrongPassword ? (
                 <Form.Text style={{ color: "red" }}>
-                  Password should contain Alpha-Numeric characters and a special character
+                  Password should contain <br />
+                  <ul>
+                    <li>
+                      At least one lowercase letter (a-z)
+                    </li> 
+                    <li>
+                      At least one uppercase letter (A-Z)
+                    </li>
+                    <li>
+                      At least one number (0-9)
+                    </li>
+                    <li>
+                      At least one special character (e.g. !@#$%^&*)
+                    </li>
+                  </ul>
+                    
                 </Form.Text>
               ) : (
                 ""
