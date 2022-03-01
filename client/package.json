@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "proxy": "http://localhost:8000/",
+  "proxy": "http://172.31.94.90:8000/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

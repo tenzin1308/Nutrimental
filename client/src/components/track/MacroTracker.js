@@ -15,6 +15,9 @@ export default function MacroTracker({ user_email }) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-  return <>placeholder</>;
+  });
+  return <>
+    {console.log(foodHistory)}
+    
+    </>;
 }
