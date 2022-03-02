@@ -89,6 +89,9 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
                   Password should contain <br />
                   <ul>
                     <li>
+                      At least 8 characters
+                    </li>
+                    <li>
                       At least one lowercase letter (a-z)
                     </li> 
                     <li>
@@ -128,6 +131,9 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
                 <Form.Text style={{ color: "red" }}>
                   Password should contain <br />
                   <ul>
+                    <li>
+                      At least 8 characters
+                    </li>
                     <li>
                       At least one lowercase letter (a-z)
                     </li> 
