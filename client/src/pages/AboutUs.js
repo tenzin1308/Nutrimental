@@ -48,7 +48,7 @@ export default function AboutUs() {
         },
         {
             authorInitial: 'DB',
-            authorName: 'Dhante B',
+            authorName: 'Dante Betancourt',
             authorBio: 'I am a fullstack software engineer with a passion for learning and building software. I am also learning about machine learning and data science.',
             authorImg: 'https://source.unsplash.com/random',
             gitHub: '',
@@ -58,7 +58,7 @@ export default function AboutUs() {
         },
         {
             authorInitial: 'IA',
-            authorName: 'Ismail A',
+            authorName: 'Ismail Akram',
             authorBio: 'I am a fullstack software engineer with a passion for learning and building software. I am also learning about machine learning and data science.',
             authorImg: 'https://source.unsplash.com/random',
             gitHub: '',
