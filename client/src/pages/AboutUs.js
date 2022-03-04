@@ -1,4 +1,6 @@
 import React from 'react';
+import FemaleAvatar from '../assets/profile_pic/FemaleAvatar.jpg';
+import MaleAvatar from '../assets/profile_pic/MaleAvatar.jpg';
 import Hafsa_Resume from '../assets/resume/Hafsa_Resume.pdf';
 import Tanzil_Resume from '../assets/resume/Tanzil_Resume.pdf';
 import Tenzin_Resume from '../assets/resume/Tenzin_Resume.pdf';
@@ -10,7 +12,7 @@ export default function AboutUs() {
             authorInitial: 'TT',
             authorName: 'Tenzin Tashi',
             authorBio: 'I am a fullstack software engineer with a passion for learning and building software. I am also learning about machine learning and data science.',
-            authorImg: 'https://source.unsplash.com/random',
+            authorImg: MaleAvatar,
             gitHub: 'https://github.com/tenzin1308',
             linkedIn: 'https://www.linkedin.com/in/tenzin-tashi-bb520510a/',
             resume: Tenzin_Resume,
@@ -20,7 +22,7 @@ export default function AboutUs() {
             authorInitial: 'JP',
             authorName: 'Justin Park',
             authorBio: 'I am a fullstack software engineer with a passion for learning and building software. I am also learning about machine learning and data science.',
-            authorImg: 'https://source.unsplash.com/random',
+            authorImg: MaleAvatar,
             gitHub: 'https://github.com/JustinParkCS',
             linkedIn: 'https://www.linkedin.com/in/justinparkcs/',
             resume: '',
@@ -30,7 +32,7 @@ export default function AboutUs() {
             authorInitial: 'HN',
             authorName: 'Hafsa Nadim',
             authorBio: 'I am a fullstack software engineer with a passion for learning and building software. I am also learning about machine learning and data science.',
-            authorImg: 'https://source.unsplash.com/random',
+            authorImg: FemaleAvatar,
             gitHub: 'https://github.com/HAFSAnCR7',
             linkedIn: 'https://www.linkedin.com/in/hafsa-nadim-b2385413b/',
             resume: Hafsa_Resume,
@@ -40,7 +42,7 @@ export default function AboutUs() {
             authorInitial: 'TB',
             authorName: 'Tanzil Baraskar',
             authorBio: 'I am a fullstack software engineer with a passion for learning and building software. I am also learning about machine learning and data science.',
-            authorImg: 'https://source.unsplash.com/random',
+            authorImg: MaleAvatar,
             gitHub: 'https://github.com/tanzil7',
             linkedIn: 'https://www.linkedin.com/in/tanzil-b-47855b130/',
             resume: Tanzil_Resume,
@@ -48,20 +50,20 @@ export default function AboutUs() {
         },
         {
             authorInitial: 'DB',
-            authorName: 'Dhante B',
+            authorName: 'Dante Betancourt',
             authorBio: 'I am a fullstack software engineer with a passion for learning and building software. I am also learning about machine learning and data science.',
-            authorImg: 'https://source.unsplash.com/random',
-            gitHub: '',
+            authorImg: MaleAvatar,
+            gitHub: 'https://github.com/DanteB98',
             linkedIn: '',
             resume: '',
             portfolio: '',
         },
         {
             authorInitial: 'IA',
-            authorName: 'Ismail A',
+            authorName: 'Ismail Akram',
             authorBio: 'I am a fullstack software engineer with a passion for learning and building software. I am also learning about machine learning and data science.',
-            authorImg: 'https://source.unsplash.com/random',
-            gitHub: '',
+            authorImg: MaleAvatar,
+            gitHub: 'https://github.com/IsmailAkram',
             linkedIn: '',
             resume: '',
             portfolio: '',

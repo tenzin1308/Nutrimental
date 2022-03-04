@@ -28,7 +28,7 @@ export default function DevInfo({ authorInitial, authorName, authorBio, authorIm
       />
       <CardMedia
         component="img"
-        height="194"
+        height="165"
         image={authorImg? authorImg : "https://source.unsplash.com/random"}
         alt={authorName}
       />
@@ -41,14 +41,18 @@ export default function DevInfo({ authorInitial, authorName, authorBio, authorIm
         <IconButton aria-label="github">
           <GitHubIcon onClick={() => window.open(gitHub, "_blank")} />
         </IconButton>
-        <IconButton aria-label="linkedin">
-          <LinkedInIcon onClick={() => window.open(linkedIn, "_blank")} />
-        </IconButton>
-        <Link to={resume} target="_blank" download={`${authorName} Resume.pdf`}>
-            <IconButton aria-label="resume">
-                <AttachFileIcon />
-            </IconButton>
-        </Link>
+        {linkedIn &&
+          <IconButton aria-label="linkedin">
+            <LinkedInIcon onClick={() => window.open(linkedIn, "_blank")} />
+          </IconButton>
+        }
+        {resume &&
+          <Link to={resume} target="_blank" download={`${authorName} Resume.pdf`}>
+              <IconButton aria-label="resume">
+                  <AttachFileIcon />
+              </IconButton>
+          </Link>
+        }
         {portfolio && 
         <IconButton aria-label="portfolio">
           <ShareIcon onClick={() => window.open(portfolio, "_blank")}/>
