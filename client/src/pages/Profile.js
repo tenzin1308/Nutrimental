@@ -1,8 +1,10 @@
 import axios from "axios";
 import React from "react";
 import toast from "react-hot-toast";
+import UnisexAvatar from "../assets/profile_pic/UnisexAvatar.jpg";
 import AccountLayout from "../components/AccountLayout";
 
+// "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
 const TABS = ["Account Information"];
 
 const getDate = (date) => {
@@ -90,7 +92,7 @@ export default function Profile({ authProps }) {
                 <div className="image overflow-hidden">
                   <img
                     className="h-auto w-full mx-auto"
-                    src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
+                    src={UnisexAvatar}
                     alt=""
                   />
                 </div>
