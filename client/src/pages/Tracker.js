@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import AccountLayout from "../components/AccountLayout";
 import MacroTracker from "../components/track/MacroTracker";
+import NutrientAdvice from "../components/track/NutrientAdvice";
 
 const TABS = [
   "Macro Tracker",
@@ -23,15 +24,13 @@ const Tracker = ({ authProps }) => {
         selectedTab={selectedTab}
       >
         <div className="p-4">
-          <h1 className=" text-5xl">ITS WORKING!! THE TRACKER PAGE</h1>
-          <br />
           {selectedTab === "Nutrient Tracker" ? (
             <div>
               <MacroTracker user_email={authProps.user.user_email} />
             </div>
           ) : selectedTab === "Nutrient Advice" ? (
             <div>
-              <h1>{selectedTab}</h1>
+              <NutrientAdvice />
             </div>
           ) : (
             selectedTab === "Food History" && (
