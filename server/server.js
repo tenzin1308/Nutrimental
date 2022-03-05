@@ -2,10 +2,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import userRouter from "./routers/userRouter.js";
+import adviceRouter from "./routers/adviceRouter.js";
 import dailyIntakeRouter from "./routers/dailyIntakeRouter.js";
-import vitaminRouter from "./routers/vitaminRouter.js";
 import foodHistoryRouter from "./routers/foodHistoryRouter.js";
+import userRouter from "./routers/userRouter.js";
+import vitaminRouter from "./routers/vitaminRouter.js";
 
 dotenv.config();
 
@@ -38,6 +39,7 @@ app.use("/api/user", userRouter);
 app.use("/api/daily-intake", dailyIntakeRouter);
 app.use("/api/vitamin", vitaminRouter);
 app.use("/api/food-history", foodHistoryRouter);
+app.use("/api/advice", adviceRouter);
 
 // Connection
 
