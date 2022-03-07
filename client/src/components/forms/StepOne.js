@@ -6,6 +6,7 @@ import validator from "validator";
 const StepOne = ({ nextStep, handleFormData, values }) => {
   //creating error state for validation
   const [isStrongPassword, setIsStrongPassword] = useState(false);
+  const [isStrongPassword2, setIsStrongPassword2] = useState(false);
   const [notMatchingError, setNotMatchingError] = useState(false);
   const [passwordLength, setPasswordLength] = useState(false);
   const [passwordLower, setPasswordLower] = useState(false);
@@ -28,68 +29,32 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
     // );
 
     // checking if value of first name and last name is empty show error else take to step 2
-    if (!validator.equals(values.password, values.confirmPassword)) {
-      setNotMatchingError(true);
-    } else if (!validator.isStrongPassword(values.password)) {
-      setIsStrongPassword(true);
-    } else {
+    if (
+      validator.equals(values.password, values.confirmPassword) &&
+      validator.isStrongPassword(values.password)
+    ) {
       nextStep();
     }
   };
 
   const checkPassword1 = (value) => {
-    if (value.length >= 8) {
-      setPasswordLength(true);
-    } else {
-      setPasswordLength(false);
-    }
-    if (value.match(/[a-z]/g)?.length > 0) {
-      setPasswordLower(true);
-    } else {
-      setPasswordLower(false);
-    }
-    if (value.match(/[A-Z]/g)?.length > 0) {
-      setPasswordUpper(true);
-    } else {
-      setPasswordUpper(false);
-    }
-    if (value.match(/\d/g)?.length > 0) {
-      setPasswordNumber(true);
-    } else {
-      setPasswordNumber(false);
-    }
-    if (value.match(/[-=_+!@#$%^&*()\s]/g)?.length > 0) {
-      setPasswordSpecial(true);
-    } else {
-      setPasswordSpecial(false);
-    }
+    setNotMatchingError(value !== values.confirmPassword);
+    setIsStrongPassword(!validator.isStrongPassword(value));
+    setPasswordLength(value.length >= 8);
+    setPasswordLower(value.match(/[a-z]/g)?.length > 0);
+    setPasswordUpper(value.match(/[A-Z]/g)?.length > 0);
+    setPasswordNumber(value.match(/\d/g)?.length > 0);
+    setPasswordSpecial(value.match(/[-=_+!@#$%^&*()\s]/g)?.length > 0);
   };
+
   const checkPassword2 = (value) => {
-    if (value.length >= 8) {
-      setPassword2Length(true);
-    } else {
-      setPassword2Length(false);
-    }
-    if (value.match(/[a-z]/g)?.length > 0) {
-      setPassword2Lower(true);
-    } else {
-      setPassword2Lower(false);
-    }
-    if (value.match(/[A-Z]/g)?.length > 0) {
-      setPassword2Upper(true);
-    } else {
-      setPassword2Upper(false);
-    }
-    if (value.match(/\d/g)?.length > 0) {
-      setPassword2Number(true);
-    } else {
-      setPassword2Number(false);
-    }
-    if (value.match(/[-=_+!@#$%^&*()\s]/g)?.length > 0) {
-      setPassword2Special(true);
-    } else {
-      setPassword2Special(false);
-    }
+    setNotMatchingError(values.password !== value);
+    setIsStrongPassword2(!validator.isStrongPassword(value));
+    setPassword2Length(value.length >= 8);
+    setPassword2Lower(value.match(/[a-z]/g)?.length > 0);
+    setPassword2Upper(value.match(/[A-Z]/g)?.length > 0);
+    setPassword2Number(value.match(/\d/g)?.length > 0);
+    setPassword2Special(value.match(/[-=_+!@#$%^&*()\s]/g)?.length > 0);
   };
 
   return (
@@ -106,7 +71,7 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
                 defaultValue={values.firstName}
                 type="text"
                 placeholder="First Name"
-                onChange={handleFormData("firstName")}
+                onChange={(e) => handleFormData("firstName", e)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -117,7 +82,7 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
                 defaultValue={values.lastName}
                 type="text"
                 placeholder="Last Name"
-                onChange={handleFormData("lastName")}
+                onChange={(e) => handleFormData("lastName", e)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -128,7 +93,7 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
                 defaultValue={values.email}
                 type="email"
                 placeholder="Email"
-                onChange={handleFormData("email")}
+                onChange={(e) => handleFormData("email", e)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -144,52 +109,52 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
                 type="password"
                 placeholder="Password"
                 onChange={(e) => {
-                  handleFormData("password");
+                  handleFormData("password", e);
                   checkPassword1(e.target.value);
                 }}
               />
-              {notMatchingError ? (
-                <Form.Text style={{ color: "red" }}>
-                  Password is not matching
-                </Form.Text>
-              ) : (
-                ""
-              )}
+
+              <Form.Text
+                className={`${notMatchingError ? "text-red-500" : "hidden"}`}
+              >
+                Password is not matching
+              </Form.Text>
+
               {isStrongPassword ? (
                 <Form.Text style={{ color: "red" }}>
                   Password should contain <br />
                   <ul>
                     <li
                       className={`${
-                        !passwordLength ? "text-red-600" : "text-black"
+                        !passwordLength ? "text-red-500" : "text-black"
                       }`}
                     >
                       At least 8 characters
                     </li>
                     <li
                       className={`${
-                        !passwordLower ? "text-red-600" : "text-black"
+                        !passwordLower ? "text-red-500" : "text-black"
                       }`}
                     >
                       At least one lowercase letter (a-z)
                     </li>
                     <li
                       className={`${
-                        !passwordUpper ? "text-red-600" : "text-black"
+                        !passwordUpper ? "text-red-500" : "text-black"
                       }`}
                     >
                       At least one uppercase letter (A-Z)
                     </li>
                     <li
                       className={`${
-                        !passwordNumber ? "text-red-600" : "text-black"
+                        !passwordNumber ? "text-red-500" : "text-black"
                       }`}
                     >
                       At least one number (0-9)
                     </li>
                     <li
                       className={`${
-                        !passwordSpecial ? "text-red-600" : "text-black"
+                        !passwordSpecial ? "text-red-500" : "text-black"
                       }`}
                     >
                       At least one special character (e.g. !@#$%^&*)
@@ -213,52 +178,52 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
                 type="password"
                 placeholder="Confirm Password"
                 onChange={(e) => {
-                  handleFormData("confirmPassword");
+                  handleFormData("confirmPassword", e);
                   checkPassword2(e.target.value);
                 }}
               />
-              {notMatchingError ? (
-                <Form.Text style={{ color: "red" }}>
-                  Password is not matching
-                </Form.Text>
-              ) : (
-                ""
-              )}
-              {isStrongPassword ? (
+
+              <Form.Text
+                className={`${notMatchingError ? "text-red-500" : "hidden"}`}
+              >
+                Password is not matching
+              </Form.Text>
+
+              {isStrongPassword2 ? (
                 <Form.Text style={{ color: "red" }}>
                   Password should contain <br />
                   <ul>
                     <li
                       className={`${
-                        !password2Length ? "text-red-600" : "text-black"
+                        !password2Length ? "text-red-500" : "text-black"
                       }`}
                     >
                       At least 8 characters
                     </li>
                     <li
                       className={`${
-                        !password2Lower ? "text-red-600" : "text-black"
+                        !password2Lower ? "text-red-500" : "text-black"
                       }`}
                     >
                       At least one lowercase letter (a-z)
                     </li>
                     <li
                       className={`${
-                        !password2Upper ? "text-red-600" : "text-black"
+                        !password2Upper ? "text-red-500" : "text-black"
                       }`}
                     >
                       At least one uppercase letter (A-Z)
                     </li>
                     <li
                       className={`${
-                        !password2Number ? "text-red-600" : "text-black"
+                        !password2Number ? "text-red-500" : "text-black"
                       }`}
                     >
                       At least one number (0-9)
                     </li>
                     <li
                       className={`${
-                        !password2Special ? "text-red-600" : "text-black"
+                        !password2Special ? "text-red-500" : "text-black"
                       }`}
                     >
                       At least one special character (e.g. !@#$%^&*)
