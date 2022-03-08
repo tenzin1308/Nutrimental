@@ -1,91 +1,83 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Table from 'react-bootstrap/Table'
-import ProgressBar from 'react-bootstrap/ProgressBar'
+import Table from "react-bootstrap/Table";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
-export default function MacroTracker({ user_email }) {
+export default function MacroTracker({ user_email, date }) {
   const [foodHistory, setFoodHistory] = useState([]);
+  const [calories, setCalories] = useState(0);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getFoodHistoryData = useEffect(async () => {
+  const getFoodHistoryData = async () => {
     await axios
-      .get(`http://localhost:8000/api/food-history/get?user_email=${user_email}`)
+      .get(
+        `http://localhost:8000/api/food-history/get?user_email=${user_email}`
+      )
       .then((res) => {
-        setFoodHistory((res.data));
+        setFoodHistory(res.data);
+        // console.log(res.data);
       })
       .catch((err) => {
         toast.error(err.message);
+        console.log(err.message);
       });
+  };
+
+  useEffect(() => {
+    getFoodHistoryData();
   }, []);
 
-  // variables to tally up
-  let calories = 0
-  let carbs = 0
- /*  let proteins = 0 */
-  let amount = 0
+  // foodHistory.forEach((obj) => {
+  //   calories += parseInt(obj.calories);
+  //   carbs += parseInt(obj.nutrients[0].nutrient_quantity);
+  //   /* proteins += parseInt(obj.nutrients[1].nutrient_quantity); */
+  //   amount += parseInt(obj.amount);
+  //   console.log(obj.nutrients[0].nutrient_name); // Continue from HERE!
+  // });
 
-  foodHistory.forEach((obj) => {
-    calories += parseInt(obj.calories);
-    carbs += parseInt(obj.nutrients[0].nutrient_quantity);
-    /* proteins += parseInt(obj.nutrients[1].nutrient_quantity); */
-    amount += parseInt(obj.amount);
-    console.log(obj.nutrients[0].nutrient_name); // Continue from HERE!
-})
+  const accumulator = () => {
+    let totalCal = 0;
+    foodHistory.map((val) => {
+      console.log("testFunc -> ", val.food_name, val.calories);
+      totalCal += parseFloat(val.calories);
+      val.nutrients.map((innerVal) => {
+        console.log(
+          "innerTestFunc -> ",
+          innerVal.nutrient_name,
+          parseFloat(innerVal.nutrient_quantity) + 1
+        );
+      });
+    });
+    setCalories(totalCal);
+    console.log("total calories for the day: ", totalCal);
+  };
 
-  let left = amount-carbs
-  let progress = (carbs/amount)*100
+  useEffect(() => {
+    accumulator();
+  }, [foodHistory]);
 
-  console.log(progress)
-  console.log(calories)
-  console.log(amount)
-  console.log(carbs)
+  // let left = amount - carbs;
+  // let progress = (carbs / amount) * 100;
+
   /* console.log(proteins) */
 
-
   return (
-    <>
-    {console.log(foodHistory)}
-
-    <Table striped bordered hover>
-  <thead>
-    <tr>
-      <th>Macro</th>
-      <th>Total</th>
-      <th>Goal</th>
-      <th>Left</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Protein</td>
-      <td>null</td>
-      <td>null</td>
-      <td>null</td>
-    </tr>
-    <tr>
-      <td colSpan={4}><ProgressBar now={0} /></td>
-    </tr>
-    <tr>
-      <td>Carbohydrate</td>
-      <td>{carbs}</td>
-      <td>{amount}</td>
-      <td>{left}</td>
-    </tr>
-    <tr>
-      <td colSpan={4}><ProgressBar now={progress} /></td>
-    </tr>
-    <tr>
-      <td>Fiber</td>
-      <td>null</td>
-      <td>null</td>
-      <td>null</td>
-    </tr>
-    <tr>
-      <td colSpan={4}><ProgressBar now={0} /></td>
-    </tr>
-  </tbody>
-</Table>
-    </>
-  )
-};
+    <div className="flex flex-col">
+      {console.log(date.toISOString().slice(0, 10))}
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Macro</th>
+            <th>Total</th>
+            <th>Goal</th>
+            <th>Left</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* <td colSpan={4}><ProgressBar now={progress} /></td> */}
+        </tbody>
+      </Table>
+    </div>
+  );
+}
