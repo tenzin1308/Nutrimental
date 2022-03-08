@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import AccountLayout from "../components/AccountLayout";
 import SearchedItem from "../components/SearchedItem";
 
-const Searched = () => {
+const Searched = ({ authProps }) => {
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState([
     // {
@@ -42,7 +42,7 @@ const Searched = () => {
       {!loading && data.length > 0 ? (
         <ul className="space-y-3">
           {data.map((item, i) => (
-            <SearchedItem data={item} index={i} key={i} />
+            <SearchedItem data={item} index={i} key={i} authProps={authProps} />
           ))}
         </ul>
       ) : (
