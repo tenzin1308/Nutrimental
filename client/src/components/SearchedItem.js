@@ -20,7 +20,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const SearchedItem = ({ data }) => {
+const SearchedItem = ({ data, authProps }) => {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -36,10 +36,6 @@ const SearchedItem = ({ data }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        {/* TODO: ADD onSubmit logic to add to account and show toast */}
-        <button className="bg-blue-700 text-white p-2 rounded-md ml-2">
-          add to account
-        </button>
         {data.description && (
           <ExpandMore
             expand={expanded}
@@ -55,7 +51,7 @@ const SearchedItem = ({ data }) => {
       {data.description && (
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent className="border-t-2 border-dashed">
-            <SearchTable data={data.foodNutrients} />
+            <SearchTable data={data} authProps={authProps} />
             {/* {console.log(data.foodNutrients)} */}
           </CardContent>
         </Collapse>
