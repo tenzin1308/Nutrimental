@@ -12,9 +12,9 @@ vitaminRouter.get(
       vitamin_name: { $regex: req.query.vitamin_name, $options: "i" },
     });
     if (vitamin) {
-      return res.status(200).send(vitamin);
+      return res.sendStatus(200).send(vitamin);
     }
-    return res.status(404).send(err.stack);
+    return res.sendStatus(404).send(err.stack);
   })
 );
 

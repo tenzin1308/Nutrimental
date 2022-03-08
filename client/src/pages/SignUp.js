@@ -18,7 +18,7 @@ export default function SignUp() {
     weight: "",
     height: "",
     diet: "",
-    gender: ""
+    gender: "",
   });
 
   // function for going to next step by increasing step state by 1
@@ -32,7 +32,7 @@ export default function SignUp() {
   };
 
   // handling form input data by taking onchange value and updating our previous form data state
-  const handleInputData = (input) => (e) => {
+  const handleInputData = (input, e) => {
     // input value from the form
     const { value } = e.target;
 

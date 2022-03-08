@@ -15,11 +15,11 @@ export default function Profile({ authProps }) {
   const [selectedTab, setSelectedTab] = React.useState(TABS[0]);
   const [editingInfo, setEditingInfo] = React.useState(false);
 
-  const [changedFirstName, setChangedFirstName] = React.useState("")
-  const [changedLastName, setChangedLastName] = React.useState("")
-  const [changedWeight, setChangedWeight] = React.useState("")
-  const [changedHeight, setChangedHeight] = React.useState("")
-  const [changedDiet, setChangedDiet] = React.useState("")
+  const [changedFirstName, setChangedFirstName] = React.useState("");
+  const [changedLastName, setChangedLastName] = React.useState("");
+  const [changedWeight, setChangedWeight] = React.useState("");
+  const [changedHeight, setChangedHeight] = React.useState("");
+  const [changedDiet, setChangedDiet] = React.useState("");
 
   React.useEffect(() => {}, [selectedTab]);
 
@@ -40,12 +40,16 @@ export default function Profile({ authProps }) {
   };
 
   const saveButtonHandler = () => {
-
-    authProps.user.first_name = changedFirstName === "" ? authProps.user.first_name : changedFirstName;
-    authProps.user.last_name = changedLastName === "" ? authProps.user.last_name : changedLastName;
-    authProps.user.weight = changedWeight === "" ? authProps.user.weight : changedWeight;
-    authProps.user.height = changedHeight === "" ? authProps.user.height : changedHeight;
-    authProps.user.diet = changedDiet === "" ? authProps.user.diet : changedDiet;
+    authProps.user.first_name =
+      changedFirstName === "" ? authProps.user.first_name : changedFirstName;
+    authProps.user.last_name =
+      changedLastName === "" ? authProps.user.last_name : changedLastName;
+    authProps.user.weight =
+      changedWeight === "" ? authProps.user.weight : changedWeight;
+    authProps.user.height =
+      changedHeight === "" ? authProps.user.height : changedHeight;
+    authProps.user.diet =
+      changedDiet === "" ? authProps.user.diet : changedDiet;
 
     clearFieldHandle();
 
@@ -53,7 +57,7 @@ export default function Profile({ authProps }) {
       if (err) {
         toast.error(err.message);
       } else {
-        await axios 
+        await axios
           .put(`/api/user/put?user_email=${authProps.user.user_email}`, {
             first_name: authProps.user.first_name,
             last_name: authProps.user.last_name,
@@ -73,7 +77,7 @@ export default function Profile({ authProps }) {
     updateDBInfo();
     setEditingInfo(false);
   };
-  
+
   return (
     authProps.isAuthenticated &&
     authProps.session &&
@@ -148,104 +152,134 @@ export default function Profile({ authProps }) {
                   <div className="grid md:grid-cols-2 text-sm">
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">First Name</div>
-                      {editingInfo ? <input
-                        type="text"
-                        placeholder={authProps.user.first_name}
-                        value={changedFirstName}
-                        onChange={(e) => setChangedFirstName(e.target.value)}
-                      ></input> : 
-                      <div className="px-4 py-2">{authProps.user.first_name}</div>
-                      }
+                      {editingInfo ? (
+                        <input
+                          type="text"
+                          placeholder={authProps.user.first_name}
+                          value={changedFirstName}
+                          onChange={(e) => setChangedFirstName(e.target.value)}
+                        ></input>
+                      ) : (
+                        <div className="px-4 py-2">
+                          {authProps.user.first_name}
+                        </div>
+                      )}
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Last Name</div>
-                      {editingInfo ? <input
-                        type="text"
-                        placeholder={authProps.user.last_name}
-                        value={changedLastName}
-                        onChange={(e) => setChangedLastName(e.target.value)}
-                      ></input> : 
-                      <div className="px-4 py-2">{authProps.user.last_name}</div>
-                      }
+                      {editingInfo ? (
+                        <input
+                          type="text"
+                          placeholder={authProps.user.last_name}
+                          value={changedLastName}
+                          onChange={(e) => setChangedLastName(e.target.value)}
+                        ></input>
+                      ) : (
+                        <div className="px-4 py-2">
+                          {authProps.user.last_name}
+                        </div>
+                      )}
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Gender</div>
-                      {editingInfo ? <input
-                        type="text"
-                        placeholder="Male" disabled
-                      ></input> : 
-                      <div className="px-4 py-2">Male</div>
-                      }
+                      {editingInfo ? (
+                        <input type="text" placeholder="Male" disabled></input>
+                      ) : (
+                        <div className="px-4 py-2">Male</div>
+                      )}
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Weight</div>
-                      {editingInfo ? <input
-                        type="text"
-                        placeholder={authProps.user.weight}
-                        value={changedWeight}
-                        onChange={(e) => setChangedWeight(e.target.value)}
-                      ></input> : 
-                      <div className="px-4 py-2">{authProps.user.weight}</div>
-                      }
+                      {editingInfo ? (
+                        <input
+                          type="text"
+                          placeholder={authProps.user.weight}
+                          value={changedWeight}
+                          onChange={(e) => setChangedWeight(e.target.value)}
+                        ></input>
+                      ) : (
+                        <div className="px-4 py-2">{authProps.user.weight}</div>
+                      )}
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Height</div>
-                      {editingInfo ? <input
-                        type="text"
-                        placeholder={authProps.user.height}
-                        value={changedHeight}
-                        onChange={(e) => setChangedHeight(e.target.value)}
-                      ></input> : 
-                      <div className="px-4 py-2">{authProps.user.height}</div>
-                      }
+                      {editingInfo ? (
+                        <input
+                          type="text"
+                          placeholder={authProps.user.height}
+                          value={changedHeight}
+                          onChange={(e) => setChangedHeight(e.target.value)}
+                        ></input>
+                      ) : (
+                        <div className="px-4 py-2">{authProps.user.height}</div>
+                      )}
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Email.</div>
-                      {editingInfo ? <input
-                        type="text"
-                        placeholder={authProps.user.user_email} disabled
-                      ></input> : 
-                      <div className="px-4 py-2">{authProps.user.user_email}</div>
-                      }
+                      {editingInfo ? (
+                        <input
+                          type="text"
+                          placeholder={authProps.user.user_email}
+                          disabled
+                        ></input>
+                      ) : (
+                        <div className="px-4 py-2">
+                          {authProps.user.user_email}
+                        </div>
+                      )}
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Birthday</div>
-                      {editingInfo ? <input
-                        type="text"
-                        placeholder={getDate(authProps.user.dob.slice(0, 10))} disabled 
-                      ></input> : 
-                      <div className="px-4 py-2">{getDate(authProps.user.dob.slice(0, 10))}</div>
-                      }
+                      {editingInfo ? (
+                        <input
+                          type="text"
+                          placeholder={getDate(authProps.user.dob.slice(0, 10))}
+                          disabled
+                        ></input>
+                      ) : (
+                        <div className="px-4 py-2">
+                          {getDate(authProps.user.dob.slice(0, 10))}
+                        </div>
+                      )}
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Diet</div>
-                      {editingInfo ? <input
-                        type="text"
-                        placeholder={authProps.user.diet}
-                        value={changedDiet}
-                        onChange={(e) => setChangedDiet(e.target.value)}
-                      ></input> : 
-                      <div className="px-4 py-2">{authProps.user.diet}</div>
-                      }
+                      {editingInfo ? (
+                        <input
+                          type="text"
+                          placeholder={authProps.user.diet}
+                          value={changedDiet}
+                          onChange={(e) => setChangedDiet(e.target.value)}
+                        ></input>
+                      ) : (
+                        <div className="px-4 py-2">{authProps.user.diet}</div>
+                      )}
                     </div>
                   </div>
                 </div>
-                {editingInfo ? 
-                <React.Fragment>
-                <button className="text px-4 font-semibold rounded-lg hover:bg-gray-300 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-2 my-3"
-                onClick={saveButtonHandler}>
-                  Save
-                </button>
-                <button className="text px-4 font-semibold rounded-lg hover:bg-gray-300 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-2 my-3"
-                onClick={cancelButtonHandler}>
-                  Cancel
-                </button> </React.Fragment>
-                :
-                <button className="block w-full text text-sm font-semibold rounded-lg hover:bg-gray-200 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
-                onClick={editButtonHandler}>
-                  Edit Information
-                </button>
-                }
+                {editingInfo ? (
+                  <React.Fragment>
+                    <button
+                      className="text px-4 font-semibold rounded-lg hover:bg-gray-300 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-2 my-3"
+                      onClick={saveButtonHandler}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="text px-4 font-semibold rounded-lg hover:bg-gray-300 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-2 my-3"
+                      onClick={cancelButtonHandler}
+                    >
+                      Cancel
+                    </button>{" "}
+                  </React.Fragment>
+                ) : (
+                  <button
+                    className="block w-full text text-sm font-semibold rounded-lg hover:bg-gray-200 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
+                    onClick={editButtonHandler}
+                  >
+                    Edit Information
+                  </button>
+                )}
               </div>
               {/* <!-- End of about section --> */}
 
