@@ -43,14 +43,14 @@ export default function MacroTracker({ user_email, date }) {
     let totalCal = 0;
     console.log(resData);
     resData.map((val) => {
-      // console.log("testFunc -> ", val.food_name, val.calories);
+      console.log("testFunc -> ", val.food_name, val.calories);
       totalCal += parseFloat(val.calories);
       val.nutrients.map((innerVal) => {
-        // console.log(
-        //   "innerTestFunc -> ",
-        //   innerVal.nutrient_name,
-        //   parseFloat(innerVal.nutrient_quantity) + 1
-        // );
+        console.log(
+          "innerTestFunc -> ",
+          innerVal.nutrient_name,
+          parseFloat(innerVal.nutrient_quantity) + 1
+        );
       });
     });
     setCalories(totalCal);
