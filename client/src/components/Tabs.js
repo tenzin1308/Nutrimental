@@ -9,20 +9,13 @@ export default function TabsWrappedLabel({
   selectedTab = "",
   handleTabUpdate,
 }) {
-  // const [selected, setSelected] = React.useState(selectedTab);
-
   const handleChange = (event, newValue) => {
-    // setSelected(newValue);
     handleTabUpdate(newValue);
   };
 
   return (
     <Box className={className}>
-      <Tabs
-        value={selectedTab}
-        onChange={handleChange}
-        aria-label="wrapped label tabs example"
-      >
+      <Tabs value={selectedTab} onChange={handleChange} variant="fullWidth">
         {tabs.map((val, i) => (
           <Tab value={val} label={val} key={val} />
         ))}

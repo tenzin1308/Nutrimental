@@ -12,10 +12,13 @@ export default function MacroTracker({ user_email, date }) {
   const getFoodHistoryData = async () => {
     await axios
       .get(
-        `http://localhost:8000/api/food-history/get?user_email=${user_email}`
+        `http://localhost:8000/api/food-history/get-date?user_email=${user_email}&date=${date
+          .toLocaleDateString()
+          .replaceAll("/", "-")}`
       )
       .then((res) => {
         setFoodHistory(res.data);
+        accumulator(res.data);
         // console.log(res.data);
       })
       .catch((err) => {
@@ -26,7 +29,7 @@ export default function MacroTracker({ user_email, date }) {
 
   useEffect(() => {
     getFoodHistoryData();
-  }, []);
+  }, [date]);
 
   // foodHistory.forEach((obj) => {
   //   calories += parseInt(obj.calories);
@@ -36,26 +39,23 @@ export default function MacroTracker({ user_email, date }) {
   //   console.log(obj.nutrients[0].nutrient_name); // Continue from HERE!
   // });
 
-  const accumulator = () => {
+  const accumulator = (resData) => {
     let totalCal = 0;
-    foodHistory.map((val) => {
-      console.log("testFunc -> ", val.food_name, val.calories);
+    console.log(resData);
+    resData.map((val) => {
+      // console.log("testFunc -> ", val.food_name, val.calories);
       totalCal += parseFloat(val.calories);
       val.nutrients.map((innerVal) => {
-        console.log(
-          "innerTestFunc -> ",
-          innerVal.nutrient_name,
-          parseFloat(innerVal.nutrient_quantity) + 1
-        );
+        // console.log(
+        //   "innerTestFunc -> ",
+        //   innerVal.nutrient_name,
+        //   parseFloat(innerVal.nutrient_quantity) + 1
+        // );
       });
     });
     setCalories(totalCal);
     console.log("total calories for the day: ", totalCal);
   };
-
-  useEffect(() => {
-    accumulator();
-  }, [foodHistory]);
 
   // let left = amount - carbs;
   // let progress = (carbs / amount) * 100;
@@ -64,7 +64,6 @@ export default function MacroTracker({ user_email, date }) {
 
   return (
     <div className="flex flex-col">
-      {console.log(date.toISOString().slice(0, 10))}
       <Table striped bordered hover>
         <thead>
           <tr>

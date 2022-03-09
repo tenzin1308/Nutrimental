@@ -15,8 +15,8 @@ const AccountLayout = ({
       <div className={`py-8 px-4 shadow w-2/3 ${className}`}>
         {showTabs ? (
           <>
-            <div className="flex justify-between">
-              <div className="flex items-start justify-center">
+            <div className="flex justify-between items-center">
+              <div>
                 <Tabs
                   className="text-3xl font-extrabold text-black shadow"
                   tabs={tabsLst}
@@ -24,7 +24,7 @@ const AccountLayout = ({
                   handleTabUpdate={handleTabUpdate}
                 />
               </div>
-              <div>{comps}</div>
+              {comps}
             </div>
             <div className="mt-4 px-4 shadow">{children}</div>
           </>

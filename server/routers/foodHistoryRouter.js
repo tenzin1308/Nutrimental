@@ -11,10 +11,10 @@ foodHistoryRouter.get(
       user_email: req.query.user_email,
     });
     if (users_email) {
-      return res.sendStatus(200).json(users_email.history);
+      return res.status(200).json(users_email.history);
     }
 
-    return res.sendStatus(400).send(err.stack);
+    return res.status(400).send(err.stack);
   })
 );
 foodHistoryRouter.get(
@@ -25,10 +25,13 @@ foodHistoryRouter.get(
     });
     if (users_email) {
       // console.log(new Date(req.query.date).toDateString()); MM-DD-YYYY
-      let history = []
+      let history = [];
       users_email.history.map((item) => {
-        if (new Date(req.query.date).toDateString() === new Date(item.date).toDateString()) {
-          history.push(item)
+        if (
+          new Date(req.query.date).toDateString() ===
+          new Date(item.date).toDateString()
+        ) {
+          history.push(item);
         }
       });
       return res.send(history);
@@ -62,7 +65,7 @@ foodHistoryRouter.post(
             try {
               const newUser = new foodHistoryModel(req.body);
               newUser.save();
-            } catch (err) { 
+            } catch (err) {
               return res.sendStatus(450).send(err.stack);
             }
           }
