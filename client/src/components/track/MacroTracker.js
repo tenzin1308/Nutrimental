@@ -40,11 +40,12 @@ export default function MacroTracker({ authProps, date }) {
       // Getting each nutrient amount
       dataObjs.nutrients.forEach((nut_item) => {
         intaken_item = {
-          vitamin_name: nut_item.nutrient_name,
+          vitamin_name: nut_item.nutrient_name.split(',')[0].replaceAll('-', ''),
           nutrient_quantity: parseFloat(nut_item.nutrient_quantity)
         };
         single_food.push(intaken_item)
       });
+
       // accumulating foods 
       if (intaken_list.length > 0) {
         intaken_list = Object.values(
