@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AccountLayout from "../components/AccountLayout";
 import MacroTracker from "../components/track/MacroTracker";
 import DatePicker from "react-datepicker";
@@ -40,10 +40,7 @@ const Tracker = ({ authProps }) => {
           <div className="p-4 w-full">
             {selectedTab === "Nutrient Tracker" ? (
               <div>
-                <MacroTracker
-                  user_email={authProps.user.user_email}
-                  date={dateState}
-                />
+                <MacroTracker authProps={authProps} date={dateState} />
               </div>
             ) : selectedTab === "Nutrient Advice" ? (
               <div>

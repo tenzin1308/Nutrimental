@@ -2,34 +2,112 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Table from "react-bootstrap/Table";
-import ProgressBar from "react-bootstrap/ProgressBar";
+// import ProgressBar from "react-bootstrap/ProgressBar";
 
-export default function MacroTracker({ user_email, date }) {
+export default function MacroTracker({ authProps, date }) {
   const [foodHistory, setFoodHistory] = useState([]);
+  const [dailyIntake, setDailyIntake] = useState([]);
   const [calories, setCalories] = useState(0);
-  const [nutrientIntake, setNutrientIntake] = useState([]); // array of an object
-  // let nutrient = {}; //
+  const [nutrientIntake, setNutrientIntake] = useState([]);
 
-  /* const [proteins, setProteins] = useState(0); // to DEL
-  const [carbohydrates, setCarbohydrates] = useState(0); //
-  const [fibers, setFibers] = useState(0); //
-  const [sugars, setSugars] = useState(0); //
-  const [fats, setFats] = useState(0); // */
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getFoodHistoryData = async () => {
     await axios
       .get(
-        `http://localhost:8000/api/food-history/get-date?user_email=${user_email}&date=${date
-          .toLocaleDateString()
-          .replaceAll("/", "-")}`,
-          console.log("Inside Get") //
+        `http://localhost:8000/api/food-history/get-date?user_email=${
+          authProps.user.user_email
+        }&date=${date.toLocaleDateString().replaceAll("/", "-")}`
       )
       .then((res) => {
         setFoodHistory(res.data);
         accumulator(res.data);
-        console.log(res.data);
-        console.log("inside then", foodHistory) //
+      })
+      .catch((err) => {
+        toast.error(err.message);
+        console.log(err.message);
+      });
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  const getAge = (dateString) => {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const getUserIntakes = (resData) => {
+    console.log(
+      "user ",
+      capitalizeFirstLetter(authProps.user.gender),
+      getAge(authProps.user.dob)
+    );
+    let user_intake_info = [];
+    resData.forEach((dataObjs) => {
+      let itemIntakes = {
+        vitamin_name: "",
+        recommended_amount: 0,
+        upper_tolerable_limit: 99999,
+      };
+      // Getting recommended_amount based on user
+      let ra = dataObjs.recommended_amount.filter(
+        (filtItem) =>
+          filtItem.gender === 0 ||
+          filtItem.gender === capitalizeFirstLetter(authProps.user.gender)
+      );
+      let rec_am = 0;
+      ra.forEach((ra_item) => {
+        if (ra_item.gender === capitalizeFirstLetter(authProps.user.gender)) {
+          if (ra_item.age_group <= getAge(authProps.user.dob)) {
+            rec_am = ra_item.amount;
+          }
+        } else {
+          if (ra_item.age_group <= getAge(authProps.user.dob)) {
+            rec_am = ra_item.amount;
+          }
+        }
+      });
+
+      // Getting upper_tolerable_limit amount based on user
+      let upp_am = 0;
+      dataObjs.upper_tolerable_limit.forEach((ra_item) => {
+        if (ra_item.gender === capitalizeFirstLetter(authProps.user.gender)) {
+          if (ra_item.age_group <= getAge(authProps.user.dob)) {
+            if (ra_item.amount === "0") {
+              upp_am = 99999;
+            } else {
+              upp_am = ra_item.amount;
+            }
+          }
+        } else {
+          if (ra_item.age_group <= getAge(authProps.user.dob)) {
+            if (ra_item.amount === "0") {
+              upp_am = 99999;
+            } else {
+              upp_am = ra_item.amount;
+            }
+          }
+        }
+      });
+      itemIntakes.vitamin_name = dataObjs.vitamin_name;
+      itemIntakes.recommended_amount = rec_am;
+      itemIntakes.upper_tolerable_limit = upp_am;
+      user_intake_info.push(itemIntakes);
+    });
+    return user_intake_info;
+  };
+
+  const getDailyIntakeData = async () => {
+    await axios
+      .get("http://localhost:8000/api/daily-intake/get/")
+      .then((res) => {
+        setDailyIntake(getUserIntakes(res.data));
       })
       .catch((err) => {
         toast.error(err.message);
@@ -39,60 +117,25 @@ export default function MacroTracker({ user_email, date }) {
 
   useEffect(() => {
     getFoodHistoryData();
+    getDailyIntakeData();
   }, [date]);
-
-  /* foodHistory.forEach((obj) => { // to DEL
-    calories += parseInt(obj.calories);
-    carbs += parseInt(obj.nutrients[0].nutrient_quantity);
-    // proteins += parseInt(obj.nutrients[1].nutrient_quantity); 
-    amount += parseInt(obj.amount);
-    console.log(obj.nutrients[0].nutrient_name); 
-  }); */
 
   const accumulator = (resData) => {
     let totalCal = 0;
-    /* let totalProteins = 0; // to DEL
-    let totalCarbohydrates = 0; //
-    let totalFibers = 0; //
-    let totalSugars = 0; //
-    let totalFats = 0; // */
-
-    console.log(resData);
-    resData.map((val) => {
-      console.log("testFunc -> ", val.food_name, val.calories);
+    resData.forEach((val) => {
       totalCal += parseFloat(val.calories);
-      
-      // totalProteins += parseFloat(val.proteins); //
-
-      val.nutrients.map((innerVal) => {
+      val.nutrients.forEach((innerVal) => {
         let nutrient = {}; // object ///
-        nutrient[innerVal.nutrient_name] = parseFloat(innerVal.nutrient_quantity) + 1; ///
-        
-        setNutrientIntake(nutrientIntake => [...nutrientIntake, nutrient]) /// setTheArray(prevArray => [...prevArray, newValue])
+        nutrient[innerVal.nutrient_name] =
+          parseFloat(innerVal.nutrient_quantity) + 1; ///
 
-        console.log(
-          "innerTestFunc -> ",
-          innerVal.nutrient_name,
-          parseFloat(innerVal.nutrient_quantity) + 1
-        );
+        setNutrientIntake((nutrientIntake) => [...nutrientIntake, nutrient]);
       });
     });
 
     setCalories(totalCal);
-    // setProteins(totalProteins); //
     console.log("total calories for the day: ", totalCal);
-    // console.log("total proteins for the day: ", totalProteins); //
   };
-
- /*  let left = amount - carbs; // to DEL
-  let progress = (carbs / amount) * 100;
-  console.log(proteins) */
-
-  // We don't want append, we need replace
-
-  /* console.log("nutrient-test", nutrientIntake) //
-  console.log("nutrient-test2", nutrient)
-  console.log("nutrient-test3", nutrient[0]) */
 
   return (
     <div className="flex flex-col">
@@ -106,23 +149,14 @@ export default function MacroTracker({ user_email, date }) {
           </tr>
         </thead>
 
-      <tbody>
-      {console.log('nutrient: ', nutrientIntake)}
-      {nutrientIntake.map((item, i) => ( // switched
-
-      <React.Fragment key={i}>
-      <tr>
-          <th>{item.nutrient_name}</th> {/* This needs to be nutrient_name */}
-          {/* <th>totalProteins</th>
-          <th>goalProteins</th>
-          <th>leftProteins</th> */}
-        </tr>
-        <tr>
-          <td colSpan={4}><ProgressBar now={100} /></td>
-        </tr>
-      </React.Fragment>
-        ))}
-      </tbody>
+        <tbody>
+          {console.log("dailyIntake: ", dailyIntake)}
+          {dailyIntake.length >= 35 && (
+            <tr>
+              <td>Loaded</td>
+            </tr>
+          )}
+        </tbody>
       </Table>
     </div>
   );
