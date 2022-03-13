@@ -4,13 +4,63 @@ import toast from "react-hot-toast";
 import Table from "react-bootstrap/Table";
 // import ProgressBar from "react-bootstrap/ProgressBar";
 
-export default function MacroTracker({ authProps, date }) {
-  const [foodHistory, setFoodHistory] = useState([]);
-  const [dailyIntake, setDailyIntake] = useState([]);
-  const [calories, setCalories] = useState(0);
-  const [nutrientIntake, setNutrientIntake] = useState([]);
+const capitalizeFirstLetter = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
-  const getFoodHistoryData = async () => {
+const getAge = (dateString) => {
+  var today = new Date();
+  var birthDate = new Date(dateString);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
+
+export default function MacroTracker({ authProps, date }) {
+  const [intakeHistory, setIntakeHistory] = useState([]);
+  const [dailyIntake, setDailyIntake] = useState([]);
+  // const []
+  // const [calories, setCalories] = useState(0);
+  // const [nutrientIntake, setNutrientIntake] = useState([]);
+
+  const getIntakeHistory = (resData) => {
+    let intaken_list = [];
+    // for each food in the day's food history
+    resData.forEach((dataObjs) => {
+      let single_food = []
+      // Getting calorie counts
+      let intaken_item = {
+        vitamin_name: "calories",
+        nutrient_quantity: Number((parseFloat(dataObjs.calories)).toFixed(1))
+      };
+      single_food.push(intaken_item)
+      // Getting each nutrient amount
+      dataObjs.nutrients.forEach((nut_item) => {
+        intaken_item = {
+          vitamin_name: nut_item.nutrient_name,
+          nutrient_quantity: parseFloat(nut_item.nutrient_quantity)
+        };
+        single_food.push(intaken_item)
+      });
+      // accumulating foods 
+      if (intaken_list.length > 0) {
+        intaken_list = Object.values(
+          intaken_list.concat(single_food).reduce((acc, {nutrient_quantity, vitamin_name})=>{
+            (acc[vitamin_name] ??= {vitamin_name, nutrient_quantity: 0}).nutrient_quantity += parseFloat(nutrient_quantity);
+            return acc;
+          }, {})
+        );
+      } else {
+        intaken_list = single_food
+      }
+    });
+    return intaken_list
+  };
+
+  const getIntakeHistoryData = async () => {
     await axios
       .get(
         `http://localhost:8000/api/food-history/get-date?user_email=${
@@ -18,8 +68,8 @@ export default function MacroTracker({ authProps, date }) {
         }&date=${date.toLocaleDateString().replaceAll("/", "-")}`
       )
       .then((res) => {
-        setFoodHistory(res.data);
-        accumulator(res.data);
+        setIntakeHistory(
+          getIntakeHistory(res.data));
       })
       .catch((err) => {
         toast.error(err.message);
@@ -27,27 +77,7 @@ export default function MacroTracker({ authProps, date }) {
       });
   };
 
-  const capitalizeFirstLetter = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  };
-
-  const getAge = (dateString) => {
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
-
   const getUserIntakes = (resData) => {
-    console.log(
-      "user ",
-      capitalizeFirstLetter(authProps.user.gender),
-      getAge(authProps.user.dob)
-    );
     let user_intake_info = [];
     resData.forEach((dataObjs) => {
       let itemIntakes = {
@@ -116,30 +146,13 @@ export default function MacroTracker({ authProps, date }) {
   };
 
   useEffect(() => {
-    getFoodHistoryData();
+    getIntakeHistoryData();
     getDailyIntakeData();
   }, [date]);
 
-  const accumulator = (resData) => {
-    let totalCal = 0;
-    resData.forEach((val) => {
-      totalCal += parseFloat(val.calories);
-      val.nutrients.forEach((innerVal) => {
-        let nutrient = {}; // object ///
-        nutrient[innerVal.nutrient_name] =
-          parseFloat(innerVal.nutrient_quantity) + 1; ///
-
-        setNutrientIntake((nutrientIntake) => [...nutrientIntake, nutrient]);
-      });
-    });
-
-    setCalories(totalCal);
-    console.log("total calories for the day: ", totalCal);
-  };
-
   return (
-    <div className="flex flex-col">
-      <Table striped bordered hover>
+    <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+      <Table className="min-w-full divide-y divide-gray-300">
         <thead>
           <tr>
             <th>Macro</th>
@@ -149,12 +162,24 @@ export default function MacroTracker({ authProps, date }) {
           </tr>
         </thead>
 
-        <tbody>
-          {console.log("dailyIntake: ", dailyIntake)}
+        <tbody className="divide-y divide-gray-200 bg-white">
+          {/* {console.log("dailyIntake: ", dailyIntake)} */}
           {dailyIntake.length >= 35 && (
-            <tr>
-              <td>Loaded</td>
-            </tr>
+            <>
+              <tr className="h-16 m-auto" >
+                <td>
+                  <div>
+                    {console.log('dailyIntake', dailyIntake)}
+                    {console.log('intakeHistory', intakeHistory)}
+                    <p>Data 1</p>
+                    <p className="absolute">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</p>
+                  </div>
+                </td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+                <td>Data 4</td>
+              </tr>
+            </>
           )}
         </tbody>
       </Table>
