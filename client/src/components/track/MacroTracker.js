@@ -115,7 +115,7 @@ export default function MacroTracker({ authProps, date }) {
   const getIntakeHistoryData = async () => {
     await axios
       .get(
-        `http://localhost:8000/api/food-history/get-date?user_email=${
+        `/api/food-history/get-date?user_email=${
           authProps.user.user_email
         }&date=${date.toLocaleDateString().replaceAll("/", "-")}`
       )
@@ -186,7 +186,7 @@ export default function MacroTracker({ authProps, date }) {
 
   const getDailyIntakeData = async () => {
     await axios
-      .get("http://localhost:8000/api/daily-intake/get/")
+      .get("/api/daily-intake/get/")
       .then((res) => {
         setDailyIntake(getUserIntakes(res.data));
       })
