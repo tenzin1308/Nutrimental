@@ -53,10 +53,22 @@ const columns = [
   },
 ];
 
+const sampleRow = [
+  {
+    amount_remaining: 640,
+    id: 1,
+    nutrient_quantity: 360,
+    recommended_amount: "1000",
+    upper_tolerable_limit: "2500",
+    vitamin_name: "Calcium",
+  },
+];
+
 export default function MacroTracker({ authProps, date }) {
   const [intakeHistory, setIntakeHistory] = useState([]);
   const [dailyIntake, setDailyIntake] = useState([]);
   const [finalData, setFinalData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getIntakeHistory = (resData) => {
     let intaken_list = [];
@@ -185,29 +197,28 @@ export default function MacroTracker({ authProps, date }) {
   };
 
   const getFinalData = (arr1, arr2) => {
+    setLoading(true);
     let id = 0;
-    let merged = [];
-    for (let i = 0; i < arr1.length; i++) {
-      merged.push({
-        ...arr1[i],
-        ...arr2.find(
-          (obj_item) => obj_item.vitamin_name === arr1[i].vitamin_name
-        ),
-      });
-    }
+    let merged = arr1.map((itm) => ({
+      ...arr2.find((item) => item.vitamin_name === itm.vitamin_name && item),
+      ...itm,
+    }));
+
     if (merged.length > 0) {
       merged.forEach((obj) => {
         id++;
         obj["id"] = id;
-        if (!obj.hasOwnProperty("nutrient_quantity")) {
+        if (!("nutrient_quantity" in obj)) {
           obj["nutrient_quantity"] = 0;
         }
-        let ra = obj.recommended_amount;
-        let nq = obj.nutrient_quantity;
-        obj["amount_remaining"] = ra - nq;
+        // if (!obj.hasOwnProperty("nutrient_quantity")) {
+        //   obj["nutrient_quantity"] = 0;
+        // }
+        obj["amount_remaining"] =
+          obj.recommended_amount - obj.nutrient_quantity;
       });
-      setFinalData(merged);
     }
+    setFinalData(merged);
   };
 
   useEffect(() => {
@@ -216,67 +227,25 @@ export default function MacroTracker({ authProps, date }) {
   }, [date]);
 
   useEffect(() => {
-    getFinalData(dailyIntake, intakeHistory);
-  }, [dailyIntake]);
+    if (intakeHistory.length > 0) {
+      getFinalData(dailyIntake, intakeHistory);
+    }
+    setLoading(false);
+  }, [dailyIntake, intakeHistory]);
 
   return (
-    <div
-      className="relative flex h-96 w-full mx-auto"
-      // style={{ height: 400, width: "100%" }}
-    >
+    <div className=" h-[70vh] w-full mx-auto overflow-scroll">
       {dailyIntake.length < 35 ? (
         <>Loading</>
       ) : (
         <DataGrid
-          rows={finalData}
+          rows={loading ? sampleRow : finalData}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={15}
+          rowsPerPageOptions={[5, 15, 25, 35]}
           disableSelectionOnClick
-          // className="absolute pl-4 "
         />
       )}
     </div>
-
-    // <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-    //   <Table className="min-w-full divide-y divide-gray-300">
-    //     <thead>
-    //       <tr>
-    //         <th>Macro Name</th>
-    //         <th>Total (mg)</th>
-    //         <th>Goal (mg)</th>
-    //         <th>Left (mg)</th>
-    //         <th>Max (mg)</th>
-    //       </tr>
-    //     </thead>
-
-    //     <tbody className="divide-y divide-gray-200 bg-white">
-    //       {/* {console.log("dailyIntake: ", dailyIntake)} */}
-    //       {dailyIntake.length >= 35 &&
-    //         dailyIntake.forEach((obj) => {
-    //           <>
-    //             <tr className="h-16 m-auto" key={obj.vitamin_name}>
-    //               <td>
-    //                 <div>
-    //                   {console.log(obj)}
-    //                   {/* {console.log("dailyIntake", dailyIntake)}
-    //                     {console.log("intakeHistory", intakeHistory)} */}
-    //                   <p>{obj.vitamin_name}</p>
-    //                   <p className="absolute">
-    //                     PROGRESS_BAR PROGRESS_BAR PROGRESS_BAR PROGRESS_BAR
-    //                     PROGRESS_BAR PROGRESS_BAR{" "}
-    //                   </p>
-    //                 </div>
-    //               </td>
-    //               <td>Total Data</td>
-    //               <td>{obj.recommended_amount}</td>
-    //               <td>Remaining Data</td>
-    //               <td>{obj.upper_tolerable_limit}</td>
-    //             </tr>
-    //           </>;
-    //         })}
-    //     </tbody>
-    //   </Table>
-    // </div>
   );
 }
