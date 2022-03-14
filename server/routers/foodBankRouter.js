@@ -11,10 +11,10 @@ foodHistoryRouter.get(
       user_email: req.body.user_email,
     });
     if (users_email) {
-      return res.status(200).send(users_email.history);
+      return res.sendStatus(200).send(users_email.history);
     }
 
-    return res.status(400).send(err.stack);
+    return res.sendStatus(400).send(err.stack);
   })
 );
 
@@ -44,10 +44,10 @@ foodHistoryRouter.post(
             insertEntry
               .save()
               .then((result) => {
-                res.status(200).send(result);
+                res.sendStatus(200).send(result);
               })
               .catch((err) => {
-                res.status(400).send(err);
+                res.sendStatus(400).send(err);
               });
           }
         }

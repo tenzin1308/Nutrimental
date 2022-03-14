@@ -100,8 +100,20 @@ function App() {
                 }
               />
               <Route exact path="/aboutus" element={<AboutUs />} />
-              <Route exact path="/searched" element={<Searched />} />
-              <Route exact path="/successfulsignup" element={<SuccessfulSignUp />} />
+              <Route
+                exact
+                path="/searched"
+                element={
+                  <Searched authProps={authProps} />
+                }
+              />
+              <Route
+                exact
+                path="/successfulsignup"
+                element={
+                  <SuccessfulSignUp />
+                } 
+              />
             </Routes>
           </div>
         </div>

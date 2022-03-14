@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import SearchTable from "./SearchTable";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -19,7 +20,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const SearchedItem = ({ data }) => {
+const SearchedItem = ({ data, authProps }) => {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -35,42 +36,26 @@ const SearchedItem = ({ data }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        {/* TODO: ADD onSubmit logic to add to account and show toast */}
-        <button className="bg-blue-700 text-white p-2 rounded-md ml-2">
-          add to account
-        </button>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-          className="focus:outline-none"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
+        {data.description && (
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+            className="focus:outline-none"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        )}
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent className="border-t-2 border-dashed">
-          <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Data A</dt>
-              <dd className="mt-1 text-sm text-gray-900">aaaaaaa</dd>
-            </div>
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Data B</dt>
-              <dd className="mt-1 text-sm text-gray-900">bbbbbb</dd>
-            </div>
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Data C</dt>
-              <dd className="mt-1 text-sm text-gray-900">cccccc</dd>
-            </div>
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Data D</dt>
-              <dd className="mt-1 text-sm text-gray-900">dddddd</dd>
-            </div>
-          </dl>
-        </CardContent>
-      </Collapse>
+      {data.description && (
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent className="border-t-2 border-dashed">
+            <SearchTable data={data} authProps={authProps} />
+            {/* {console.log(data.foodNutrients)} */}
+          </CardContent>
+        </Collapse>
+      )}
     </Card>
   );
 };

@@ -1,12 +1,13 @@
 import React, { useContext, useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { AccountContext } from "../components/Account";
 import bg_logo from "../healthy-food-bg2.png";
-import toast from "react-hot-toast";
 
 export default function SignIn({ authProps, setAuthProps }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
 
   const { authenticate } = useContext(AccountContext);
 
@@ -15,7 +16,7 @@ export default function SignIn({ authProps, setAuthProps }) {
 
     authenticate(email, password)
       .then((data) => {
-        toast.success("Loggin Successful");
+        toast.success("Login Successful");
         window.location.href = "/tracker";
       })
       .catch((err) => {
