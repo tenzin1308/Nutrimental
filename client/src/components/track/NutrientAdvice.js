@@ -2,129 +2,108 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputBase, Paper } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import React, { useState } from 'react';
-import toast from "react-hot-toast";
-import axios from "axios";
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 
 export default function NutrientAdvice() {
 
-    const [searchText, setSearchText] = useState([]);
+    const [searchText, setSearchText] = useState('');
 
-    const [keyWordsList] = useState([
-        'brain','eyes','skin','teeth','bone','muscles',
-        'lung','liver','heart','digestive system','immune system','kidneys',
-        'reproductive system','ears','hair','blood','breasts','nervous system']);
+    const [keywords, setKeywords] = useState([]);
 
-    const [vitaminBank, setVitaminBank] = useState([]);
-    const [foodBank, setFoodBank] = useState([]);
-
-    const clearVitaminBank = () => {
-        setVitaminBank([]); 
-    }
-    const clearFoodBank = () => {
-        setFoodBank([]);
+    const [vitamins, setVitamins] = useState([]);
+    const [foods, setFoods] = useState([]);
+    const [duplicatesVita, setDuplicatesVita] = useState([]);
+    const [duplicatesFood, setDuplicateFood] = useState([]);
+    
+    function removeDuplicates(value, index, self){
+        return self.indexOf(value) === index;
     }
 
-    
-    const getAdviceVitamins = async (word) => {
-        await axios
-            .get(`/api/advice/get?search=${word}`)
-
-            .then((res) => {
-            for (let i=0; i < res.data[0].vitamins.length; i++) {
-                setVitaminBank(vitaminBank => [...vitaminBank, res.data[0].vitamins[i]]);
-            }
-            
+    // useEffect to run on hook change (nutrients)
+    useEffect( () => {
+        let a = []
+        keywords.map(async(keyword) => {
+            await axios.get(`/api/advice/get?search=${keyword}`)
+            .then(res => {
+                //console.log('res',res)
+                a.push("abc")
+                setDuplicatesVita(duplicatesVita => duplicatesVita.concat(res.data[0].vitamins));
             })
-            .catch((err) => {
-            toast.error(err.message);
-            });
-      };
-    
-    const getVitaminFoods = async (vitamin) => {
-        await axios
-            .get(`/api/vitamin/get?vitamin_name=${vitamin}`)
-
-            .then((res) => {
-            for (let j=0; j < res.data[0].foods.length; j++) {
-                setFoodBank(foodBank => [...foodBank, res.data[0].foods[j]]);
-            }
-                
+            .catch(err => {
+                //console.log('err',err)
+                toast.error(err.message);
             })
-            .catch((err) => {
-            toast.error(err.message);
-            });
-    };
+            //console.log('values ',Object.values(result.data[0].vitamins))
+            //console.log('keys ',Object.keys(result.data[0].vitamins))
+            //console.log('result ',typeof(Object.values(result.data[0].vitamins)))
+            ///vita.push(Object.values(result.data[0].vitamins))
+            //vita.push(result.data[0].vitamins)
+            //setDuplicatesVita(duplicatesVita => [...duplicatesVita, result.data[0].vitamins])
+        })
+        console.log(a);
+        
+        let uniqueVitamins = duplicatesVita.filter(removeDuplicates);
+        setVitamins(uniqueVitamins)
+        
+    }, [keywords])
+
     
+
+    // useEffect to run on hook change (food name)
+    useEffect(() => {
+        
+        vitamins.map(async(vitamin) => {
+            await axios.get(`/api/vitamin/get?vitamin_name=${vitamin}`)
+            .then(res => {
+                console.log(res.data)
+                setDuplicateFood(duplicatesFood => duplicatesFood.concat(res.data[0]?.foods));
+            })
+            .catch(err => {
+                toast.error(err.message);
+            })
+        })
+        //console.log('dup foods',duplicatesFood)
+        let uniqueFoods = duplicatesFood.filter(removeDuplicates);        
+        setFoods(uniqueFoods)
+        
+    },[vitamins])
+
+
     const searchHandler = () => {
-        //These two clear funcions are here to clear the array banks so that it doesn't keep piling up
-        clearVitaminBank();
-        clearFoodBank();
-        if(searchText.length !== 0){
-            var splitArray = searchText.split(" ");
-            
-            function findCommonElements(arr1, arr2){
-                return arr1.some(word => arr2.includes(word))
+        const keyWordsList = [
+            'brain','eyes','skin','teeth','bone','muscles',
+            'lung','liver','heart','digestive system','immune system','kidneys',
+            'reproductive system','ears','hair','blood','breasts','nervous system']
+
+        let userInputSplit = searchText.split(" ")
+
+        // Filters out keyword(s) from searchText and place into array to be used 
+        let matchedWords = []
+        userInputSplit.map((word) => {
+            if(keyWordsList.includes(word)){
+                matchedWords.push(word)
             }
-
-            function removeDuplicates(value, index, self){
-                return self.indexOf(value) === index;
-            }
-
-            let wordBank = [];
-            
-            if(findCommonElements(keyWordsList, splitArray)){
-                console.log('Keyword(s) detected!');
-                
-                for (let j=0; j < splitArray.length; j++){
-                    if(keyWordsList.includes(splitArray[j])){
-                        console.log('This is one matched entry');
-                        wordBank.push(splitArray[j]);
-                    }
-                    else{
-                        continue;
-                    }
-                }
-                    
-                
-            } else {
-                console.log('Could not find keywords, please try to rephrase your search');
-            }
-
-            console.log(wordBank);
-
-            wordBank.map(async(word) => {
-                await getAdviceVitamins(word)
-            })
-
-            //vitaminBank at this point is unfiltered and contains duplicates (hence we need to make the code line under this comment)
-
-            var uniqueVitaminBank = vitaminBank.filter(removeDuplicates);
-
-            //vitaminBank at this point is FILTERED and does NOT contain duplicates
-            console.log(uniqueVitaminBank);
-
-            uniqueVitaminBank.map(async(vitamin) => {
-                await getVitaminFoods(vitamin)
-            })
-            
-            //foodBank at this point is unfiltered and contains duplicates (hence we need to make the code line under this comment)
-            
-            var uniqueFoodBank = foodBank.filter(removeDuplicates);
-
-            //foodBank at this point is FILTERED and does NOT contain duplicates
-            console.log(uniqueFoodBank);
-            
-
-        } else {
-            console.log('You have not entered anything!');
-        }
+        })
+        
+        setKeywords(matchedWords)
 
     }
     const clearTextHandler = () => {
+        //console.log(adviceWords);
         setSearchText('');
     }
+    const clearVitamins = () => {
+        //console.log(adviceWords);
+        setVitamins([]);
+    }
+    const clearFoods = () => {
+        //console.log(adviceWords);
+        setFoods([]);
+    }
+    
     
     return (
         <Paper
@@ -132,6 +111,10 @@ export default function NutrientAdvice() {
             sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
             // onSubmit={searchHandler}
         >
+            {console.log('duplicate v',duplicatesVita)}
+            {console.log('duplicate f',duplicatesFood)}
+            {console.log('vitamins ',vitamins)}
+            {/* {console.log('Foods',foods)} */}
             <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 id="how-can-i-help-you"
