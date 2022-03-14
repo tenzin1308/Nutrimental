@@ -1,0 +1,21 @@
+{
+  "name": "nutrimental",
+  "version": "1.0.0",
+  "description": "- git clone https://github.com/tenzin1308/Nutrimental.git - cd client && npm start -",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd client && npm install",
+    "server": "cd server && npm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tenzin1308/Nutrimental.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tenzin1308/Nutrimental/issues"
+  },
+  "homepage": "https://github.com/tenzin1308/Nutrimental#readme"
+}

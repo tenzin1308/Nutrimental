@@ -1,9 +1,11 @@
 import Avatar from "@mui/material/Avatar";
 import axios from "axios";
 import React, { useContext, useEffect } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import logo from "../nutrimental-logo.png";
 import { AccountContext } from "./Account";
+import SearchBar from "./SearchBar";
 
 function stringToColor(string) {
   let hash = 0;
@@ -52,7 +54,7 @@ export default function NavBar({ authProps, setAuthProps }) {
         });
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err.message);
       });
   };
 
@@ -66,15 +68,38 @@ export default function NavBar({ authProps, setAuthProps }) {
   }, []);
 
   return (
-    <div className="w-screen ">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light flex justify-between">
-        <Link className="navbar-brand h1 fw-bold" to="/">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-20 h-16 -mt-2 -mb-4 -ml-2 rounded-full"
-          />
-        </Link>
+    <div className="w-screen">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light flex justify-between h-16 -pt-1 item-center">
+        <div className="flex flex-row justify-center text-center items-center">
+          <Link className="" to="/">
+            <img
+              src={logo}
+              alt="logo"
+              className="w-12 h-12 rounded-full mx-2"
+            />
+          </Link>
+          <Link to="/">
+            <button type="button" className="btn btn-light">
+              Nutrimental
+            </button>
+          </Link>
+          <SearchBar />
+          <Link to="/contact">
+            <button type="button" className="btn btn-light">
+              Contact
+            </button>
+          </Link>
+          <Link to="/faq">
+            <button type="button" className="btn btn-light">
+              FAQ
+            </button>
+          </Link>
+          <Link to="/aboutus">
+            <button type="button" className="btn btn-light">
+              About
+            </button>
+          </Link>
+        </div>
         <div className="flex flex-row">
           {authProps.session && authProps.isAuthenticated && authProps.user ? (
             <>

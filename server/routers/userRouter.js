@@ -18,7 +18,7 @@ userRouter.post(
     // Some Code in here
     try {
       if (await userModel.exists({ user_email: req.body.user_email })) {
-        return res.status(400).send("user already exist");
+        return res.sendStatus(400).send("user already exist");
       }
       else {
         const newUser = userModel(req.body);
@@ -26,9 +26,9 @@ userRouter.post(
       }
     } catch (err) {
       console.log(err);
-      return res.status(400).send(err);
+      return res.sendStatus(400).send(err);
     }
-    return res.status(200).send("A Ok");
+    return res.sendStatus(200).send("A Ok");
   })
 );
 
@@ -39,7 +39,7 @@ userRouter.put(
     // Some Code in here
     try {
       await userModel.findOneAndUpdate(
-        { user_email: req.body.user_email },
+        { user_email: req.query.user_email },
         req.body,
         {
           new: true,
@@ -48,9 +48,9 @@ userRouter.put(
       );
     } catch (err) {
       console.log(err);
-      return res.status(400).send(err);
+      return res.sendStatus(400).send(err);
     }
-    return res.status(200).send("A Ok");
+    return res.sendStatus(200).send("A Ok");
   })
 );
 

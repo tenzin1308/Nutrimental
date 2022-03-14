@@ -8,13 +8,35 @@ foodHistoryRouter.get(
   "/get/",
   expressAsyncHandler(async (req, res, err) => {
     const users_email = await foodHistoryModel.findOne({
-      user_email: req.body.user_email,
+      user_email: req.query.user_email,
     });
     if (users_email) {
-      return res.status(200).send(users_email.history);
+      return res.status(200).json(users_email.history);
     }
 
     return res.status(400).send(err.stack);
+  })
+);
+foodHistoryRouter.get(
+  "/get-date/",
+  expressAsyncHandler(async (req, res, err) => {
+    const users_email = await foodHistoryModel.findOne({
+      user_email: req.query.user_email,
+    });
+    if (users_email) {
+      // console.log(new Date(req.query.date).toDateString()); MM-DD-YYYY
+      let history = [];
+      users_email.history.map((item) => {
+        if (
+          new Date(req.query.date).toDateString() ===
+          new Date(item.date).toDateString()
+        ) {
+          history.push(item);
+        }
+      });
+      return res.send(history);
+    }
+    return res.sendStatus(400).send(err.stack);
   })
 );
 
@@ -40,15 +62,12 @@ foodHistoryRouter.post(
               }
             );
           } else {
-            const insertEntry = foodHistoryModel(req.body);
-            insertEntry
-              .save()
-              .then((result) => {
-                res.status(200).send(result);
-              })
-              .catch((err) => {
-                res.status(400).send(err);
-              });
+            try {
+              const newUser = new foodHistoryModel(req.body);
+              newUser.save();
+            } catch (err) {
+              return res.sendStatus(450).send(err.stack);
+            }
           }
         }
       }

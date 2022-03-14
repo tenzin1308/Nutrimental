@@ -28,11 +28,11 @@ const userSchemaModel = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: ["male", "female"]
+    enum: ["male", "female"],
   },
   diet: {
     type: String,
-    required: true,
+    required: false,
   },
   signup_date: {
     type: Date,

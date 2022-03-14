@@ -1,21 +1,37 @@
 import axios from "axios";
 import React from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import toast from "react-hot-toast";
 import UserPool from "../../UserPool";
 
 // creating functional component ans getting props from app.js and destucturing them
 const StepTwo = ({ handleFormData, prevStep, values }) => {
-  const { firstName, lastName, password, email, dob, weight, height, diet, gender } =
-    values;
+  const {
+    firstName,
+    lastName,
+    password,
+    email,
+    dob,
+    weight,
+    height,
+    diet,
+    gender,
+  } = values;
+
+  var today = new Date();
+  today.setDate(today.getDate() - 1);
+  const maxDate = today.toISOString().slice(0, 10);
+
+  // function to run timer to wait before executing next line
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   // after form submit validating the form data using validator
   const submitFormData = (e) => {
     e.preventDefault();
     UserPool.signUp(email, password, [], null, async (err, data) => {
       if (err) {
-        console.error(err);
+        toast.error(err.message);
       } else {
-        console.log(data);
         // after signup on cognito we are creating user in MongoDB
         await axios
           .post("/api/user/post", {
@@ -26,16 +42,17 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
             weight: weight,
             height: height,
             diet: diet,
-            gender: gender
+            gender: gender,
           })
           .then((res) => {
-            console.log(res);
+            toast.success("Sign up successful!");
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(err.message);
           });
-        // redirecting to home page after signup
-        window.location.href = "/";
+        // redirecting to successfulsignup page after signup and waiting 2.5 seconds
+        await delay(2500);
+        window.location.href = "/successfulsignup";
       }
     });
   };
@@ -51,14 +68,14 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
                 required
                 name="dob"
                 defaultValue={values.dob}
-                max="2022-01-0"
+                max={maxDate}
                 type="date"
                 placeholder="dob"
-                onChange={handleFormData("dob")}
+                onChange={(e) => handleFormData("dob", e)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label >Gender</Form.Label>
+              <Form.Label>Gender</Form.Label>
               <Form.Group className="flex">
                 <Form.Check
                   className="mr-3"
@@ -66,7 +83,7 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
                   name="gender"
                   type="radio"
                   label="Male"
-                  onChange={handleFormData("gender")}
+                  onChange={(e) => handleFormData("gender", e)}
                 />
                 <Form.Check
                   className="mr-3"
@@ -74,7 +91,7 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
                   name="gender"
                   type="radio"
                   label="Female"
-                  onChange={handleFormData("gender")}
+                  onChange={(e) => handleFormData("gender", e)}
                 />
               </Form.Group>
             </Form.Group>
@@ -84,7 +101,7 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
                 required
                 type="number"
                 placeholder="Weight"
-                onChange={handleFormData("weight")}
+                onChange={(e) => handleFormData("weight", e)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -93,7 +110,7 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
                 required
                 type="number"
                 placeholder="Height"
-                onChange={handleFormData("height")}
+                onChange={(e) => handleFormData("height", e)}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -102,7 +119,7 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
                 id="diet"
                 name="diet"
                 placeholder="diet"
-                onChange={handleFormData("diet")}
+                onChange={(e) => handleFormData("diet", e)}
               >
                 <option defaultValue="Select Diet">Select Diet</option>
                 <option value="1">Option 1</option>

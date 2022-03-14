@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // MongoDB Connection
 mongoose.connect(
-  process.env.Nutrimental_DB_URL || "mongodb://localhost/nutrimental",
+  "mongodb+srv://admin:admin123@cluster0.2djpc.mongodb.net/nutrimental",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
