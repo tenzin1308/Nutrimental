@@ -45,7 +45,7 @@ const SearchTable = ({ data, authProps }) => {
   newData.forEach((item, i) => {
     item.id = i + 1;
   });
-  
+
   const dbData = newData.map((item) => ({
     nutrient_name: item.nutrientName,
     nutrient_quantity: item.value,
@@ -54,18 +54,19 @@ const SearchTable = ({ data, authProps }) => {
   const submitHandler = async () => {
     if (authProps.isAuthenticated) {
       // console.log( data.foodNutrients)
-      await axios.post("/api/food-history/post/", {
-        user_email: authProps.user.user_email,
-        history: {
+      await axios
+        .post("/api/food-history/post/", {
+          user_email: authProps.user.user_email,
+          history: {
             food_name: data.description,
             calories: data.score,
             amount: serving,
             nutrients: dbData,
             serving_unit: servingUnit,
             date: new Date(),
-          }
-      })
-        .then( async (res) => {
+          },
+        })
+        .then(async (res) => {
           await delay(2500);
           toast.success("Food added to history");
         })
@@ -73,9 +74,9 @@ const SearchTable = ({ data, authProps }) => {
           toast.error("Something went wrong");
         });
     } else {
-        // ask to login or signup if not logged in yet and then add food to tracker
-        toast.error('You must be logged in to add a food to your tracker');
-      }
+      // ask to login or signup if not logged in yet and then add food to tracker
+      toast.error("You must be logged in to add a food to your tracker");
+    }
   };
 
   return (
@@ -110,15 +111,17 @@ const SearchTable = ({ data, authProps }) => {
         >
           <option value="oz">Ounce (oz)</option>
           <option value="lb">Pound (lb)</option>
-          <option value="gm">grams (gm)</option>  
+          <option value="gm">grams (gm)</option>
           <option value="kg">kilograms (kg)</option>
-          
         </select>
 
-        <button className="bg-blue-700 text-white p-2 rounded-md ml-2" onClick={() => submitHandler()}>
+        <button
+          className="bg-blue-700 text-white p-2 rounded-md ml-2"
+          onClick={() => submitHandler()}
+        >
           Add to Account
         </button>
-      </div>  
+      </div>
     </>
   );
 };
