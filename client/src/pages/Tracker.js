@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AccountLayout from "../components/AccountLayout";
+import FoodHistory from "../components/historyTab/FoodHistory";
 import MacroTracker from "../components/track/MacroTracker";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -49,7 +50,7 @@ const Tracker = ({ authProps }) => {
             ) : (
               selectedTab === "Food History" && (
                 <div>
-                  <h1>{selectedTab}</h1>
+                  <FoodHistory user_email={authProps.user.user_email} />
                 </div>
               )
             )}
