@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import AdviceVitaminItem from "./AdviceVitaminItem";
 
-
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -29,42 +28,49 @@ const AdviceBodyItem = ({ data }) => {
     // console.log(data);
   };
 
+  React.useEffect(() => {
+    console.log("Within use effect of body item", data);
+  }, [data]);
+
   return (
     <Card>
       <CardContent>
         <Typography variant="h4" color="black">
-        <p>{data.keyword}</p>
-        <p>{data.function}</p>
+          {data.keyword}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-      
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-            className="focus:outline-none"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+          className="focus:outline-none"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
       </CardActions>
-      
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent className="border-t-2 border-dashed">
-            {/* {
-                data.length > 0 && (
-                    data.vitamins_info_list.map((item,i) => {
-                        <AdviceVitaminItem data={item} key={i} index={i}/>
-                    })
 
-                )
-            } */}
-            {/* {console.log(data.foodNutrients)} */}
-          </CardContent>
-        </Collapse>
-     
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent className="border-t-2 border-dashed h-auto">
+          {data.vitamins_info_list ? (
+            data.vitamins_info_list.forEach((item, i) => {
+              <>
+                {/* {console.log("@@@@@@@@@@@@@@@@@@@", item)} */}
+                <AdviceVitaminItem data={item} key={i} index={i} />
+              </>;
+            })
+          ) : (
+            // <div>
+            //   ITS RENDERING THE AdviceVitaminItem
+            //   {console.log("data.vitamins_info_list", data.vitamins_info_list)}
+            // </div>
+            <div>Loading</div>
+          )}
+          {/* <p>{data.vitamins_info_list.length}</p> */}
+          {/* {console.log(data.vitamins_info_list.length)} */}
+        </CardContent>
+      </Collapse>
     </Card>
   );
 };

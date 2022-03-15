@@ -7,7 +7,6 @@ import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import SearchTable from "./SearchTable";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -28,11 +27,17 @@ const AdviceVitaminItem = ({ data }) => {
     // console.log(data);
   };
 
+  React.useEffect(() => {
+    console.log('within useeffect of vitamin item')
+  }, [data,expanded])
+  
+
   return (
     <Card>
       <CardContent>
         <Typography variant="h4" color="black">
-          {data.description || data.vitamin_name}
+          <p>{data.vitamin_name}</p>
+          {/* <p>SAMPLE INNER TITLE</p> */}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -52,14 +57,15 @@ const AdviceVitaminItem = ({ data }) => {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent className="border-t-2 border-dashed">
             {/* <SearchTable data={data} authProps={authProps} /> */}
-            <h1>
-                {data.vitamin_name}
+            <h1 className='h-screen'>
+                @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             </h1>
-            {/* {console.log(data.foodNutrients)} */}
+            {/* {data.vitamin_name} */}
           </CardContent>
         </Collapse>
      
     </Card>
+    // <p>{data.vitamin_name}</p>
   );
 };
 

@@ -16,13 +16,10 @@ function getUniqueListBy(arr, key) {
 
 export default function NutrientAdvice() {
   const [searchText, setSearchText] = useState("");
-
   const [keywords, setKeywords] = useState([]);
-
-  //   const [foods, setFoods] = useState([]);
   const [vitaminList, setVitaminList] = useState([]);
   const [finalData, setFinalData] = useState([]);
-  const [finalFinalData, setFinalFinalData] = useState([]);
+  const [cleanedFinalData, setCleanedFinalData] = useState([]);
 
   const getAllVitamins = async () => {
     await axios
@@ -38,7 +35,7 @@ export default function NutrientAdvice() {
     getAllVitamins();
   }, [keywords]);
 
-  // useEffect to run on hook change (nutrients)          ORIGINAL
+  // useEffect to run on hook change (nutrients)   
   useEffect(() => {
     keywords.forEach(async (keyword) => {
       await axios
@@ -46,30 +43,21 @@ export default function NutrientAdvice() {
         .then((res) => {
           let aux_obj = {
             keyword: keyword,
-            vitamins: [], // this will be nested vitamins: [ { vitamin_name: vitamin_name, foods: res.data[0].foods } ]
+            vitamins: [], 
           };
 
-          // let aux_aux2 = {
-          //     vitamin_name: vitamin,
-          //     foods: []
-          // }
+          //Capitalize vitamin(s) from res.data in order to be prepared to search in our vitaminList
           res.data[0].vitamins.forEach((item) => {
             aux_obj.vitamins.push(capitalizeFirstLetter(item));
-
-            //aux_obj.vitamins[item] = [foods]
           });
           console.log("vitamin_list", vitaminList);
           console.log("aux_obj", aux_obj);
           console.log("res data", res.data[0]);
-          // aux_obj.vitamins.forEach(vitamin => {
-          //     let aux_vitamin_object = {
-          //         vitamin_name: vitamin,
-          //         function: "",
-          //         foods: []
-          //     }
-          //     let merged =
+          
           let aux_vitamins = [];
 
+          //We are now comparing vitamins in our aux_obj with vitamins in vitamin_list. 
+          //If match then grab whole OBJECT and store in aux_vitamins
           aux_obj.vitamins.forEach((vitamin) => {
             let finds = vitaminList.find((element) => {
               if (element.vitamin_name.includes(vitamin)) {
@@ -79,38 +67,25 @@ export default function NutrientAdvice() {
             if (finds) {
               aux_vitamins.push(finds);
             }
-            // console.log("finds@@@@", finds);
           });
+          //We are making a new key value for our aux_obj and assigning all the objects we just found
           aux_obj["vitamins_info_list"] = aux_vitamins;
           setFinalData((oldArray) => [...oldArray, aux_obj]);
 
-          //     // if(vitaminList.some(i => i.vitamin_name.includes(vitamin))){
-          //     //     console.log("Theres a matched on vitaminList with me! :", vitamin)
-          //     //     //console.log(vitaminList.vitamin_name.indexOf(vitamin))
-
-          //     // } else {
-          //     //     console.log("There is NO MATCH for me:", vitamin)
-          //     // }
-          // })
         })
         .catch((err) => {
-          //console.log('err',err)
           toast.error(err.message);
         });
-      // aux_list.push(aux_data)
+      
     });
-    //console.log('aux_final', aux_final_list)
-    // setFinalData(aux_final_list);
+    
   }, [vitaminList]);
 
   useEffect(() => {
-    setFinalFinalData(getUniqueListBy(finalData, "keyword"));
+    setCleanedFinalData(getUniqueListBy(finalData, "keyword"));
   }, [finalData]);
 
-  // useEffect to run on hook change (food name)                    Perhaps can change this useEffect to have dependency be on Foods
-  //   useEffect(() => {
-  //     console.log(foods);
-  //   }, [foods]);
+ 
 
   const searchHandler = () => {
     const keyWordsList = [
@@ -179,10 +154,10 @@ export default function NutrientAdvice() {
       </Paper>
 
       <div className="">
-        {console.log("finalFinalData:", finalFinalData)}
-        {finalFinalData.length > 0 && (
+        {console.log("cleanedFinalData:", cleanedFinalData)}
+        {cleanedFinalData.length > 0 && (
           <div className="space-y-3">
-            {finalFinalData.map((item, i) => (
+            {cleanedFinalData.map((item, i) => (
               <AdviceBodyItem data={item} index={i} key={i} />
             ))}
           </div>
