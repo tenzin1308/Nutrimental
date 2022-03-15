@@ -3,6 +3,7 @@ import AccountLayout from "../components/AccountLayout";
 import FoodHistory from "../components/historyTab/FoodHistory";
 import MacroTracker from "../components/track/MacroTracker";
 import DatePicker from "react-datepicker";
+import NutrientAdvice from "../components/track/NutrientAdvice";
 import "react-datepicker/dist/react-datepicker.css";
 
 const TABS = ["Nutrient Tracker", "Nutrient Advice", "Food History"];
