@@ -30,7 +30,6 @@ const SearchedItem = ({ data, authProps }) => {
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
-    // console.log(data);
   };
 
   const handleServingChange = (e) => {
@@ -58,7 +57,6 @@ const SearchedItem = ({ data, authProps }) => {
     setExpanded(false);
     event.preventDefault();
     if (authProps.isAuthenticated) {
-      // console.log( data.foodNutrients)
       await axios
         .post("/api/food-history/post/", {
           user_email: authProps.user.user_email,
@@ -108,7 +106,6 @@ const SearchedItem = ({ data, authProps }) => {
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent className="border-t-2 border-dashed">
               <SearchTable newData={newData} authProps={authProps} />
-              {/* {console.log(data.foodNutrients)} */}
             </CardContent>
           </Collapse>
          

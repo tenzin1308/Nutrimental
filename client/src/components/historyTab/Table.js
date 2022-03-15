@@ -1,12 +1,12 @@
-import "./table.css";
-import "./FoodHistory";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Fragment, useEffect, useState } from "react";
 import CancelPresentationSharpIcon from "@mui/icons-material/CancelPresentationSharp";
 import CheckIcon from "@mui/icons-material/Check";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
-import React from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import "./FoodHistory";
+import "./table.css";
 
 const Table = ({ data, column, user_email }) => {
   const [editFormData, setEditFormData] = useState({
@@ -20,7 +20,6 @@ const Table = ({ data, column, user_email }) => {
   //const [editID, setID] = useState(data);
 
   const editHandler = (event, item) => {
-    console.log("edit handler: ", item._id);
     event.preventDefault();
 
     setEditEnable(item._id);
@@ -42,13 +41,10 @@ const Table = ({ data, column, user_email }) => {
     const newFormData = { ...editFormData };
     newFormData[fieldName] = fieldValue;
 
-    console.log("this is new data", newFormData);
-
     setEditFormData(newFormData);
   };
 
   const cancelHandler = () => {
-    console.log("cancel");
     setEditEnable(false);
   };
 
@@ -62,10 +58,10 @@ const Table = ({ data, column, user_email }) => {
         calories: editFormData.calories,
       })
       .then((res) => {
-        console.log(res);
+        toast.success("Food updated successfully");
       })
       .catch((err) => {
-        console.log(err.message);
+        toast.error(err.message);
       });
     setEditFormData({
       food_name: "",
@@ -83,18 +79,16 @@ const Table = ({ data, column, user_email }) => {
   };
 
   const deleteHandler = async (item, index) => {
-    console.log(item);
-    // console.log(this.user_email);
     if (window.confirm("Are you sure you want to delete")) {
       await axios
         .delete(
           `/api/food-history/delete/?user_email=${user_email}&_id=${item}`
         )
         .then((res) => {
-          console.log(res);
+          toast.success("Food deleted successfully");
         })
         .catch((err) => {
-          console.log(err);
+          toast.error(err.message);
         });
       data.splice(index, 1);
       setRefresh(true);
@@ -104,7 +98,6 @@ const Table = ({ data, column, user_email }) => {
     }
   };
   useEffect(() => {
-    console.log("useeffect called");
   }, [refresh, data]);
 
   return (
@@ -155,7 +148,6 @@ const TableRow = ({
   handleEditFormChange,
 }) => {
   useEffect(() => {
-    console.log("useeffect called");
   }, [editFormData]);
   return (
     <>
