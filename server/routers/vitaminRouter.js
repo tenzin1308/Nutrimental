@@ -17,5 +17,16 @@ vitaminRouter.get(
     return res.status(404).send(err.stack);
   })
 );
+vitaminRouter.get(
+  "/get-all/",
+  expressAsyncHandler(async (req, res, err) => {
+    // Some Code in here
+    const vitamin = await vitaminModel.find({});
+    if (vitamin) {
+      return res.status(200).send(vitamin);
+    }
+    return res.status(404).send(err.stack);
+  })
+);
 
 export default vitaminRouter;
