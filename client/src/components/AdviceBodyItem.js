@@ -28,9 +28,12 @@ const AdviceBodyItem = ({ data }) => {
     // console.log(data);
   };
 
-  React.useEffect(() => {
-    console.log("Within use effect of body item", data);
-  }, [data]);
+  // React.useEffect(() => {
+  //   console.log("Within use effect of body item", data);
+  //   if (data) {
+  //     console.log("asSadasd@@@@");
+  //   }
+  // }, []);
 
   return (
     <Card>
@@ -53,22 +56,13 @@ const AdviceBodyItem = ({ data }) => {
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent className="border-t-2 border-dashed h-auto">
-          {data.vitamins_info_list ? (
-            data.vitamins_info_list.forEach((item, i) => {
-              <>
-                {/* {console.log("@@@@@@@@@@@@@@@@@@@", item)} */}
+          {
+            data &&
+              data.vitamins_info_list.map((item, i) => (
                 <AdviceVitaminItem data={item} key={i} index={i} />
-              </>;
-            })
-          ) : (
-            // <div>
-            //   ITS RENDERING THE AdviceVitaminItem
-            //   {console.log("data.vitamins_info_list", data.vitamins_info_list)}
-            // </div>
-            <div>Loading</div>
-          )}
-          {/* <p>{data.vitamins_info_list.length}</p> */}
-          {/* {console.log(data.vitamins_info_list.length)} */}
+              ))
+            // <AdviceVitaminItem data={data.vitamins_info_list} />
+          }
         </CardContent>
       </Collapse>
     </Card>

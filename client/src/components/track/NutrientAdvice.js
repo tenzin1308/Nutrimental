@@ -35,7 +35,7 @@ export default function NutrientAdvice() {
     getAllVitamins();
   }, [keywords]);
 
-  // useEffect to run on hook change (nutrients)   
+  // useEffect to run on hook change (nutrients)
   useEffect(() => {
     keywords.forEach(async (keyword) => {
       await axios
@@ -43,7 +43,7 @@ export default function NutrientAdvice() {
         .then((res) => {
           let aux_obj = {
             keyword: keyword,
-            vitamins: [], 
+            vitamins: [],
           };
 
           //Capitalize vitamin(s) from res.data in order to be prepared to search in our vitaminList
@@ -53,10 +53,10 @@ export default function NutrientAdvice() {
           console.log("vitamin_list", vitaminList);
           console.log("aux_obj", aux_obj);
           console.log("res data", res.data[0]);
-          
+
           let aux_vitamins = [];
 
-          //We are now comparing vitamins in our aux_obj with vitamins in vitamin_list. 
+          //We are now comparing vitamins in our aux_obj with vitamins in vitamin_list.
           //If match then grab whole OBJECT and store in aux_vitamins
           aux_obj.vitamins.forEach((vitamin) => {
             let finds = vitaminList.find((element) => {
@@ -71,21 +71,18 @@ export default function NutrientAdvice() {
           //We are making a new key value for our aux_obj and assigning all the objects we just found
           aux_obj["vitamins_info_list"] = aux_vitamins;
           setFinalData((oldArray) => [...oldArray, aux_obj]);
-
         })
         .catch((err) => {
           toast.error(err.message);
         });
-      
     });
-    
   }, [vitaminList]);
 
   useEffect(() => {
     setCleanedFinalData(getUniqueListBy(finalData, "keyword"));
   }, [finalData]);
 
- 
+  useEffect(() => {}, [cleanedFinalData]);
 
   const searchHandler = () => {
     const keyWordsList = [

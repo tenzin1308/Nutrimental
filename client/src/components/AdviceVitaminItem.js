@@ -28,9 +28,8 @@ const AdviceVitaminItem = ({ data }) => {
   };
 
   React.useEffect(() => {
-    console.log('within useeffect of vitamin item')
-  }, [data,expanded])
-  
+    console.log("within useeffect of vitamin item", data);
+  }, [data]);
 
   return (
     <Card>
@@ -41,31 +40,27 @@ const AdviceVitaminItem = ({ data }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-      
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-            className="focus:outline-none"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+          className="focus:outline-none"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
       </CardActions>
-      
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent className="border-t-2 border-dashed">
-            {/* <SearchTable data={data} authProps={authProps} /> */}
-            <h1 className='h-screen'>
-                @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            </h1>
-            {/* {data.vitamin_name} */}
-          </CardContent>
-        </Collapse>
-     
+
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent className="border-t-2 border-dashed">
+          {/* <SearchTable data={data} authProps={authProps} /> */}
+          {data.foods.map((itm, i) => (
+            <h1 key={i}> {itm} </h1>
+          ))}
+          {/* {data.vitamin_name} */}
+        </CardContent>
+      </Collapse>
     </Card>
-    // <p>{data.vitamin_name}</p>
   );
 };
 
