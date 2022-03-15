@@ -13,63 +13,109 @@ export default function NutrientAdvice() {
 
     const [keywords, setKeywords] = useState([]);
 
-    const [vitamins, setVitamins] = useState([]);
     const [foods, setFoods] = useState([]);
-    const [duplicatesVita, setDuplicatesVita] = useState([]);
-    const [duplicatesFood, setDuplicateFood] = useState([]);
-    
-    function removeDuplicates(value, index, self){
-        return self.indexOf(value) === index;
-    }
 
-    // useEffect to run on hook change (nutrients)
+    // const getVitaminDbData = async () => {
+    //     await axios
+    //       .get(`/api/vitamin/get?vitamin_name=${searchTxt}`)
+    //       .then((res) => {
+    //         setVitaminData(res.data);
+    //       })
+    //       .catch((err) => {
+    //         toast.error(err.message);
+    //       });
+    //   };
+
+    //Seperate function test     PENDING PROMISE ERROR
+    const getFoods = async(vitamin)=> {
+        await axios.get(`/api/vitamin/get?vitamin_name=${vitamin}`)
+        .then(res => {
+            if(res.data.length > 0){
+                //console.log(res.data[0].foods);
+                setFoods(res.data[0].foods)
+                //console.log('foods', foods)
+            }
+        })
+        .catch(err => {
+            toast.error(err.message)
+        })
+    };
+
+    
+    // useEffect to run on hook change (nutrients)          ORIGINAL
     useEffect( () => {
-        let a = []
-        keywords.map(async(keyword) => {
+        keywords.forEach(async(keyword) => {
             await axios.get(`/api/advice/get?search=${keyword}`)
             .then(res => {
-                //console.log('res',res)
-                a.push("abc")
-                setDuplicatesVita(duplicatesVita => duplicatesVita.concat(res.data[0].vitamins));
+                let aux_aux = {
+                    keyword: keyword, 
+                    vitamins: {} // this will be nested vitamins: [ { vitamin_name: vitamin_name, foods: res.data[0].foods } ]
+                }
+                
+                // let aux_aux2 = {
+                //     vitamin_name: vitamin,
+                //     foods: []
+                // }
+                res.data[0].vitamins.forEach(item => {
+                    //console.log('@@ item', item)
+                    // api call the item. the item is vitamin_name
+                    getFoods(item)
+                    
+                    //aux_aux.vitamins[item] = [foods]
+                    aux_aux.vitamins[item] = [foods]
+                                        
+                })
+                console.log('aux_aux',aux_aux)
+                
+                
             })
             .catch(err => {
                 //console.log('err',err)
                 toast.error(err.message);
             })
-            //console.log('values ',Object.values(result.data[0].vitamins))
-            //console.log('keys ',Object.keys(result.data[0].vitamins))
-            //console.log('result ',typeof(Object.values(result.data[0].vitamins)))
-            ///vita.push(Object.values(result.data[0].vitamins))
-            //vita.push(result.data[0].vitamins)
-            //setDuplicatesVita(duplicatesVita => [...duplicatesVita, result.data[0].vitamins])
+            // aux_list.push(aux_data)
+            
         })
-        console.log(a);
-        
-        let uniqueVitamins = duplicatesVita.filter(removeDuplicates);
-        setVitamins(uniqueVitamins)
-        
     }, [keywords])
 
-    
+        
+        
 
-    // useEffect to run on hook change (food name)
+        // useEffect to run on hook change (nutrients)          TESTING
+    // useEffect( () => {
+    //     keywords.forEach(async(keyword) => {
+            
+    //         let aux_aux = {
+    //             keyword: keyword, 
+    //             vitamins: [] // this will be nested vitamins: [ { vitamin_name: vitamin_name, foods: res.data[0].foods } ]
+    //         }
+    //         // let aux_aux2 = {
+    //         //     vitamin_name: vitamin,
+    //         //     foods: []
+    //         // }
+    //         let p = new Promise((resolve, reject) => {
+    //             resolve('Success')
+    //             reject('Failed')
+    //         })
+    //         p.then((keyword) => {
+                
+    //             aux_aux.vitamins.push(getVitamins(keyword))
+    //         }).catch((message) => {
+    //             console.log('This is in the catch ' + message)
+    //         })
+    //         console.log('aux_aux', aux_aux)
+            
+                
+    //         })
+        
+    // }, [keywords])
+
+    // useEffect to run on hook change (food name)                    Perhaps can change this useEffect to have dependency be on Foods
     useEffect(() => {
+        console.log(foods)
         
-        vitamins.map(async(vitamin) => {
-            await axios.get(`/api/vitamin/get?vitamin_name=${vitamin}`)
-            .then(res => {
-                console.log(res.data)
-                setDuplicateFood(duplicatesFood => duplicatesFood.concat(res.data[0]?.foods));
-            })
-            .catch(err => {
-                toast.error(err.message);
-            })
-        })
-        //console.log('dup foods',duplicatesFood)
-        let uniqueFoods = duplicatesFood.filter(removeDuplicates);        
-        setFoods(uniqueFoods)
         
-    },[vitamins])
+    },[foods])
 
 
     const searchHandler = () => {
@@ -92,17 +138,9 @@ export default function NutrientAdvice() {
 
     }
     const clearTextHandler = () => {
-        //console.log(adviceWords);
         setSearchText('');
     }
-    const clearVitamins = () => {
-        //console.log(adviceWords);
-        setVitamins([]);
-    }
-    const clearFoods = () => {
-        //console.log(adviceWords);
-        setFoods([]);
-    }
+    
     
     
     return (
@@ -111,10 +149,7 @@ export default function NutrientAdvice() {
             sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
             // onSubmit={searchHandler}
         >
-            {console.log('duplicate v',duplicatesVita)}
-            {console.log('duplicate f',duplicatesFood)}
-            {console.log('vitamins ',vitamins)}
-            {/* {console.log('Foods',foods)} */}
+            
             <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 id="how-can-i-help-you"
