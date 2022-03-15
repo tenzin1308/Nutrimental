@@ -6,6 +6,9 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
 export default function NutrientAdvice() {
 
@@ -14,42 +17,30 @@ export default function NutrientAdvice() {
     const [keywords, setKeywords] = useState([]);
 
     const [foods, setFoods] = useState([]);
+    const [vitaminList, setVitaminList] = useState([]);
 
-    // const getVitaminDbData = async () => {
-    //     await axios
-    //       .get(`/api/vitamin/get?vitamin_name=${searchTxt}`)
-    //       .then((res) => {
-    //         setVitaminData(res.data);
-    //       })
-    //       .catch((err) => {
-    //         toast.error(err.message);
-    //       });
-    //   };
-
-    //Seperate function test     PENDING PROMISE ERROR
-    const getFoods = async(vitamin)=> {
-        await axios.get(`/api/vitamin/get?vitamin_name=${vitamin}`)
+    
+    const getAllVitamins = async()=> {
+        await axios.get("/api/vitamin/get-all/")
         .then(res => {
-            if(res.data.length > 0){
-                //console.log(res.data[0].foods);
-                setFoods(res.data[0].foods)
-                //console.log('foods', foods)
-            }
+            setVitaminList(res.data)
         })
         .catch(err => {
             toast.error(err.message)
         })
     };
-
+    useEffect(() => {
+        getAllVitamins()
+    }, [keywords])
     
     // useEffect to run on hook change (nutrients)          ORIGINAL
     useEffect( () => {
         keywords.forEach(async(keyword) => {
             await axios.get(`/api/advice/get?search=${keyword}`)
             .then(res => {
-                let aux_aux = {
+                let aux_obj = {
                     keyword: keyword, 
-                    vitamins: {} // this will be nested vitamins: [ { vitamin_name: vitamin_name, foods: res.data[0].foods } ]
+                    vitamins: [] // this will be nested vitamins: [ { vitamin_name: vitamin_name, foods: res.data[0].foods } ]
                 }
                 
                 // let aux_aux2 = {
@@ -57,15 +48,30 @@ export default function NutrientAdvice() {
                 //     foods: []
                 // }
                 res.data[0].vitamins.forEach(item => {
-                    //console.log('@@ item', item)
-                    // api call the item. the item is vitamin_name
-                    getFoods(item)
+                    aux_obj.vitamins.push(capitalizeFirstLetter(item))
                     
-                    //aux_aux.vitamins[item] = [foods]
-                    aux_aux.vitamins[item] = [foods]
-                                        
+                    
+                    //aux_obj.vitamins[item] = [foods]
+                    
                 })
-                console.log('aux_aux',aux_aux)
+                console.log("vitamin_list",vitaminList)
+                console.log('aux_obj',aux_obj)
+                console.log('res data', res.data[0])
+                // aux_obj.vitamins.forEach(vitamin => {
+                //     let aux_vitamin_object = {
+                //         vitamin_name: vitamin,
+                //         function: "",
+                //         foods: []
+                //     }
+                //     let merged = 
+                //     // if(vitaminList.some(i => i.vitamin_name.includes(vitamin))){
+                //     //     console.log("Theres a matched on vitaminList with me! :", vitamin)
+                //     //     //console.log(vitaminList.vitamin_name.indexOf(vitamin))
+                        
+                //     // } else {
+                //     //     console.log("There is NO MATCH for me:", vitamin)
+                //     // }
+                // })
                 
                 
             })
@@ -76,39 +82,10 @@ export default function NutrientAdvice() {
             // aux_list.push(aux_data)
             
         })
-    }, [keywords])
+    }, [vitaminList])
 
         
         
-
-        // useEffect to run on hook change (nutrients)          TESTING
-    // useEffect( () => {
-    //     keywords.forEach(async(keyword) => {
-            
-    //         let aux_aux = {
-    //             keyword: keyword, 
-    //             vitamins: [] // this will be nested vitamins: [ { vitamin_name: vitamin_name, foods: res.data[0].foods } ]
-    //         }
-    //         // let aux_aux2 = {
-    //         //     vitamin_name: vitamin,
-    //         //     foods: []
-    //         // }
-    //         let p = new Promise((resolve, reject) => {
-    //             resolve('Success')
-    //             reject('Failed')
-    //         })
-    //         p.then((keyword) => {
-                
-    //             aux_aux.vitamins.push(getVitamins(keyword))
-    //         }).catch((message) => {
-    //             console.log('This is in the catch ' + message)
-    //         })
-    //         console.log('aux_aux', aux_aux)
-            
-                
-    //         })
-        
-    // }, [keywords])
 
     // useEffect to run on hook change (food name)                    Perhaps can change this useEffect to have dependency be on Foods
     useEffect(() => {

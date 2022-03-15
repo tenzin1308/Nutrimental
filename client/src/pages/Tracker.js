@@ -46,7 +46,7 @@ const Tracker = ({ authProps }) => {
               </div>
             ) : selectedTab === "Nutrient Advice" ? (
               <div>
-                <h1>{selectedTab}</h1>
+                <NutrientAdvice/>
               </div>
             ) : (
               selectedTab === "Food History" && (
