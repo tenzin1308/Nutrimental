@@ -24,7 +24,6 @@ foodHistoryRouter.get(
       user_email: req.query.user_email,
     });
     if (users_email) {
-      // console.log(new Date(req.query.date).toDateString()); MM-DD-YYYY
       let history = [];
       users_email.history.map((item) => {
         if (
@@ -50,7 +49,6 @@ foodHistoryRouter.post(
           res.send(err);
         } else {
           if (result) {
-            console.log("User Found");
             foodHistoryModel.findOneAndUpdate(
               { user_email: req.body.user_email },
               { $push: { history: req.body.history } },
@@ -113,7 +111,7 @@ foodHistoryRouter.put(
         }
       );
     } catch (err) {
-      console.log(err);
+      return res.send(450).send(err.stack);
     }
   })
 );

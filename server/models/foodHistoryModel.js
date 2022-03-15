@@ -10,14 +10,17 @@ const foodHistorySchema = new mongoose.Schema({
       food_name: {
         type: String,
         requried: true,
+        default: "",
       },
       calories: {
         type: String,
         required: true,
+        default: "",
       },
       amount: {
         type: String,
         required: true,
+        default: "",
       },
       date: {
         type: Date,
@@ -29,9 +32,11 @@ const foodHistorySchema = new mongoose.Schema({
           nutrient_name: {
             type: String,
             required: true,
+            default: "",
           },
           nutrient_quantity: {
             type: String,
+            default: "",
             requried: true,
           },
         },
