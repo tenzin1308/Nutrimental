@@ -57,10 +57,12 @@ function App() {
       </div>
       <Router>
         <div className="flex flex-col w-screen h-screen">
-          <Account>
-            <NavBar authProps={authProps} setAuthProps={setAuthProps} />
-          </Account>
-          <div className="h-full w-full">
+          <div className="h-16">
+            <Account>
+              <NavBar authProps={authProps} setAuthProps={setAuthProps} />
+            </Account>
+          </div>
+          <div className="h-full w-screen">
             <Routes>
               <Route
                 exact
@@ -103,16 +105,12 @@ function App() {
               <Route
                 exact
                 path="/searched"
-                element={
-                  <Searched authProps={authProps} />
-                }
+                element={<Searched authProps={authProps} />}
               />
               <Route
                 exact
                 path="/successfulsignup"
-                element={
-                  <SuccessfulSignUp />
-                } 
+                element={<SuccessfulSignUp />}
               />
             </Routes>
           </div>
