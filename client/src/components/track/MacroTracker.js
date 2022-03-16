@@ -117,7 +117,7 @@ export default function MacroTracker({ authProps, date }) {
       .get(
         `/api/food-history/get-date?user_email=${
           authProps.user.user_email
-        }&date=${date.toLocaleDateString().replaceAll("/", "-")}`
+        }&date=${date.toLocaleDateString().replaceAll("/", "-")}/`
       )
       .then((res) => {
         setIntakeHistory(getIntakeHistory(res.data));
