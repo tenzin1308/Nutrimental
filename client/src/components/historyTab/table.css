@@ -1,23 +1,23 @@
-table {
+.food-history-table {
   border-collapse: collapse;
   max-width: 900px;
   width: 200%;
   margin: 2rem auto;
 }
-table th,
-table td {
+.food-history-table-th,
+.food-history-table-td {
   border: 3px solid #006aff;
   padding: 10px;
 }
-form {
+.food-history-form {
   display: flex;
   gap: 5px;
 }
-form td:last-child {
+.food-history-form-td:last-child {
   display: flex;
   justify-content: space-evenly;
 }
 
-form * {
+.food-history-form-* {
   font-size: 20px;
 }

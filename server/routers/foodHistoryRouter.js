@@ -64,7 +64,7 @@ foodHistoryRouter.post(
               const newUser = new foodHistoryModel(req.body);
               newUser.save();
             } catch (err) {
-              return res.sendStatus(450).send(err.stack);
+              return res.status(450).send(err.stack);
             }
           }
         }
@@ -96,7 +96,7 @@ foodHistoryRouter.put(
       await foodHistoryModel.findOne(
         { user_email: req.body.user_email },
         function (err, result) {
-          if (err) res.send(400);
+          if (err) res.status(400);
           else {
             // update subdocument in mongoose
             var update = result.history.filter((obj) => {
@@ -106,12 +106,12 @@ foodHistoryRouter.put(
             update[0].calories = req.body.calories;
             update[0].amount = req.body.amount;
             result.save();
-            return res.send(200);
+            return res.status(200);
           }
         }
       );
     } catch (err) {
-      return res.send(450).send(err.stack);
+      return res.status(450).send(err.stack);
     }
   })
 );

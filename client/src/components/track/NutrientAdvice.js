@@ -50,7 +50,7 @@ export default function NutrientAdvice() {
           res.data[0].vitamins.forEach((item) => {
             aux_obj.vitamins.push(capitalizeFirstLetter(item));
           });
-          
+
           let aux_vitamins = [];
 
           //We are now comparing vitamins in our aux_obj with vitamins in vitamin_list.
@@ -107,16 +107,16 @@ export default function NutrientAdvice() {
 
     // Filters out keyword(s) from searchText and place into array to be used
     let matchedWords = [];
-    userInputSplit.map((word) => {
+    userInputSplit.forEach((word) => {
       if (keyWordsList.includes(word)) {
         matchedWords.push(word);
       }
     });
-    
+
     if (matchedWords.length > 0) {
-      toast.success("Showing nutrient advice for your search" )
-    } else{
-      toast.error("No nutrient advice found. Please rephrase your input")
+      toast.success("Showing nutrient advice for your search");
+    } else {
+      toast.error("No nutrient advice found. Please rephrase your input");
     }
 
     setKeywords(matchedWords);
@@ -127,9 +127,7 @@ export default function NutrientAdvice() {
 
   return (
     <>
-      <Paper
-        sx={{ p: "2px 4px", display: "flex", alignItems: "center" }}
-      >
+      <Paper sx={{ p: "2px 4px", display: "flex", alignItems: "center" }}>
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           id="how-can-i-help-you"
