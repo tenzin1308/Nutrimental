@@ -26,7 +26,6 @@ function FoodHistory({ user_email }) {
 
   return (
     <div className="MacroTracker">
-      <h1>Food History Tracker</h1>
       <Table user_email={user_email} data={foodHistory} column={column} />
     </div>
   );

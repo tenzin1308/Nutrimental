@@ -213,17 +213,20 @@ const TableRow = ({
         )}
       </td>
 
-      <td className="food-history-table-td flex justify-evenly">
+      {/* <td className="food-history-table-td flex justify-evenly">
+       */}
+
+      <td className="food-history-table-td">
         {item._id === editEnable ? (
-          <Fragment>
+          <div className="flex justify-between">
             <CheckIcon onClick={() => handleEditFormSubmit(item._id, index)} />
             <CancelPresentationSharpIcon onClick={cancelHandler} />
-          </Fragment>
+          </div>
         ) : (
-          <Fragment>
+          <div className="flex justify-between">
             <EditIcon onClick={(event) => editHandler(event, item)} />
             <DeleteForeverIcon onClick={() => deleteHandler(item._id, index)} />
-          </Fragment>
+          </div>
         )}
       </td>
     </>

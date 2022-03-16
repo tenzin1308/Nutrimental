@@ -3,6 +3,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Audio } from "react-loader-spinner";
+
 // import ProgressBar from "react-bootstrap/ProgressBar";
 
 const capitalizeFirstLetter = (string) => {
@@ -239,7 +241,18 @@ export default function MacroTracker({ authProps, date }) {
   return (
     <div className=" h-[70vh] w-full mx-auto overflow-scroll">
       {dailyIntake.length < 35 ? (
-        <>Loading</>
+        <div className="flex items-center justify-center content-center">
+          <div className="flex flex-col items-center">
+            <Audio
+              height="100"
+              width="100"
+              //  color="grey"
+
+              ariaLabel="loading"
+            />
+            <h3 className="flex justify-center py-4">Populating Data</h3>
+          </div>
+        </div>
       ) : (
         <DataGrid
           // rows={loading ? sampleRow : finalData}
