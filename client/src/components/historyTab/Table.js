@@ -65,7 +65,7 @@ const Table = ({ data, column, user_email }) => {
         toast.success("Food updated successfully");
       })
       .catch((err) => {
-        toast.error(err.message);
+        //toast.error(err.message);
       });
     setEditFormData({
       food_name: "",
