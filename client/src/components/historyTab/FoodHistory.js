@@ -10,7 +10,6 @@ function FoodHistory({ user_email }) {
     axios
       .get(`/api/food-history/get?user_email=${user_email}`)
       .then((res) => {
-        console.log('FH =>',res.data);
         setFoodHistory(res.data);
       })
       .catch((err) => {
