@@ -103,7 +103,6 @@ foodHistoryRouter.put(
             let index = result.history.findIndex(obj => {
               return obj._id == req.body._id;
             })
-            console.log('index', index);
             result.history[index].food_name = req.body.food_name;
             result.history[index].amount = req.body.amount;
             result.history[index].calories = req.body.calories;

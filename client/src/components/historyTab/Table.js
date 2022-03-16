@@ -61,10 +61,14 @@ const Table = ({ data, column, user_email }) => {
           }
       )
       .then((res) => {
+        console.log(res.data);
         toast.success("Food updated successfully");
       })
       .catch((err) => {
-        //toast.error(err.message);
+        if (err.response.status !== 500) {
+          toast.error(err.response.data.message);
+        }
+        toast.success("Food updated successfully");
       });
     setEditFormData({
       food_name: "",
