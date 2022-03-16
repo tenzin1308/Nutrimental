@@ -104,9 +104,9 @@ const Table = ({ data, column, user_email }) => {
   useEffect(() => {}, [refresh, data]);
 
   return (
-    <form class="food-history-form">
+    <form className="food-history-form">
       <table
-        class="food-history-table"
+        className="food-history-table"
         // className="table-auto"
         // className="max-w-[900px] border-collapse w-[200%] my-2 mx-auto"
       >
@@ -116,7 +116,7 @@ const Table = ({ data, column, user_email }) => {
               <TableHeadItem item={item} key={index} />
             ))}
             <th
-              class="food-history-table-th"
+              className="food-history-table-th"
               //  className="border-2 border-solid border-blue-600 p-2"
             >
               Actions
@@ -148,7 +148,7 @@ const Table = ({ data, column, user_email }) => {
 };
 
 const TableHeadItem = ({ item }) => (
-  <th class="food-history-table-th">{item.heading}</th>
+  <th className="food-history-table-th">{item.heading}</th>
 );
 const TableRow = ({
   item,
@@ -164,8 +164,8 @@ const TableRow = ({
   useEffect(() => {}, [editFormData]);
   return (
     <>
-      <td class="food-history-table-td"> {item.date} </td>
-      <td class="food-history-table-td">
+      <td className="food-history-table-td"> {item.date} </td>
+      <td className="food-history-table-td">
         {item._id === editEnable ? (
           <input
             type="text"
@@ -180,7 +180,7 @@ const TableRow = ({
         )}
       </td>
 
-      <td class="food-history-table-td">
+      <td className="food-history-table-td">
         {item._id === editEnable ? (
           <input
             type="text"
@@ -195,7 +195,7 @@ const TableRow = ({
         )}
       </td>
 
-      <td class="food-history-table-td">
+      <td className="food-history-table-td">
         {item._id === editEnable ? (
           <input
             type="text"
