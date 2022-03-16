@@ -56,16 +56,16 @@ const columns = [
   },
 ];
 
-const sampleRow = [
-  {
-    amount_remaining: 640,
-    id: 1,
-    nutrient_quantity: 360,
-    recommended_amount: "1000",
-    upper_tolerable_limit: "2500",
-    vitamin_name: "Calcium",
-  },
-];
+// const sampleRow = [
+//   {
+//     amount_remaining: 640,
+//     id: 1,
+//     nutrient_quantity: 360,
+//     recommended_amount: "1000",
+//     upper_tolerable_limit: "2500",
+//     vitamin_name: "Calcium",
+//   },
+// ];
 
 export default function MacroTracker({ authProps, date }) {
   const [intakeHistory, setIntakeHistory] = useState([]);

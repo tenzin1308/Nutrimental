@@ -92,30 +92,17 @@ foodHistoryRouter.delete(
 foodHistoryRouter.put(
   "/put/",
   expressAsyncHandler(async (req, res, err) => {
-    await foodHistoryModel.findOne(
-      { user_email: req.body.user_email }, function (err, result) {
-        if (err) {
-          res.status(400).send(err.stack);
-        } 
-        else {
-          // update subdocument in mongoose
-          try {
-            let index = result.history.findIndex(obj => {
-              return obj._id == req.body._id;
-            })
-            result.history[index].food_name = req.body.food_name;
-            result.history[index].amount = req.body.amount;
-            result.history[index].calories = req.body.calories;
-            result.save();
-            //res.sendStatus(200).json({message: 'updated'});
-          } catch (err) {
-            console.log('catch error', err);
-            return res.sendStatus(450).send(err.stack);
-          }
-        }
-      }
-    );
-    return res.sendStatus(200).send("updated");
+    const result = await foodHistoryModel.findOne({ user_email: req.query.user_email })
+    result.history.forEach(object => {
+      if (object._id == req.query.id) {
+        object.food_name = req.body.food_name;
+        object.calories = req.body.calories;
+        object.amount = req.body.amount;
+        result.save();
+        return res.send(200);
+      }      
+    });
+    return res.send(400);
   })
 );
 
