@@ -11,6 +11,8 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import SuccessfulSignUp from "./pages/SuccessfulSignUp";
 import Tracker from "./pages/Tracker";
+import FAQ from "./pages/FAQ";
+import Contact from "./pages/Contact";
 
 function App() {
   const [authProps, setAuthProps] = useState({
@@ -111,6 +113,16 @@ function App() {
                 exact
                 path="/successfulsignup"
                 element={<SuccessfulSignUp />}
+              />
+              <Route
+                exact
+                path="/faq"
+                element={<FAQ />}
+              />
+              <Route
+                exact
+                path="/contact"
+                element={<Contact />}
               />
             </Routes>
           </div>

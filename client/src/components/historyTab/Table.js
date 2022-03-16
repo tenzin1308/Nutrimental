@@ -51,34 +51,30 @@ const Table = ({ data, column, user_email }) => {
   const handleEditFormSubmit = async (id, index) => {
     await axios
       .put(
-        "/api/food-history/put/",
+        `/api/food-history/put/?id=${id}&user_email=${user_email}`,
           {
-            user_email: user_email,
-            _id: id,
             food_name: editFormData.food_name,
             amount: editFormData.amount,
             calories: editFormData.calories,
           }
       )
       .then((res) => {
-        console.log(res.data);
+        console.log('res =>',res);
         toast.success("Food updated successfully");
       })
       .catch((err) => {
-        if (err.response.status !== 500) {
-          toast.error(err.response.data.message);
-        }
-        toast.success("Food updated successfully");
+        toast.error(err.response.data.message);
       });
     setEditFormData({
       food_name: "",
       amount: "",
       calories: "",
     });
-    setEditEnable(false);
+    setEditEnable(!editEnable);
     data[index].food_name = editFormData.food_name;
     data[index].amount = editFormData.amount;
     data[index].calories = editFormData.calories;
+    
     setRefresh(true);
     setRefresh(false);
     setRefresh(true);

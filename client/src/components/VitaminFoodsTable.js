@@ -3,7 +3,7 @@ import React from "react";
 
 const VitaminFoodsTable = ({ data }) => {
 
-  const [gridData] = React.useState(data);
+  //const [gridData] = React.useState(data);
 
   const rows= [];
 
