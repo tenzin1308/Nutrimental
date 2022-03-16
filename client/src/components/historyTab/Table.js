@@ -51,21 +51,24 @@ const Table = ({ data, column, user_email }) => {
   const handleEditFormSubmit = async (id, index) => {
     await axios
       .put(
-        "/api/food-history/put/" +
+        "/api/food-history/put/",
           {
             user_email: user_email,
             _id: id,
             food_name: editFormData.food_name,
             amount: editFormData.amount,
             calories: editFormData.calories,
-          } +
-          "/"
+          }
       )
       .then((res) => {
+        console.log(res.data);
         toast.success("Food updated successfully");
       })
       .catch((err) => {
-        //toast.error(err.message);
+        if (err.response.status !== 500) {
+          toast.error(err.response.data.message);
+        }
+        toast.success("Food updated successfully");
       });
     setEditFormData({
       food_name: "",
