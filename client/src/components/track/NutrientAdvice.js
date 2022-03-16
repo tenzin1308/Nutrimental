@@ -50,10 +50,7 @@ export default function NutrientAdvice() {
           res.data[0].vitamins.forEach((item) => {
             aux_obj.vitamins.push(capitalizeFirstLetter(item));
           });
-          console.log("vitamin_list", vitaminList);
-          console.log("aux_obj", aux_obj);
-          console.log("res data", res.data[0]);
-
+          
           let aux_vitamins = [];
 
           //We are now comparing vitamins in our aux_obj with vitamins in vitamin_list.
@@ -115,6 +112,12 @@ export default function NutrientAdvice() {
         matchedWords.push(word);
       }
     });
+    
+    if (matchedWords.length > 0) {
+      toast.success("Showing nutrient advice for your search" )
+    } else{
+      toast.error("No nutrient advice found. Please rephrase your input")
+    }
 
     setKeywords(matchedWords);
   };
@@ -125,12 +128,8 @@ export default function NutrientAdvice() {
   return (
     <>
       <Paper
-        // component="form"
-        //   className="flex items-center flex-col"
         sx={{ p: "2px 4px", display: "flex", alignItems: "center" }}
-        // onSubmit={searchHandler}
       >
-        {/* <div className="flex flex-row"> */}
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           id="how-can-i-help-you"
@@ -147,11 +146,9 @@ export default function NutrientAdvice() {
         <IconButton aria-label="search" onClick={searchHandler}>
           <SearchIcon />
         </IconButton>
-        {/* </div> */}
       </Paper>
 
       <div className="">
-        {console.log("cleanedFinalData:", cleanedFinalData)}
         {cleanedFinalData.length > 0 && (
           <div className="space-y-3">
             {cleanedFinalData.map((item, i) => (

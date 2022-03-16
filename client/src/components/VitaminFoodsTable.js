@@ -1,28 +1,19 @@
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 
-const columns = [
-  {
-    field: "{data.vitamin_name}",
-    property: "Vitamin Name",
-    minWidth: 170,
-    // align: "center",
-  },
-];
-
 const VitaminFoodsTable = ({ data }) => {
+
   const [gridData] = React.useState(data);
 
+  const rows= [];
 
-  // function to run timer to wait before executing next line
-  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
-
-  const newData = gridData.filter((item) => item.value > 0);
-  newData.forEach((item, i) => {
-    item.id = i + 1;
+  data.foods.forEach((item, i) => {
+    rows.push({ id: i+1, col1: item})
   });
-
+  
+  const columns = [
+    { field: 'col1', headerName: "Foods with " + data.vitamin_name, width: 300 },
+  ];
 
 
   return (
@@ -32,7 +23,7 @@ const VitaminFoodsTable = ({ data }) => {
         // style={{ height: 400, width: "100%" }}
       >
         <DataGrid
-          rows={newData}
+          rows={rows}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}

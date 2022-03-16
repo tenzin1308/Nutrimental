@@ -25,21 +25,13 @@ const AdviceBodyItem = ({ data }) => {
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
-    // console.log(data);
   };
-
-  // React.useEffect(() => {
-  //   console.log("Within use effect of body item", data);
-  //   if (data) {
-  //     console.log("asSadasd@@@@");
-  //   }
-  // }, []);
 
   return (
     <Card>
       <CardContent>
         <Typography variant="h4" color="black">
-          {data.keyword}
+          Body Part: {data.keyword}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -61,7 +53,6 @@ const AdviceBodyItem = ({ data }) => {
               data.vitamins_info_list.map((item, i) => (
                 <AdviceVitaminItem data={item} key={i} index={i} />
               ))
-            // <AdviceVitaminItem data={data.vitamins_info_list} />
           }
         </CardContent>
       </Collapse>

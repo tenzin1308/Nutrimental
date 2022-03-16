@@ -6,6 +6,7 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import VitaminFoodsTable from "./VitaminFoodsTable";
 import * as React from "react";
 
 const ExpandMore = styled((props) => {
@@ -24,19 +25,13 @@ const AdviceVitaminItem = ({ data }) => {
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
-    // console.log(data);
   };
-
-  React.useEffect(() => {
-    console.log("within useeffect of vitamin item", data);
-  }, [data]);
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h4" color="black">
+        <Typography variant="h5" color="black">
           <p>{data.vitamin_name}</p>
-          {/* <p>SAMPLE INNER TITLE</p> */}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -51,15 +46,15 @@ const AdviceVitaminItem = ({ data }) => {
         </ExpandMore>
       </CardActions>
 
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent className="border-t-2 border-dashed">
-          {/* <SearchTable data={data} authProps={authProps} /> */}
-          {data.foods.map((itm, i) => (
-            <h1 key={i}> {itm} </h1>
-          ))}
-          {/* {data.vitamin_name} */}
-        </CardContent>
-      </Collapse>
+      {data && (
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent className="border-t-2 border-dashed">
+            <VitaminFoodsTable data={data} />
+          </CardContent>
+        </Collapse>
+      )}
+
+
     </Card>
   );
 };
