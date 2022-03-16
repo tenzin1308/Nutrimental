@@ -6,10 +6,11 @@ import Table from "./Table";
 function FoodHistory({ user_email }) {
   const [foodHistory, setFoodHistory] = useState([]);
 
-  useEffect(async () => {
-    await axios
-      .get(`/api/food-history/get?user_email=${user_email}/`)
+  useEffect(() => {
+    axios
+      .get(`/api/food-history/get?user_email=${user_email}`)
       .then((res) => {
+        console.log('FH =>',res.data);
         setFoodHistory(res.data);
       })
       .catch((err) => {
