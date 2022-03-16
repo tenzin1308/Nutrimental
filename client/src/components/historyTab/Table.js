@@ -50,13 +50,17 @@ const Table = ({ data, column, user_email }) => {
 
   const handleEditFormSubmit = async (id, index) => {
     await axios
-      .put(`/api/food-history/put/`, {
-        user_email: user_email,
-        _id: id,
-        food_name: editFormData.food_name,
-        amount: editFormData.amount,
-        calories: editFormData.calories,
-      })
+      .put(
+        "/api/food-history/put/" +
+          {
+            user_email: user_email,
+            _id: id,
+            food_name: editFormData.food_name,
+            amount: editFormData.amount,
+            calories: editFormData.calories,
+          } +
+          "/"
+      )
       .then((res) => {
         toast.success("Food updated successfully");
       })
@@ -97,18 +101,26 @@ const Table = ({ data, column, user_email }) => {
       setRefresh(false);
     }
   };
-  useEffect(() => {
-  }, [refresh, data]);
+  useEffect(() => {}, [refresh, data]);
 
   return (
-    <form>
-      <table>
+    <form class="food-history-form">
+      <table
+        class="food-history-table"
+        // className="table-auto"
+        // className="max-w-[900px] border-collapse w-[200%] my-2 mx-auto"
+      >
         <thead>
           <tr>
             {column.map((item, index) => (
               <TableHeadItem item={item} key={index} />
             ))}
-            <th>Actions</th>
+            <th
+              class="food-history-table-th"
+              //  className="border-2 border-solid border-blue-600 p-2"
+            >
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -135,7 +147,9 @@ const Table = ({ data, column, user_email }) => {
   );
 };
 
-const TableHeadItem = ({ item }) => <th>{item.heading}</th>;
+const TableHeadItem = ({ item }) => (
+  <th class="food-history-table-th">{item.heading}</th>
+);
 const TableRow = ({
   item,
   index,
@@ -147,12 +161,11 @@ const TableRow = ({
   editFormData,
   handleEditFormChange,
 }) => {
-  useEffect(() => {
-  }, [editFormData]);
+  useEffect(() => {}, [editFormData]);
   return (
     <>
-      <td> {item.date} </td>
-      <td>
+      <td class="food-history-table-td"> {item.date} </td>
+      <td class="food-history-table-td">
         {item._id === editEnable ? (
           <input
             type="text"
@@ -167,7 +180,7 @@ const TableRow = ({
         )}
       </td>
 
-      <td>
+      <td class="food-history-table-td">
         {item._id === editEnable ? (
           <input
             type="text"
@@ -182,7 +195,7 @@ const TableRow = ({
         )}
       </td>
 
-      <td>
+      <td class="food-history-table-td">
         {item._id === editEnable ? (
           <input
             type="text"
@@ -197,7 +210,7 @@ const TableRow = ({
         )}
       </td>
 
-      <td className="flex justify-evenly">
+      <td className="food-history-table-td flex justify-evenly">
         {item._id === editEnable ? (
           <Fragment>
             <CheckIcon onClick={() => handleEditFormSubmit(item._id, index)} />

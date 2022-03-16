@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Table from "./Table";
 
-function MacroTracker({ user_email }) {
+function FoodHistory({ user_email }) {
   const [foodHistory, setFoodHistory] = useState([]);
 
-  useEffect(() => {
-    axios(`/api/food-history/get?user_email=${user_email}`)
+  useEffect(async () => {
+    await axios
+      .get(`/api/food-history/get?user_email=${user_email}/`)
       .then((res) => {
         setFoodHistory(res.data);
       })
@@ -31,4 +32,4 @@ function MacroTracker({ user_email }) {
   );
 }
 
-export default MacroTracker;
+export default FoodHistory;

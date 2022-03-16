@@ -68,8 +68,8 @@ export default function NavBar({ authProps, setAuthProps }) {
   }, []);
 
   return (
-    <div className="w-screen">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light flex justify-between h-16 -pt-1 item-center">
+    <div className="w-screen h-full">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light flex justify-between h-full -pt-1 item-center">
         <div className="flex flex-row justify-center text-center items-center">
           <Link className="" to="/">
             <img

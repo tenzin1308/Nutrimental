@@ -226,11 +226,15 @@ export default function MacroTracker({ authProps, date }) {
   }, [date]);
 
   useEffect(() => {
-    if (intakeHistory.length > 0) {
-      getFinalData(dailyIntake, intakeHistory);
-    }
+    // if (intakeHistory.length > 0) {
+    //   getFinalData(dailyIntake, intakeHistory);
+    // }
+
+    getFinalData(dailyIntake, intakeHistory);
     setLoading(false);
   }, [dailyIntake, intakeHistory]);
+
+  useEffect(() => {}, [finalData]);
 
   return (
     <div className=" h-[70vh] w-full mx-auto overflow-scroll">
@@ -238,7 +242,8 @@ export default function MacroTracker({ authProps, date }) {
         <>Loading</>
       ) : (
         <DataGrid
-          rows={loading ? sampleRow : finalData}
+          // rows={loading ? sampleRow : finalData}
+          rows={finalData}
           columns={columns}
           pageSize={15}
           rowsPerPageOptions={[5, 15, 25, 35]}

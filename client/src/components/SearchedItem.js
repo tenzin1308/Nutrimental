@@ -62,7 +62,7 @@ const SearchedItem = ({ data, authProps }) => {
           user_email: authProps.user.user_email,
           history: {
             food_name: data.description ? data.description : data.vitamin_name,
-            calories: data.score  ? data.score : "",
+            calories: data.score ? data.score : "",
             amount: serving,
             nutrients: dbData ? dbData : [],
             date: new Date(),
@@ -80,7 +80,7 @@ const SearchedItem = ({ data, authProps }) => {
       toast.error("You must be logged in to add a food to your tracker");
     }
   };
-  
+
   return (
     <Card>
       <CardContent>
@@ -108,19 +108,20 @@ const SearchedItem = ({ data, authProps }) => {
               <SearchTable newData={newData} authProps={authProps} />
             </CardContent>
           </Collapse>
-         
         </>
       )}
-      <form className="flex items-center mt-2" onSubmit={submitHandler}>
+      <form className="flex items-center p-2" onSubmit={submitHandler}>
         <input
           required
           type="number"
-          min={1}
+          min={0}
+          step={0.1}
+          // value={1}
           className="m-1"
-          placeholder="Serving"
+          placeholder="Input servings"
           onChange={handleServingChange}
         />
-        gm
+        Servings
         {/* <select
           required
           className="m-1"
@@ -132,7 +133,6 @@ const SearchedItem = ({ data, authProps }) => {
           <option value="gm">grams (gm)</option>
           <option value="kg">kilograms (kg)</option>
         </select> */}
-
         <button
           className="bg-blue-700 text-white p-2 rounded-md ml-2"
           type="submit"

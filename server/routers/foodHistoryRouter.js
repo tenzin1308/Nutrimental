@@ -64,7 +64,7 @@ foodHistoryRouter.post(
               const newUser = new foodHistoryModel(req.body);
               newUser.save();
             } catch (err) {
-              return res.sendStatus(450).send(err.stack);
+              return res.status(450).send(err.stack);
             }
           }
         }
