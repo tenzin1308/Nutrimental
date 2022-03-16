@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { DataGrid } from "@mui/x-data-grid";
 // import ProgressBar from "react-bootstrap/ProgressBar";
 
 const capitalizeFirstLetter = (string) => {
@@ -124,7 +125,6 @@ export default function MacroTracker({ authProps, date }) {
       })
       .catch((err) => {
         toast.error(err.message);
-        console.log(err.message);
       });
   };
 
@@ -192,7 +192,6 @@ export default function MacroTracker({ authProps, date }) {
       })
       .catch((err) => {
         toast.error(err.message);
-        console.log(err.message);
       });
   };
 
