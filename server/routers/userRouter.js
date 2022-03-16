@@ -25,7 +25,6 @@ userRouter.post(
         newUser.save();
       }
     } catch (err) {
-      console.log(err);
       return res.sendStatus(400).send(err);
     }
     return res.sendStatus(200).send("A Ok");
@@ -47,7 +46,6 @@ userRouter.put(
         }
       );
     } catch (err) {
-      console.log(err);
       return res.sendStatus(400).send(err);
     }
     return res.sendStatus(200).send("A Ok");

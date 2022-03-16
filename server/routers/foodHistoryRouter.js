@@ -24,7 +24,6 @@ foodHistoryRouter.get(
       user_email: req.query.user_email,
     });
     if (users_email) {
-      // console.log(new Date(req.query.date).toDateString()); MM-DD-YYYY
       let history = [];
       users_email.history.map((item) => {
         if (
@@ -50,7 +49,6 @@ foodHistoryRouter.post(
           res.send(err);
         } else {
           if (result) {
-            console.log("User Found");
             foodHistoryModel.findOneAndUpdate(
               { user_email: req.body.user_email },
               { $push: { history: req.body.history } },
@@ -66,7 +64,7 @@ foodHistoryRouter.post(
               const newUser = new foodHistoryModel(req.body);
               newUser.save();
             } catch (err) {
-              return res.sendStatus(450).send(err.stack);
+              return res.status(450).send(err.stack);
             }
           }
         }
@@ -78,14 +76,46 @@ foodHistoryRouter.post(
 foodHistoryRouter.delete(
   "/delete/",
   expressAsyncHandler(async (req, res, err) => {
-    foodHistoryModel.update(
-      { user_email: req.body.user_email },
-      { $pull: { history: { _id: req.body["_id"] } } },
+    foodHistoryModel.updateOne(
+      { user_email: req.query.user_email },
+      { $pull: { history: { _id: req.query._id } } },
       function (err, result) {
-        if (err) res.send(400);
-        else return res.send(200);
+        if (err) {
+          res.send(400);
+        } else {
+          return res.send(200);
+        }
       }
     );
+  })
+);
+foodHistoryRouter.put(
+  "/put/",
+  expressAsyncHandler(async (req, res, err) => {
+    await foodHistoryModel.findOne(
+      { user_email: req.body.user_email }, function (err, result) {
+        if (err) {
+          res.status(400).send(err.stack);
+        } 
+        else {
+          // update subdocument in mongoose
+          try {
+            let index = result.history.findIndex(obj => {
+              return obj._id == req.body._id;
+            })
+            result.history[index].food_name = req.body.food_name;
+            result.history[index].amount = req.body.amount;
+            result.history[index].calories = req.body.calories;
+            result.save();
+            //res.sendStatus(200).json({message: 'updated'});
+          } catch (err) {
+            console.log('catch error', err);
+            return res.sendStatus(450).send(err.stack);
+          }
+        }
+      }
+    );
+    return res.sendStatus(200).send("updated");
   })
 );
 

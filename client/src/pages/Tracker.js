@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import AccountLayout from "../components/AccountLayout";
+import FoodHistory from "../components/historyTab/FoodHistory";
 import MacroTracker from "../components/track/MacroTracker";
 import DatePicker from "react-datepicker";
+import NutrientAdvice from "../components/track/NutrientAdvice";
 import "react-datepicker/dist/react-datepicker.css";
 
 const TABS = ["Nutrient Tracker", "Nutrient Advice", "Food History"];
@@ -22,19 +24,21 @@ const Tracker = ({ authProps }) => {
           handleTabUpdate={setSelectedTab}
           selectedTab={selectedTab}
           comps={
-            <div className="flex flex-row items-center">
-              <img
-                src="https://img.icons8.com/ios/50/000000/calendar--v1.png"
-                className="w-5 h-5 -mr-10"
-                alt="calendar-icon"
-              />
-              <DatePicker
-                selected={dateState}
-                onChange={changeDate}
-                popperPlacement="bottom-end"
-                className="cursor-pointer pl-14 w-40 bg-transparent border-gray-300"
-              />
-            </div>
+            selectedTab !== "Food History" && (
+              <div className="flex flex-row items-center">
+                <img
+                  src="https://img.icons8.com/ios/50/000000/calendar--v1.png"
+                  className="w-5 h-5 -mr-10"
+                  alt="calendar-icon"
+                />
+                <DatePicker
+                  selected={dateState}
+                  onChange={changeDate}
+                  popperPlacement="bottom-end"
+                  className="cursor-pointer pl-14 w-40 bg-transparent border-gray-300"
+                />
+              </div>
+            )
           }
         >
           <div className="p-4 w-full">
@@ -44,12 +48,12 @@ const Tracker = ({ authProps }) => {
               </div>
             ) : selectedTab === "Nutrient Advice" ? (
               <div>
-                <h1>{selectedTab}</h1>
+                <NutrientAdvice />
               </div>
             ) : (
               selectedTab === "Food History" && (
                 <div>
-                  <h1>{selectedTab}</h1>
+                  <FoodHistory user_email={authProps.user.user_email} />
                 </div>
               )
             )}

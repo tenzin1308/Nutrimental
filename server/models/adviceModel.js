@@ -6,10 +6,12 @@ const adviceSchema = new mongoose.Schema({
     required: true,
   },
 
-  vitamins: {
+  vitamins: [
+    {
     type: String,
     required: true,
-  },
+    }]
+  ,
 });
 
 const adviceModel = mongoose.model("advice", adviceSchema);

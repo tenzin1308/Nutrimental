@@ -29,7 +29,6 @@ const Searched = ({ authProps }) => {
   }, []);
 
   useEffect(() => {
-    // console.log(location.state.items);
     setData(location.state.items);
     setLoading(location.state.loading);
   }, [location.state]);

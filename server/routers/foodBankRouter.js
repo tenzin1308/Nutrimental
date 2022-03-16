@@ -28,7 +28,6 @@ foodHistoryRouter.post(
           res.send(err);
         } else {
           if (result) {
-            console.log("User Found");
             foodHistoryModel.findOneAndUpdate(
               { user_email: req.body.user_email },
               { $push: { history: req.body.history } },

@@ -1,7 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { DataGrid } from "@mui/x-data-grid";
+import { Audio } from "react-loader-spinner";
+
 // import ProgressBar from "react-bootstrap/ProgressBar";
 
 const capitalizeFirstLetter = (string) => {
@@ -117,14 +120,13 @@ export default function MacroTracker({ authProps, date }) {
       .get(
         `/api/food-history/get-date?user_email=${
           authProps.user.user_email
-        }&date=${date.toLocaleDateString().replaceAll("/", "-")}`
+        }&date=${date.toLocaleDateString().replaceAll("/", "-")}/`
       )
       .then((res) => {
         setIntakeHistory(getIntakeHistory(res.data));
       })
       .catch((err) => {
         toast.error(err.message);
-        console.log(err.message);
       });
   };
 
@@ -192,7 +194,6 @@ export default function MacroTracker({ authProps, date }) {
       })
       .catch((err) => {
         toast.error(err.message);
-        console.log(err.message);
       });
   };
 
@@ -227,19 +228,35 @@ export default function MacroTracker({ authProps, date }) {
   }, [date]);
 
   useEffect(() => {
-    if (intakeHistory.length > 0) {
-      getFinalData(dailyIntake, intakeHistory);
-    }
+    // if (intakeHistory.length > 0) {
+    //   getFinalData(dailyIntake, intakeHistory);
+    // }
+
+    getFinalData(dailyIntake, intakeHistory);
     setLoading(false);
   }, [dailyIntake, intakeHistory]);
+
+  useEffect(() => {}, [finalData]);
 
   return (
     <div className=" h-[70vh] w-full mx-auto overflow-scroll">
       {dailyIntake.length < 35 ? (
-        <>Loading</>
+        <div className="flex items-center justify-center content-center">
+          <div className="flex flex-col items-center">
+            <Audio
+              height="100"
+              width="100"
+              //  color="grey"
+
+              ariaLabel="loading"
+            />
+            <h3 className="flex justify-center py-4">Populating Data</h3>
+          </div>
+        </div>
       ) : (
         <DataGrid
-          rows={loading ? sampleRow : finalData}
+          // rows={loading ? sampleRow : finalData}
+          rows={finalData}
           columns={columns}
           pageSize={15}
           rowsPerPageOptions={[5, 15, 25, 35]}
