@@ -38,12 +38,12 @@ export default function DevInfo({ authorInitial, authorName, authorBio, authorIm
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="github">
-          <GitHubIcon onClick={() => window.open(gitHub, "_blank")} />
+        <IconButton aria-label="github" onClick={() => window.open(gitHub, "_blank")}>
+          <GitHubIcon  />
         </IconButton>
         {linkedIn &&
-          <IconButton aria-label="linkedin">
-            <LinkedInIcon onClick={() => window.open(linkedIn, "_blank")} />
+          <IconButton aria-label="linkedin" onClick={() => window.open(linkedIn, "_blank")}>
+            <LinkedInIcon  />
           </IconButton>
         }
         {resume &&
@@ -54,8 +54,8 @@ export default function DevInfo({ authorInitial, authorName, authorBio, authorIm
           </Link>
         }
         {portfolio && 
-        <IconButton aria-label="portfolio">
-          <ShareIcon onClick={() => window.open(portfolio, "_blank")}/>
+        <IconButton aria-label="portfolio" onClick={() => window.open(portfolio, "_blank")}>
+          <ShareIcon />
         </IconButton>
         }
         
