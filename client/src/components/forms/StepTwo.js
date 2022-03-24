@@ -45,6 +45,11 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
             gender: gender,
           })
           .then((res) => {
+            axios.post("/api/food-history/post/", {
+              user_email: email,
+              history: [],
+            });
+
             toast.success("Sign up successful!");
           })
           .catch((err) => {
@@ -55,17 +60,6 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
         await delay(1500);
         window.location.href = "/successfulsignup";
       }
-      await axios
-        .post("/api/food-history/post/", {
-          user_email: email,
-          history: [],
-        })
-        .then((res) => {
-          console.log("WORKED!");
-        })
-        .catch((err) => {
-          console.log("Did not work");
-        });
     });
   };
 
