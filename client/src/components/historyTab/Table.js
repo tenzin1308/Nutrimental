@@ -8,11 +8,12 @@ import toast from "react-hot-toast";
 import "./FoodHistory";
 import "./table.css";
 
-const Table = ({ data, column, user_email }) => {
+const Table = ({ data, column, user_email}) => {
   const [editFormData, setEditFormData] = useState({
     food_name: "",
     amount: "",
     calories: "",
+   
   });
 
   const [editEnable, setEditEnable] = useState(false);
@@ -28,6 +29,7 @@ const Table = ({ data, column, user_email }) => {
       food_name: item.food_name,
       amount: item.amount,
       calories: item.calories,
+      
     };
     setEditFormData(formValues);
   };
@@ -47,6 +49,7 @@ const Table = ({ data, column, user_email }) => {
   const cancelHandler = () => {
     setEditEnable(false);
   };
+
 
   const handleEditFormSubmit = async (id, index) => {
     await axios
@@ -74,6 +77,9 @@ const Table = ({ data, column, user_email }) => {
     data[index].food_name = editFormData.food_name;
     data[index].amount = editFormData.amount;
     data[index].calories = editFormData.calories;
+    
+    
+    
     
     setRefresh(true);
     setRefresh(false);
@@ -146,7 +152,7 @@ const Table = ({ data, column, user_email }) => {
   );
 };
 
-const TableHeadItem = ({ item }) => (
+const TableHeadItem = ({ item}) => (
   <th className="food-history-table-th">{item.heading}</th>
 );
 const TableRow = ({
@@ -161,9 +167,21 @@ const TableRow = ({
   handleEditFormChange,
 }) => {
   useEffect(() => {}, [editFormData]);
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const monthName = date.toLocaleString("default", { month: "long" });
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const hour = date.toLocaleTimeString("en-US", 
+      { hour: "numeric", minute: "2-digit", hour12: true, });
+  
+    return `${monthName} ${day}, ${year}: ${hour}`;
+  };
+
   return (
     <>
-      <td className="food-history-table-td"> {item.date} </td>
+      <td className="food-history-table-td"> {formatDate(item.date)} </td>
       <td className="food-history-table-td">
         {item._id === editEnable ? (
           <input
