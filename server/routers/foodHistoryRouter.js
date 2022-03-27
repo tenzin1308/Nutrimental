@@ -92,17 +92,19 @@ foodHistoryRouter.delete(
 foodHistoryRouter.put(
   "/put/",
   expressAsyncHandler(async (req, res, err) => {
-    const result = await foodHistoryModel.findOne({ user_email: req.query.user_email })
-    result.history.forEach(object => {
+    const result = await foodHistoryModel.findOne({
+      user_email: req.query.user_email,
+    });
+    result.history.forEach((object) => {
       if (object._id == req.query.id) {
         object.food_name = req.body.food_name;
         object.calories = req.body.calories;
         object.amount = req.body.amount;
         result.save();
         return res.send(200);
-      }      
+      }
     });
-    return res.send(400);
+    return res.status(400);
   })
 );
 
