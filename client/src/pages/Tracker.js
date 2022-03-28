@@ -24,7 +24,7 @@ const Tracker = ({ authProps }) => {
           handleTabUpdate={setSelectedTab}
           selectedTab={selectedTab}
           comps={
-            selectedTab !== "Food History" && (
+            selectedTab === "Nutrient Tracker" && (
               <div className="flex flex-row items-center">
                 <img
                   src="https://img.icons8.com/ios/50/000000/calendar--v1.png"
