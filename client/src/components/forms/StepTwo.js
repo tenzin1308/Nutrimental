@@ -45,13 +45,19 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
             gender: gender,
           })
           .then((res) => {
+            axios.post("/api/food-history/post/", {
+              user_email: email,
+              history: [],
+            });
+
             toast.success("Sign up successful!");
           })
           .catch((err) => {
             toast.error(err.message);
           });
+
         // redirecting to successfulsignup page after signup and waiting 2.5 seconds
-        await delay(2500);
+        await delay(1500);
         window.location.href = "/successfulsignup";
       }
     });
