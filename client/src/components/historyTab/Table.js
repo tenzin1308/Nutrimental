@@ -13,8 +13,7 @@ const Table = ({ data, column, user_email}) => {
     food_name: "",
     amount: "",
     calories: "",
-   
-  });
+   });
 
   const [editEnable, setEditEnable] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -29,7 +28,6 @@ const Table = ({ data, column, user_email}) => {
       food_name: item.food_name,
       amount: item.amount,
       calories: item.calories,
-      
     };
     setEditFormData(formValues);
   };
@@ -49,7 +47,6 @@ const Table = ({ data, column, user_email}) => {
   const cancelHandler = () => {
     setEditEnable(false);
   };
-
 
   const handleEditFormSubmit = async (id, index) => {
     await axios
@@ -77,9 +74,6 @@ const Table = ({ data, column, user_email}) => {
     data[index].food_name = editFormData.food_name;
     data[index].amount = editFormData.amount;
     data[index].calories = editFormData.calories;
-    
-    
-    
     
     setRefresh(true);
     setRefresh(false);
