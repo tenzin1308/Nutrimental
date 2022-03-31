@@ -22,9 +22,6 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
   today.setDate(today.getDate() - 1);
   const maxDate = today.toISOString().slice(0, 10);
 
-  // function to run timer to wait before executing next line
-  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
   // after form submit validating the form data using validator
   const submitFormData = (e) => {
     e.preventDefault();
@@ -57,7 +54,6 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
           });
 
         // redirecting to successfulsignup page after signup and waiting 2.5 seconds
-        await delay(1500);
         window.location.href = "/successfulsignup";
       }
     });
