@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "proxy": "http://172.31.94.90:8000/",
+  "proxy": "http://localhost:8000/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.16.1",
     "amazon-cognito-identity-js": "^5.2.6",
     "axios": "^0.25.0",
+    "cloudinary-react": "^1.7.2",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.1",
     "react-datepicker": "^4.7.0",

@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import UnisexAvatar from "../assets/profile_pic/UnisexAvatar.jpg";
 import AccountLayout from "../components/AccountLayout";
 
+import { Image } from "cloudinary-react" // transferred
+
 // "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
 const TABS = ["Account Information"];
 
@@ -20,6 +22,24 @@ export default function Profile({ authProps }) {
   const [changedWeight, setChangedWeight] = React.useState("");
   const [changedHeight, setChangedHeight] = React.useState("");
   const [changedDiet, setChangedDiet] = React.useState("");
+
+  const [imageSelected, setImageSelected] = React.useState(""); 
+  const [profilePic, setProfilePic] = React.useState(null); 
+  
+  const uploadImage = () => {
+    const formData = new FormData()
+    formData.append("file", imageSelected)
+    formData.append("upload_preset", "rkb3oumh")
+
+    axios.post(
+      "https://api.cloudinary.com/v1_1/dvnalmvqo/image/upload",
+      formData
+      ).then((res) => {
+        console.log(res);
+        console.log("URL: ", res.data.url);
+        setProfilePic(res.data.url);
+      });
+  };
 
   React.useEffect(() => {}, [selectedTab]);
 
@@ -94,11 +114,20 @@ export default function Profile({ authProps }) {
               {/* <!-- Profile Card --> */}
               <div className="bg-white p-3 border-t-4 border-green-400">
                 <div className="image overflow-hidden">
-                  <img
+                  <Image
                     className="h-auto w-full mx-auto"
-                    src={UnisexAvatar}
+                    // src={UnisexAvatar}
                     alt=""
+                    cloudName="rkb3oumh" 
+                    public_id={profilePic} 
                   />
+                  <input 
+                    type="file"
+                    onChange={(e) => {
+                      setImageSelected(e.target.files[0]);
+                    }}
+                  />
+                  <button onClick={uploadImage}>Upload Image</button>
                 </div>
                 <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
                   {authProps.user.first_name} {authProps.user.last_name}
