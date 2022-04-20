@@ -14,27 +14,24 @@ userRouter.route("/get/").get(async (req, res) => {
 userRouter.post(
   "/post/",
   expressAsyncHandler(async (req, res, err) => {
-
     // Some Code in here
     try {
       if (await userModel.exists({ user_email: req.body.user_email })) {
         return res.sendStatus(400).send("user already exist");
-      }
-      else {
+      } else {
         const newUser = userModel(req.body);
         newUser.save();
       }
     } catch (err) {
       return res.sendStatus(400).send(err);
     }
-    return res.sendStatus(200).send("A Ok");
+    return res.status(200).send("A Ok");
   })
 );
 
 userRouter.put(
   "/put/",
   expressAsyncHandler(async (req, res, err) => {
-
     // Some Code in here
     try {
       await userModel.findOneAndUpdate(
