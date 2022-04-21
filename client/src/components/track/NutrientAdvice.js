@@ -1,6 +1,6 @@
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import SearchIcon from "@mui/icons-material/Search";
-import { InputBase, Paper } from "@mui/material";
+import { InputBase } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -37,17 +37,18 @@ export default function NutrientAdvice() {
 
   // useEffect to run on hook change (nutrients)
   useEffect(() => {
-    keywords.forEach(async (keyword) => {
-      await axios
-        .get(`/api/advice/get?search=${keyword}`)
+    const searchKeywords = keywords.join(",");
+       axios
+        .get(`/api/advice/get?search=${searchKeywords}`)
         .then((res) => {
+          res.data.forEach((advice) => {
           let aux_obj = {
-            keyword: keyword,
+            keyword: advice.body_part,
             vitamins: [],
           };
 
           //Capitalize vitamin(s) from res.data in order to be prepared to search in our vitaminList
-          res.data[0].vitamins.forEach((item) => {
+          advice.vitamins.forEach((item) => {
             aux_obj.vitamins.push(capitalizeFirstLetter(item));
           });
 
@@ -68,10 +69,10 @@ export default function NutrientAdvice() {
           //We are making a new key value for our aux_obj and assigning all the objects we just found
           aux_obj["vitamins_info_list"] = aux_vitamins;
           setFinalData((oldArray) => [...oldArray, aux_obj]);
-        })
+        });
+      })
         .catch((err) => {
           toast.error(err.message);
-        });
     });
   }, [vitaminList]);
 
@@ -81,7 +82,8 @@ export default function NutrientAdvice() {
 
   useEffect(() => {}, [cleanedFinalData]);
 
-  const searchHandler = () => {
+  const searchHandler = (event) => {
+    event.preventDefault();
     const keyWordsList = [
       "brain",
       "eyes",
@@ -127,7 +129,7 @@ export default function NutrientAdvice() {
 
   return (
     <>
-      <Paper sx={{ p: "2px 4px", display: "flex", alignItems: "center" }}>
+      <form onSubmit={searchHandler} className="2px 4px flex center border-2" >
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           id="how-can-i-help-you"
@@ -141,10 +143,10 @@ export default function NutrientAdvice() {
             <HighlightOffIcon />
           </IconButton>
         )}
-        <IconButton aria-label="search" onClick={searchHandler}>
+        <IconButton aria-label="search" type="submit">
           <SearchIcon />
         </IconButton>
-      </Paper>
+      </form>
 
       <div className="">
         {cleanedFinalData.length > 0 && (

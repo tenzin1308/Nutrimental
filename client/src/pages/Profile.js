@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import UnisexAvatar from "../assets/profile_pic/UnisexAvatar.jpg";
 import AccountLayout from "../components/AccountLayout";
 
+import { Image } from "cloudinary-react"; // profile image
+
 // "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
 const TABS = ["Account Information"];
 
@@ -11,7 +13,7 @@ const getDate = (date) => {
   return Date(date).split(" ").splice(1, 3).join(" ");
 };
 
-export default function Profile({ authProps }) {
+export default function Profile({ authProps, setAuthProps }) {
   const [selectedTab, setSelectedTab] = React.useState(TABS[0]);
   const [editingInfo, setEditingInfo] = React.useState(false);
 
@@ -21,7 +23,52 @@ export default function Profile({ authProps }) {
   const [changedHeight, setChangedHeight] = React.useState("");
   const [changedDiet, setChangedDiet] = React.useState("");
 
-  React.useEffect(() => {}, [selectedTab]);
+  const [imageSelected, setImageSelected] = React.useState("");
+  const [profilePic, setProfilePic] = React.useState("");
+
+  // initial render
+  const getUser = async () => {
+    await axios
+      .get(`/api/user/get/?user_email=${authProps.user.user_email}`)
+      .then((res) => {
+        setProfilePic(res.data.image_url);
+      });
+  };
+
+  React.useEffect(() => {
+    if (authProps.user) {
+      getUser();
+    }
+  }, [authProps]);
+
+  const uploadImage = async () => {
+    const formData = new FormData();
+    formData.append("file", imageSelected);
+    formData.append("upload_preset", "rkb3oumh");
+
+    await axios
+      .post("https://api.cloudinary.com/v1_1/dvnalmvqo/image/upload", formData)
+      .then((res) => {
+        setProfilePic(res.data.url); // set State.
+        putImageUserDB(res.data.url);
+      })
+      .catch((err) => {
+        console.log("Error uploading user profile image to Cloudinary", err);
+      });
+  };
+
+  const putImageUserDB = async (imageStr) => {
+    await axios
+      .put(`/api/user/put?user_email=${authProps.user.user_email}`, {
+        image_url: imageStr,
+      })
+      .then((res) => {
+        console.log("Successful profile image upload");
+      })
+      .catch((err) => {
+        console.log("Error uploading profile image. ", err);
+      });
+  };
 
   const editButtonHandler = () => {
     setEditingInfo(!editingInfo);
@@ -94,11 +141,30 @@ export default function Profile({ authProps }) {
               {/* <!-- Profile Card --> */}
               <div className="bg-white p-3 border-t-4 border-green-400">
                 <div className="image overflow-hidden">
-                  <img
+                  <Image
                     className="h-auto w-full mx-auto"
-                    src={UnisexAvatar}
+                    src={profilePic === "" ? UnisexAvatar : profilePic}
                     alt=""
+                    cloudName="rkb3oumh"
+                    public_id={profilePic}
                   />
+                  <input
+                    type="file"
+                    onChange={(e) => {
+                      setImageSelected(e.target.files[0]);
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      if (authProps.user) {
+                        uploadImage();
+                      } else {
+                        alert("Issue uploading image.");
+                      }
+                    }}
+                  >
+                    Upload Image
+                  </button>
                 </div>
                 <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
                   {authProps.user.first_name} {authProps.user.last_name}
@@ -282,77 +348,6 @@ export default function Profile({ authProps }) {
                 )}
               </div>
               {/* <!-- End of about section --> */}
-
-              <div className="my-4"></div>
-
-              {/* <!-- Experience and education --> */}
-              <div className="bg-white p-3 shadow-sm rounded-sm">
-                <div className="grid grid-cols-2">
-                  <div>
-                    <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                      <span clas="text-green-500">
-                        <svg
-                          className="h-5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
-                      </span>
-                      <span className="tracking-wide">Records</span>
-                    </div>
-                    <ul className="list-inside space-y-2">
-                      <li>
-                        <div className="text-teal-600">DATE</div>
-                        <div className="text-gray-500 text-xs">
-                          March 2020 - Now
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                      <span clas="text-green-500">
-                        <svg
-                          className="h-5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path fill="#fff" d="M12 14l9-5-9-5-9 5 9 5z" />
-                          <path
-                            fill="#fff"
-                            d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                          />
-                        </svg>
-                      </span>
-                      <span className="tracking-wide">Education</span>
-                    </div>
-                    <ul className="list-inside space-y-2">
-                      <li>
-                        <div className="text-teal-600">Calories: 45/5</div>
-                        <div className="text-gray-500 text-xs">
-                          March 2020 - Now
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

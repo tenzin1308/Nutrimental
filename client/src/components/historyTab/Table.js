@@ -8,12 +8,12 @@ import toast from "react-hot-toast";
 import "./FoodHistory";
 import "./table.css";
 
-const Table = ({ data, column, user_email }) => {
+const Table = ({ data, column, user_email}) => {
   const [editFormData, setEditFormData] = useState({
     food_name: "",
     amount: "",
     calories: "",
-  });
+   });
 
   const [editEnable, setEditEnable] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -146,7 +146,7 @@ const Table = ({ data, column, user_email }) => {
   );
 };
 
-const TableHeadItem = ({ item }) => (
+const TableHeadItem = ({ item}) => (
   <th className="food-history-table-th">{item.heading}</th>
 );
 const TableRow = ({
@@ -161,9 +161,21 @@ const TableRow = ({
   handleEditFormChange,
 }) => {
   useEffect(() => {}, [editFormData]);
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const monthName = date.toLocaleString("default", { month: "long" });
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const hour = date.toLocaleTimeString("en-US", 
+      { hour: "numeric", minute: "2-digit", hour12: true, });
+  
+    return `${monthName} ${day}, ${year}: ${hour}`;
+  };
+
   return (
     <>
-      <td className="food-history-table-td"> {item.date} </td>
+      <td className="food-history-table-td"> {formatDate(item.date)} </td>
       <td className="food-history-table-td">
         {item._id === editEnable ? (
           <input
