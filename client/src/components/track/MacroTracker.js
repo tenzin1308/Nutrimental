@@ -75,7 +75,7 @@ export default function MacroTracker({ authProps, date }) {
           vitamin_name: nut_item.nutrient_name
             .split(",")[0]
             .replaceAll("-", ""),
-          nutrient_quantity: parseFloat(nut_item.nutrient_quantity),
+          nutrient_quantity: parseFloat(nut_item.nutrient_quantity).toFixed(1), //
         };
         single_food.push(intaken_item);
       });
@@ -89,7 +89,7 @@ export default function MacroTracker({ authProps, date }) {
               (acc[vitamin_name] ??= {
                 vitamin_name,
                 nutrient_quantity: 0,
-              }).nutrient_quantity += parseFloat(nutrient_quantity);
+              }).nutrient_quantity += parseFloat(nutrient_quantity); //
               return acc;
             }, {})
         );
@@ -114,6 +114,7 @@ export default function MacroTracker({ authProps, date }) {
         toast.error(err.message);
       });
   };
+
 
   const getDailyIntakeData = async () => {
     await axios

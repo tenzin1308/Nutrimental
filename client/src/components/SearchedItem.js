@@ -75,7 +75,7 @@ const SearchedItem = ({ data, authProps }) => {
           user_email: authProps.user.user_email,
           history: {
             food_name: data.description ? data.description : data.vitamin_name,
-            calories: data.score ? data.score : "",
+            calories: data.score ? parseFloat(data.score).toFixed(2) : "", // changed data.score to parseFloat(data.score).toFixed(2)           
             amount: serving,
             nutrients: dbData ? dbData : [],    
             date: new Date(),
