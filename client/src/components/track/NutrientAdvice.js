@@ -37,17 +37,18 @@ export default function NutrientAdvice() {
 
   // useEffect to run on hook change (nutrients)
   useEffect(() => {
-    keywords.forEach(async (keyword) => {
-      await axios
-        .get(`/api/advice/get?search=${keyword}`)
+    const searchKeywords = keywords.join(",");
+       axios
+        .get(`/api/advice/get?search=${searchKeywords}`)
         .then((res) => {
+          res.data.forEach((advice) => {
           let aux_obj = {
-            keyword: keyword,
+            keyword: advice.body_part,
             vitamins: [],
           };
 
           //Capitalize vitamin(s) from res.data in order to be prepared to search in our vitaminList
-          res.data[0].vitamins.forEach((item) => {
+          advice.vitamins.forEach((item) => {
             aux_obj.vitamins.push(capitalizeFirstLetter(item));
           });
 
@@ -68,10 +69,10 @@ export default function NutrientAdvice() {
           //We are making a new key value for our aux_obj and assigning all the objects we just found
           aux_obj["vitamins_info_list"] = aux_vitamins;
           setFinalData((oldArray) => [...oldArray, aux_obj]);
-        })
+        });
+      })
         .catch((err) => {
           toast.error(err.message);
-        });
     });
   }, [vitaminList]);
 

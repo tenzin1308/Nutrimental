@@ -8,9 +8,14 @@ adviceRouter.get(
   "/get/",
   expressAsyncHandler(async (req, res, err) => {
     // Some Code in here
+    const searchArray = req.query.search.split(",");
+
     const advice = await adviceModel.find({
-      body_part: { $regex: req.query.search, $options: "i" },
+      body_part: {
+        $in: searchArray,
+      },
     });
+
     if (advice) {
       return res.status(200).send(advice);
     }
