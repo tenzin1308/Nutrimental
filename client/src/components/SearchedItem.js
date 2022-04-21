@@ -24,8 +24,13 @@ const ExpandMore = styled((props) => {
 
 const SearchedItem = ({ data, authProps }) => {
   const [expanded, setExpanded] = React.useState(false);
+  const [nutrient, setNutrient] = React.useState({
+    nutrient_name: "", 
+    nutrient_quantity: "", 
+  })
   const [serving, setServing] = React.useState(0);
-  // const [servingUnit, setServingUnit] = React.useState("");
+  const [dosageAmount, setDosageAmount] = React.useState(0);
+  const [unit, setUnit] = React.useState("mg");
   const [gridData] = React.useState(data.foodNutrients);
 
   const handleExpandClick = () => {
@@ -36,9 +41,17 @@ const SearchedItem = ({ data, authProps }) => {
     setServing(e.target.value);
   };
 
-  // const handleServingUnitChange = (e) => {
-  //   setServingUnit(e.target.value);
-  // };
+  const handleDosageChange = (e) => {
+    setDosageAmount(e.target.value);
+    setNutrient({
+      nutrient_name: data.vitamin_name,
+      nutrient_quantity: e.target.value,
+    });
+  };
+
+  const handleUnitChange = (e) => {
+    setUnit(e.target.value);
+  };
 
   // function to run timer to wait before executing next line
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -50,7 +63,7 @@ const SearchedItem = ({ data, authProps }) => {
 
   const dbData = newData?.map((item) => ({
     nutrient_name: item.nutrientName,
-    nutrient_quantity: item.value,
+    nutrient_quantity: item.value * serving, 
   }));
 
   const submitHandler = async (event) => {
@@ -64,7 +77,7 @@ const SearchedItem = ({ data, authProps }) => {
             food_name: data.description ? data.description : data.vitamin_name,
             calories: data.score ? parseFloat(data.score).toFixed(2) : "", // changed data.score to parseFloat(data.score).toFixed(2)           
             amount: serving,
-            nutrients: dbData ? dbData : [],
+            nutrients: dbData ? dbData : [],    
             date: new Date(),
           },
         })
@@ -79,6 +92,39 @@ const SearchedItem = ({ data, authProps }) => {
       // ask to login or signup if not logged in yet and then add food to tracker
       toast.error("You must be logged in to add a food to your tracker");
     }
+  };
+
+  const dosageSubmitHandler = async (event) => {
+    setExpanded(false);
+    event.preventDefault(); 
+    let finalAmount = 0;
+    if (unit === "g") {
+      finalAmount = dosageAmount * 1000;
+    } else {
+      finalAmount = dosageAmount;
+    }
+    await axios
+      .post("/api/food-history/post/", {
+        user_email: authProps.user.user_email,
+        history: {
+          food_name: data.vitamin_name,
+          calories: data.score ? data.score : "",
+          amount: finalAmount,
+          nutrients: 
+            unit === "g" ? {
+              nutrient_name: data.vitamin_name,
+              nutrient_quantity: finalAmount,
+            } : nutrient,
+          date: new Date(),
+        },
+      })
+      .then(async (res) => {
+        await delay(2000);
+        toast.success("Food added to history");
+      })
+      .catch((err) => {
+        toast.error("Something went wrong");
+      })
   };
 
   return (
@@ -110,36 +156,61 @@ const SearchedItem = ({ data, authProps }) => {
           </Collapse>
         </>
       )}
-      <form className="flex items-center p-2" onSubmit={submitHandler}>
-        <input
-          required
-          type="number"
-          min={0}
-          step={0.1}
-          // value={1}
-          className="m-1"
-          placeholder="Input servings"
-          onChange={handleServingChange}
-        />
-        Servings
-        {/* <select
-          required
-          className="m-1"
-          id="servingUnit"
-          onChange={handleServingUnitChange}
-        >
-          <option value="oz">Ounce (oz)</option>
-          <option value="lb">Pound (lb)</option>
-          <option value="gm">grams (gm)</option>
-          <option value="kg">kilograms (kg)</option>
-        </select> */}
-        <button
-          className="bg-blue-700 text-white p-2 rounded-md ml-2"
-          type="submit"
-        >
-          Add to Account
-        </button>
-      </form>
+
+      {data.description && (
+        <>
+          <form className="flex items-center p-2" onSubmit={submitHandler}>
+            <input
+              required
+              type="number"
+              min={0}
+              step={0.1}
+              // value={1}
+              className="m-1"
+              placeholder="Input servings"
+              onChange={handleServingChange}
+            />
+            Servings
+            <button
+              className="bg-blue-700 text-white p-2 rounded-md ml-2"
+              type="submit"
+            >
+              Add to Account
+            </button>
+          </form>
+        </>
+      )}
+
+      {data.vitamin_name && (
+        <>
+          <form className="flex items-center p-2" onSubmit={dosageSubmitHandler}>
+            <input
+              required
+              type="number"
+              min={0}
+              className="m-1"
+              placeholder="Dosage Amount"
+              onChange={handleDosageChange}
+            />
+            <select
+              required
+              className="m-1"
+              id="servingUnit"
+              onChange={handleUnitChange}
+            >
+              <option value="mg">Milligrams (mg)</option>
+              <option value="g">Grams (g)</option>
+            </select>
+            <button
+              className="bg-blue-700 text-white p-2 rounded-md ml-2"
+              type="submit"
+            >
+              Add to Account
+            </button>
+          </form>
+        </>
+      )}
+        
     </Card>
   );
 };
