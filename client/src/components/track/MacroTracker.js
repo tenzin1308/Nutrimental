@@ -90,7 +90,7 @@ export default function MacroTracker({ authProps, date }) {
           vitamin_name: nut_item.nutrient_name
             .split(",")[0]
             .replaceAll("-", ""),
-          nutrient_quantity: parseFloat(nut_item.nutrient_quantity),
+          nutrient_quantity: parseFloat(nut_item.nutrient_quantity).toFixed(1), //
         };
         single_food.push(intaken_item);
       });
@@ -104,7 +104,7 @@ export default function MacroTracker({ authProps, date }) {
               (acc[vitamin_name] ??= {
                 vitamin_name,
                 nutrient_quantity: 0,
-              }).nutrient_quantity += parseFloat(nutrient_quantity);
+              }).nutrient_quantity += parseFloat(nutrient_quantity); //
               return acc;
             }, {})
         );
@@ -148,11 +148,11 @@ export default function MacroTracker({ authProps, date }) {
       ra.forEach((ra_item) => {
         if (ra_item.gender === capitalizeFirstLetter(authProps.user.gender)) {
           if (ra_item.age_group <= getAge(authProps.user.dob)) {
-            rec_am = ra_item.amount;
+            rec_am = parseFloat(ra_item.amount).toFixed(2); //
           }
         } else {
           if (ra_item.age_group <= getAge(authProps.user.dob)) {
-            rec_am = ra_item.amount;
+            rec_am = parseFloat(ra_item.amount).toFixed(2); //
           }
         }
       });
