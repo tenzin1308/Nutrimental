@@ -18,5 +18,9 @@
     "express-async-handler": "^1.2.0",
     "mongoose": "^6.1.6",
     "nodemon": "^2.0.15"
+  },
+  "engines": {
+    "node": "8.1.2",
+    "npm": "16.x"
   }
 }
