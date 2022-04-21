@@ -43,7 +43,6 @@ app.use("/api/advice", adviceRouter);
 
 // Connection
 
-const port = 8000;
-app.listen(port, () => {
+app.listen(process.env.PORT || 8000, () => {
   console.log(`Server started at http://localhost:${port}`);
 });
