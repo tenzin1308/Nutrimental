@@ -39,6 +39,11 @@ const userSchemaModel = new mongoose.Schema({
     default: Date,
     required: true,
   },
+  isdietitian: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
 });
 
 const userModel = mongoose.model("users", userSchemaModel);
