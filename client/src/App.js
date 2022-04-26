@@ -27,7 +27,7 @@ function App() {
     } catch (error) {
       toast.error(error.message);
     }
-  }, []);
+  }, []); 
 
   return (
     <>

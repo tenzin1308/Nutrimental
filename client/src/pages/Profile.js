@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import UnisexAvatar from "../assets/profile_pic/UnisexAvatar.jpg";
 import AccountLayout from "../components/AccountLayout";
 
+import { Image } from "cloudinary-react"; // profile image
+
 // "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
 const TABS = ["Account Information"];
 
@@ -11,7 +13,7 @@ const getDate = (date) => {
   return Date(date).split(" ").splice(1, 3).join(" ");
 };
 
-export default function Profile({ authProps }) {
+export default function Profile({ authProps, setAuthProps }) {
   const [selectedTab, setSelectedTab] = React.useState(TABS[0]);
   const [editingInfo, setEditingInfo] = React.useState(false);
 
@@ -21,7 +23,52 @@ export default function Profile({ authProps }) {
   const [changedHeight, setChangedHeight] = React.useState("");
   const [changedDiet, setChangedDiet] = React.useState("");
 
-  React.useEffect(() => {}, [selectedTab]);
+  const [imageSelected, setImageSelected] = React.useState("");
+  const [profilePic, setProfilePic] = React.useState("");
+
+  // initial render
+  const getUser = async () => {
+    await axios
+      .get(`/api/user/get/?user_email=${authProps.user.user_email}`)
+      .then((res) => {
+        setProfilePic(res.data.image_url);
+      });
+  };
+
+  React.useEffect(() => {
+    if (authProps.user) {
+      getUser();
+    }
+  }, [authProps]);
+
+  const uploadImage = async () => {
+    const formData = new FormData();
+    formData.append("file", imageSelected);
+    formData.append("upload_preset", "rkb3oumh");
+
+    await axios
+      .post("https://api.cloudinary.com/v1_1/dvnalmvqo/image/upload", formData)
+      .then((res) => {
+        setProfilePic(res.data.url); // set State.
+        putImageUserDB(res.data.url);
+      })
+      .catch((err) => {
+        console.log("Error uploading user profile image to Cloudinary", err);
+      });
+  };
+
+  const putImageUserDB = async (imageStr) => {
+    await axios
+      .put(`/api/user/put?user_email=${authProps.user.user_email}`, {
+        image_url: imageStr,
+      })
+      .then((res) => {
+        console.log("Successful profile image upload");
+      })
+      .catch((err) => {
+        console.log("Error uploading profile image. ", err);
+      });
+  };
 
   const editButtonHandler = () => {
     setEditingInfo(!editingInfo);
@@ -94,11 +141,30 @@ export default function Profile({ authProps }) {
               {/* <!-- Profile Card --> */}
               <div className="bg-white p-3 border-t-4 border-green-400">
                 <div className="image overflow-hidden">
-                  <img
+                  <Image
                     className="h-auto w-full mx-auto"
-                    src={UnisexAvatar}
+                    src={profilePic === "" ? UnisexAvatar : profilePic}
                     alt=""
+                    cloudName="rkb3oumh"
+                    public_id={profilePic}
                   />
+                  <input
+                    type="file"
+                    onChange={(e) => {
+                      setImageSelected(e.target.files[0]);
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      if (authProps.user) {
+                        uploadImage();
+                      } else {
+                        alert("Issue uploading image.");
+                      }
+                    }}
+                  >
+                    Upload Image
+                  </button>
                 </div>
                 <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
                   {authProps.user.first_name} {authProps.user.last_name}
