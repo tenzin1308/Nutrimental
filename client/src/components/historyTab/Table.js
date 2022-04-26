@@ -51,7 +51,7 @@ const Table = ({ data, column, user_email}) => {
   const handleEditFormSubmit = async (id, index) => {
     await axios
       .put(
-        `/api/food-history/put/?id=${id}&user_email=${user_email}`,
+        `https://nutrimental-server.herokuapp.com/api/food-history/put/?id=${id}&user_email=${user_email}`,
           {
             food_name: editFormData.food_name,
             amount: editFormData.amount,
@@ -85,7 +85,7 @@ const Table = ({ data, column, user_email}) => {
     if (window.confirm("Are you sure you want to delete")) {
       await axios
         .delete(
-          `/api/food-history/delete/?user_email=${user_email}&_id=${item}`
+          `https://nutrimental-server.herokuapp.com/api/food-history/delete/?user_email=${user_email}&_id=${item}`
         )
         .then((res) => {
           toast.success("Food deleted successfully");

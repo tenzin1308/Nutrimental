@@ -1,10 +1,10 @@
 import axios from "axios";
+import { Image } from "cloudinary-react"; // profile image
 import React from "react";
 import toast from "react-hot-toast";
 import UnisexAvatar from "../assets/profile_pic/UnisexAvatar.jpg";
 import AccountLayout from "../components/AccountLayout";
 
-import { Image } from "cloudinary-react"; // profile image
 
 // "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
 const TABS = ["Account Information"];
@@ -29,7 +29,7 @@ export default function Profile({ authProps, setAuthProps }) {
   // initial render
   const getUser = async () => {
     await axios
-      .get(`/api/user/get/?user_email=${authProps.user.user_email}`)
+      .get(`https://nutrimental-server.herokuapp.com/api/user/get/?user_email=${authProps.user.user_email}`)
       .then((res) => {
         setProfilePic(res.data.image_url);
       });
@@ -59,7 +59,7 @@ export default function Profile({ authProps, setAuthProps }) {
 
   const putImageUserDB = async (imageStr) => {
     await axios
-      .put(`/api/user/put?user_email=${authProps.user.user_email}`, {
+      .put(`https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`, {
         image_url: imageStr,
       })
       .then((res) => {
@@ -105,7 +105,7 @@ export default function Profile({ authProps, setAuthProps }) {
         toast.error(err.message);
       } else {
         await axios
-          .put(`/api/user/put?user_email=${authProps.user.user_email}`, {
+          .put(`https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`, {
             first_name: authProps.user.first_name,
             last_name: authProps.user.last_name,
             weight: authProps.user.weight,

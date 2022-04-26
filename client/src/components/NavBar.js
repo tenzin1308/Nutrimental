@@ -41,7 +41,7 @@ export default function NavBar({ authProps, setAuthProps }) {
 
   const getUserDBInfo = async (session) => {
     await axios
-      .get(`/api/user/get?user_email=${session.idToken.payload.email}`, {
+      .get(`https://nutrimental-server.herokuapp.com/api/user/get?user_email=${session.idToken.payload.email}`, {
         headers: {
           "Content-Type": "application/json",
         },
