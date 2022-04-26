@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "proxy": "https://nutrimental-server.herokuapp.com/",
+  "proxy": "https://nutrimental-server.herokuapp.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
