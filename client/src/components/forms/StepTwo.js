@@ -16,6 +16,7 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
     height,
     diet,
     gender,
+    isdietitian,
   } = values;
 
   var today = new Date();
@@ -40,6 +41,7 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
             height: height,
             diet: diet,
             gender: gender,
+            isdietitian: isdietitian,
           })
           .then((res) => {
             axios.post("https://nutrimental-server.herokuapp.com/api/food-history/post/", {
@@ -94,6 +96,28 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
                   type="radio"
                   label="Female"
                   onChange={(e) => handleFormData("gender", e)}
+                />
+              </Form.Group>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Are you a dietitian?</Form.Label>
+              <Form.Group className="flex">
+                <Form.Check
+                  className="mr-3"
+                  value="yes"
+                  name="isdietitian"
+                  type="radio"
+                  label="Yes"
+                  onChange={(e) => handleFormData("isdietitian", e)}
+                />
+                <Form.Check
+                  className="mr-3"
+                  value="no"
+                  name="isdietitian"
+                  type="radio"
+                  label="No"
+                  defaultChecked
+                  onChange={(e) => handleFormData("isdietitian", e)}
                 />
               </Form.Group>
             </Form.Group>
