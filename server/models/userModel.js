@@ -48,6 +48,18 @@ const userSchemaModel = new mongoose.Schema({
     type: String,
     required: false,
   },
+   // dietitan's customer list
+   whoUser: [
+    {
+      type: String,
+      default: false,
+    },
+  ],
+  // choosing your dietitian
+  whoDietitian: {
+    type: String,
+    default: false,
+  },
 });
 
 const userModel = mongoose.model("users", userSchemaModel);

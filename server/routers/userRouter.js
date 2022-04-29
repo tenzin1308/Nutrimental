@@ -11,6 +11,13 @@ userRouter.route("/get/").get(async (req, res) => {
   res.json(user);
 });
 
+userRouter.route("/get-dietitian/").get(async (req, res) => {
+  const dietitian = await userModel.find({
+    isdietitian: true,
+  });
+  res.json(dietitian);
+});
+
 userRouter.post(
   "/post/",
   expressAsyncHandler(async (req, res, err) => {
@@ -43,9 +50,9 @@ userRouter.put(
         }
       );
     } catch (err) {
-      return res.sendStatus(400).send(err);
+      return res.status(400).send(err);
     }
-    return res.sendStatus(200).send("A Ok");
+    return res.status(200).send("A Ok");
   })
 );
 
