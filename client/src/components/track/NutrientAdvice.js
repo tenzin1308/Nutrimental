@@ -3,7 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { InputBase } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import AdviceBodyItem from "../AdviceBodyItem";
 
@@ -23,7 +23,7 @@ export default function NutrientAdvice() {
 
   const getAllVitamins = async () => {
     await axios
-      .get("/api/vitamin/get-all/")
+      .get("https://nutrimental-server.herokuapp.com/api/vitamin/get-all/")
       .then((res) => {
         setVitaminList(res.data);
       })
@@ -39,7 +39,7 @@ export default function NutrientAdvice() {
   useEffect(() => {
     const searchKeywords = keywords.join(",");
        axios
-        .get(`/api/advice/get?search=${searchKeywords}`)
+        .get(`https://nutrimental-server.herokuapp.com/api/advice/get?search=${searchKeywords}`)
         .then((res) => {
           res.data.forEach((advice) => {
           let aux_obj = {

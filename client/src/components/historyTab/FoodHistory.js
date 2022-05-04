@@ -8,7 +8,7 @@ function FoodHistory({ user_email }) {
 
   useEffect(() => {
     axios
-      .get(`/api/food-history/get?user_email=${user_email}`)
+      .get(`https://nutrimental-server.herokuapp.com/api/food-history/get?user_email=${user_email}`)
       .then((res) => {
         setFoodHistory(res.data);
       })

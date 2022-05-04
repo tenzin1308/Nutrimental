@@ -71,7 +71,7 @@ const SearchedItem = ({ data, authProps }) => {
     event.preventDefault();
     if (authProps.isAuthenticated) {
       await axios
-        .post("/api/food-history/post/", {
+        .post("https://nutrimental-server.herokuapp.com/api/food-history/post/", {
           user_email: authProps.user.user_email,
           history: {
             food_name: data.description ? data.description : data.vitamin_name,
@@ -104,7 +104,7 @@ const SearchedItem = ({ data, authProps }) => {
       finalAmount = dosageAmount;
     }
     await axios
-      .post("/api/food-history/post/", {
+      .post("https://nutrimental-server.herokuapp.com/api/food-history/post/", {
         user_email: authProps.user.user_email,
         history: {
           food_name: data.vitamin_name,

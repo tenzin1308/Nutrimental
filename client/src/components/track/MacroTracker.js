@@ -103,7 +103,7 @@ export default function MacroTracker({ authProps, date }) {
   const getIntakeHistoryData = async () => {
     await axios
       .get(
-        `/api/food-history/get-date?user_email=${
+        `https://nutrimental-server.herokuapp.com/api/food-history/get-date?user_email=${
           authProps.user.user_email
         }&date=${date.toLocaleDateString().replaceAll("/", "-")}/`
       )
@@ -118,7 +118,7 @@ export default function MacroTracker({ authProps, date }) {
 
   const getDailyIntakeData = async () => {
     await axios
-      .get("/api/daily-intake/get/", {
+      .get("https://nutrimental-server.herokuapp.com/api/daily-intake/get/", {
         params: authProps.user,
       })
       .then((res) => {

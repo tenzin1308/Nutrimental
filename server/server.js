@@ -42,8 +42,7 @@ app.use("/api/food-history", foodHistoryRouter);
 app.use("/api/advice", adviceRouter);
 
 // Connection
-
-const port = 8000;
+const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });

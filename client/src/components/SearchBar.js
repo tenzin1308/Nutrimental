@@ -46,7 +46,7 @@ const SearchBar = () => {
 
   const getVitaminDbData = async () => {
     await axios
-      .get(`/api/vitamin/get?vitamin_name=${searchTxt}`)
+      .get(`https://nutrimental-server.herokuapp.com/api/vitamin/get?vitamin_name=${searchTxt}`)
       .then((res) => {
         setVitaminData(res.data);
       })
