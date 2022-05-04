@@ -12,10 +12,14 @@ userRouter.route("/get/").get(async (req, res) => {
 });
 
 userRouter.route("/get-dietitian/").get(async (req, res) => {
-  const dietitian = await userModel.find({
-    isdietitian: true,
-  });
-  res.json(dietitian);
+  try {
+    const dietitian = await userModel.find({
+      isdietitian: true,
+    });
+    return res.status(200).json(dietitian);
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 });
 
 userRouter.post(

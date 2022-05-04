@@ -33,7 +33,7 @@ export default function Profile({ authProps, setAuthProps }) {
   React.useEffect(() => {}, [selectedTab]);
 
   React.useEffect(() => {
-    fetch("/api/user/get-dietitian")
+    fetch("https://nutrimental-server.herokuapp.com/api/user/get-dietitian")
       .then((res) => res.json())
       .then((data) => {
         setDietitians(data);
@@ -43,7 +43,7 @@ export default function Profile({ authProps, setAuthProps }) {
   // initial render
   const getUser = async () => {
     await axios
-      .get(`/api/user/get/?user_email=${authProps.user.user_email}`)
+      .get(`https://nutrimental-server.herokuapp.com/api/user/get/?user_email=${authProps.user.user_email}`)
       .then((res) => {
         setProfilePic(res.data.image_url);
       });
@@ -73,7 +73,7 @@ export default function Profile({ authProps, setAuthProps }) {
 
   const putImageUserDB = async (imageStr) => {
     await axios
-      .put(`/api/user/put?user_email=${authProps.user.user_email}`, {
+      .put(`https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`, {
         image_url: imageStr,
       })
       .then((res) => {
@@ -119,13 +119,12 @@ export default function Profile({ authProps, setAuthProps }) {
         toast.error(err.message);
       } else {
         await axios
-          .put(`http://localhost:8000/api/user/put?user_email=${authProps.user.user_email}`, {
+          .put(`https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`, {
             first_name: authProps.user.first_name,
             last_name: authProps.user.last_name,
             weight: authProps.user.weight,
             height: authProps.user.height,
             diet: authProps.user.diet,
-            //whoDietitian: dietitian,
           })
           .then((res) => {
             toast.success("Successfully updated your profile");
@@ -148,7 +147,7 @@ export default function Profile({ authProps, setAuthProps }) {
     } else {
       await axios
         .put(
-          `http://localhost:8000/api/user/put?user_email=${authProps.user.user_email}`,
+          `https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`,
           {
             whoDietitian: dietitian,
           }
@@ -159,8 +158,8 @@ export default function Profile({ authProps, setAuthProps }) {
         .catch((err) => {
           toast.error(err.message);
         });
-     setDietitian(false)
-     await delay (700);
+
+      await delay (700);
       window.location.reload();
     }
   };
