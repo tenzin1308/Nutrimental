@@ -4,6 +4,7 @@ import React from "react";
 import toast from "react-hot-toast";
 import UnisexAvatar from "../assets/profile_pic/UnisexAvatar.jpg";
 import AccountLayout from "../components/AccountLayout";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 
 // "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
@@ -17,6 +18,9 @@ export default function Profile({ authProps, setAuthProps }) {
   const [selectedTab, setSelectedTab] = React.useState(TABS[0]);
   const [editingInfo, setEditingInfo] = React.useState(false);
 
+  const [dietitian, setDietitian] = React.useState("");
+  const [dietitians, setDietitians] = React.useState([]);
+
   const [changedFirstName, setChangedFirstName] = React.useState("");
   const [changedLastName, setChangedLastName] = React.useState("");
   const [changedWeight, setChangedWeight] = React.useState("");
@@ -26,6 +30,16 @@ export default function Profile({ authProps, setAuthProps }) {
   const [imageSelected, setImageSelected] = React.useState("");
   const [profilePic, setProfilePic] = React.useState("");
 
+  React.useEffect(() => {}, [selectedTab]);
+
+  React.useEffect(() => {
+    fetch("https://nutrimental-server.herokuapp.com/api/user/get-dietitian")
+      .then((res) => res.json())
+      .then((data) => {
+        setDietitians(data);
+      });
+  }, []);
+  
   // initial render
   const getUser = async () => {
     await axios
@@ -123,6 +137,31 @@ export default function Profile({ authProps, setAuthProps }) {
 
     updateDBInfo();
     setEditingInfo(false);
+  };
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const changeDietitian = async (err, data) => {
+    if (err) {
+      toast.error(err.message);
+    } else {
+      await axios
+        .put(
+          `https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`,
+          {
+            whoDietitian: dietitian,
+          }
+        )
+        .then((res) => {
+          toast.success("Successfully Selected Dietitian");
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+
+      await delay (700);
+      window.location.reload();
+    }
   };
 
   return (
@@ -321,8 +360,42 @@ export default function Profile({ authProps, setAuthProps }) {
                         <div className="px-4 py-2">{authProps.user.diet}</div>
                       )}
                     </div>
+                    <FormControl size = "small">
+                      <InputLabel>
+                      {authProps.user.whoDietitian === "false"
+                        ? "Select Dietitian"
+                        : authProps.user.whoDietitian}
+                  </InputLabel>
+                  <Select
+                    value = {dietitian}
+                    label = {
+                      authProps.user.whoDietitian === "false"
+                        ? "Select Dietitian"
+                        : authProps.user.whoDietitian
+                    }
+                    onChange = {(event) => {
+                      setDietitian(event.target.value);
+                    }}
+                  >
+                    {dietitians.map((dietitian) => {
+                        return (
+                          <MenuItem
+                            value = {dietitian.user_email}
+                            key = {dietitian.id}
+                          >
+                            {dietitian.user_email}
+                          </MenuItem>
+                        );
+                        })}
+                    </Select>
+                    </FormControl>
+                    <div className="px-4 py-2 font-semibold">     
+                      <button onClick={() => changeDietitian()}>
+                      <b>Add Dietitian</b>
+                    </button>        
                   </div>
                 </div>
+              </div>
                 {editingInfo ? (
                   <React.Fragment>
                     <button
