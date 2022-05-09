@@ -52,7 +52,7 @@ const columns = [
 //   },
 // ];
 
-export default function MacroTracker({ authProps, date }) {
+export default function MacroTracker({ authProps, date, role, clientEmail }) {
   const [intakeHistory, setIntakeHistory] = useState([]);
   const [dailyIntake, setDailyIntake] = useState([]);
   const [finalData, setFinalData] = useState([]);
@@ -75,7 +75,7 @@ export default function MacroTracker({ authProps, date }) {
           vitamin_name: nut_item.nutrient_name
             .split(",")[0]
             .replaceAll("-", ""),
-          nutrient_quantity: parseFloat(nut_item.nutrient_quantity).toFixed(1), //
+          nutrient_quantity: parseFloat(nut_item.nutrient_quantity).toFixed(1),
         };
         single_food.push(intaken_item);
       });
@@ -89,7 +89,7 @@ export default function MacroTracker({ authProps, date }) {
               (acc[vitamin_name] ??= {
                 vitamin_name,
                 nutrient_quantity: 0,
-              }).nutrient_quantity += parseFloat(nutrient_quantity); //
+              }).nutrient_quantity += parseFloat(nutrient_quantity);
               return acc;
             }, {})
         );
@@ -104,7 +104,7 @@ export default function MacroTracker({ authProps, date }) {
     await axios
       .get(
         `https://nutrimental-server.herokuapp.com/api/food-history/get-date?user_email=${
-          authProps.user.user_email
+          role ? clientEmail : authProps.user.user_email
         }&date=${date.toLocaleDateString().replaceAll("/", "-")}/`
       )
       .then((res) => {
@@ -114,7 +114,6 @@ export default function MacroTracker({ authProps, date }) {
         toast.error(err.message);
       });
   };
-
 
   const getDailyIntakeData = async () => {
     await axios
