@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import toast from "react-hot-toast";
 import AccountLayout from "../components/AccountLayout";
 import FoodHistory from "../components/historyTab/FoodHistory";
 import MacroTracker from "../components/track/MacroTracker";
-import DatePicker from "react-datepicker";
 import NutrientAdvice from "../components/track/NutrientAdvice";
-import axios from "axios";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import "react-datepicker/dist/react-datepicker.css";
-import toast from "react-hot-toast";
 
 const TABS = ["Nutrient Tracker", "Nutrient Advice", "Food History"];
 
@@ -15,36 +14,17 @@ const Tracker = ({ authProps }) => {
   const [selectedTab, setSelectedTab] = useState(TABS[0]);
   const [dateState, setDateState] = useState(new Date());
   const [selectedUser, setSelectedUser] = useState("");
-  const [whoUserList, setWhoUserList] = useState([]);
   const [userSelected, setUserSelected] = useState(false);
 
   const changeDate = (e) => {
     setDateState(e);
   };
 
-  const getWhoUserList = async () => {
-    await axios
-      .get(
-        `https://nutrimental-server.herokuapp.com/api/user/get?user_email=${authProps.user.user_email}`
-      )
-      .then((res) => {
-        setWhoUserList(res.data.whoUser);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  };
-  useEffect(() => {
-    if (authProps.user) {
-      getWhoUserList();
-    }
-  }, [authProps]);
-
   const buttonHandler = () => {
-    if (selectedUser == "") {
+    if (selectedUser === "") {
       toast.error("You have not selected a user. Please choose a user.");
     } else {
-      setUserSelected(!userSelected);
+      setUserSelected(true);
     }
   };
 
@@ -55,10 +35,10 @@ const Tracker = ({ authProps }) => {
   return authProps.isAuthenticated && authProps.session ? (
     authProps.user.isdietitian ? (
       <div>
-        <FormControl size="small">
+        <FormControl fullWidth={true}>
           <InputLabel>Please select a user</InputLabel>
           <Select value="" label="Place Holder" onChange={handleSelectedUser}>
-            {whoUserList.map((item, i) => {
+            {authProps.user.whoUser.map((item, i) => {
               return (
                 <MenuItem value={item} index={i} key={i}>
                   {item}
