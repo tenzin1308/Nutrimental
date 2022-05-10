@@ -13,6 +13,7 @@ import SuccessfulSignUp from "./pages/SuccessfulSignUp";
 import Tracker from "./pages/Tracker";
 import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
+import { Navigate } from "react-router";
 
 function App() {
   const [authProps, setAuthProps] = useState({
@@ -73,22 +74,30 @@ function App() {
                   <Home authProps={authProps} setAuthProps={setAuthProps} />
                 }
               />
-              <Route
+               <Route
                 exact
                 path="/login"
                 element={
-                  <Account>
-                    <SignIn authProps={authProps} setAuthProps={setAuthProps} />
+                  !authProps.isAuthenticated || !authProps.session ? (
+                    <Account>
+                      <SignIn authProps={authProps} setAuthProps={setAuthProps} />
                   </Account>
+                  ) : (
+                    <Navigate to ="/tracker" />
+                  )
                 }
               />
               <Route
                 exact
                 path="/signup"
                 element={
+                 !authProps.isAuthenticated || !authProps.session ? (
                   <Account>
                     <SignUp authProps={authProps} setAuthProps={setAuthProps} />
                   </Account>
+                  ) : (
+                    <Navigate to="/tracker" />
+                  )
                 }
               />
               <Route
