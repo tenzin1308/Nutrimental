@@ -248,7 +248,15 @@ export default function Profile({ authProps, setAuthProps }) {
                   <li className="flex items-center py-3">
                     <span>Member since</span>
                     <span className="ml-auto">
-                      {getDate(authProps.user.signup_date.slice(0, 10))}
+                      {new Date(authProps.user.signup_date).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "short",
+                          day: "2-digit",
+                          timeZone: "America/New_York",
+                        }
+                      )}
                     </span>
                   </li>
                 </ul>
@@ -365,12 +373,27 @@ export default function Profile({ authProps, setAuthProps }) {
                       {editingInfo ? (
                         <input
                           type="text"
-                          placeholder={getDate(authProps.user.dob.slice(0, 10))}
+                          placeholder={new Date(
+                            authProps.user.dob
+                          ).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "2-digit",
+                            timeZone: "America/New_York",
+                          })}
                           disabled
                         ></input>
                       ) : (
                         <div className="px-4 py-2">
-                          {getDate(authProps.user.dob.slice(0, 10))}
+                          {new Date(authProps.user.dob).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "2-digit",
+                              timeZone: "America/New_York",
+                            }
+                          )}
                         </div>
                       )}
                     </div>
@@ -408,11 +431,11 @@ export default function Profile({ authProps, setAuthProps }) {
                               setDietitian(event.target.value);
                             }}
                           >
-                            {dietitians.map((dietitian) => {
+                            {dietitians.map((dietitian, indx) => {
                               return (
                                 <MenuItem
                                   value={dietitian.user_email}
-                                  key={dietitian.id}
+                                  key={indx}
                                 >
                                   {dietitian.user_email}
                                 </MenuItem>

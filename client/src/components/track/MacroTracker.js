@@ -90,7 +90,9 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
       .get(
         `https://nutrimental-server.herokuapp.com/api/food-history/get-date?user_email=${
           role ? clientEmail : authProps.user.user_email
-        }&date=${date.toLocaleDateString().replaceAll("/", "-")}/`
+        }&date=${date
+          .toLocaleString("en-US", { timeZone: "UTC" })
+          .replaceAll("/", "-")}/`
       )
       .then((res) => {
         setIntakeHistory(getIntakeHistory(res.data));
@@ -141,7 +143,6 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
   }, [date]);
 
   useEffect(() => {
-
     getFinalData(dailyIntake, intakeHistory);
     setLoading(false);
   }, [dailyIntake, intakeHistory, clientEmail]);
@@ -153,12 +154,7 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
       {dailyIntake.length < 35 ? (
         <div className="flex items-center justify-center content-center">
           <div className="flex flex-col items-center">
-            <Audio
-              height="100"
-              width="100"
-
-              ariaLabel="loading"
-            />
+            <Audio height="100" width="100" ariaLabel="loading" />
             <h3 className="flex justify-center py-4">Populating Data</h3>
           </div>
         </div>
