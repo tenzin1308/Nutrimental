@@ -174,7 +174,6 @@ const SearchedItem = ({ data, authProps }) => {
               type="number"
               min={0}
               step={0.1}
-              // value={1}
               className="m-1"
               placeholder="Input servings"
               onChange={handleServingChange}

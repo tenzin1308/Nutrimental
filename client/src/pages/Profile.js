@@ -6,33 +6,20 @@ import UnisexAvatar from "../assets/profile_pic/UnisexAvatar.jpg";
 import AccountLayout from "../components/AccountLayout";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-//import { Image } from "cloudinary-react"; // profile image
-
-// "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
 const TABS = ["Account Information"];
-
-const getDate = (date) => {
-  return Date(date).split(" ").splice(1, 3).join(" ");
-};
 
 export default function Profile({ authProps, setAuthProps }) {
   const [selectedTab, setSelectedTab] = React.useState(TABS[0]);
   const [editingInfo, setEditingInfo] = React.useState(false);
-
   const [dietitian, setDietitian] = React.useState("");
-  const [currentUserEmail, setCurrentUserEmail] = React.useState("");
   const [dietitians, setDietitians] = React.useState([]);
-
   const [changedFirstName, setChangedFirstName] = React.useState("");
   const [changedLastName, setChangedLastName] = React.useState("");
   const [changedWeight, setChangedWeight] = React.useState("");
   const [changedHeight, setChangedHeight] = React.useState("");
   const [changedDiet, setChangedDiet] = React.useState("");
-
   const [imageSelected, setImageSelected] = React.useState("");
   const [profilePic, setProfilePic] = React.useState("");
-
-  React.useEffect(() => {}, [selectedTab]);
 
   React.useEffect(() => {
     fetch("https://nutrimental-server.herokuapp.com/api/user/get-dietitian")
@@ -56,7 +43,6 @@ export default function Profile({ authProps, setAuthProps }) {
   React.useEffect(() => {
     if (authProps.user) {
       getUser();
-      setCurrentUserEmail(authProps.user.user_email);
     }
   }, [authProps]);
 
