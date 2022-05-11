@@ -76,7 +76,7 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
       } else {
         // after signup on cognito we are creating user in MongoDB
         await axios
-          .post("/api/user/post", {
+          .post("https://nutrimental-server.herokuapp.com/api/user/post", {
             user_email: email,
             first_name: firstName,
             last_name: lastName,
@@ -88,7 +88,7 @@ const StepTwo = ({ handleFormData, prevStep, values }) => {
             isdietitian: isdietitian,
           })
           .then((res) => {
-            axios.post("/api/food-history/post/", {
+            axios.post("https://nutrimental-server.herokuapp.com/api/food-history/post/", {
               user_email: email,
               history: [],
             });

@@ -14,3 +14,10 @@
 - cd client
 - npm i
 - npm start
+
+
+## https://nutrimental-server.herokuapp.com/
+## 
+## heroku login
+## heroku git:remote -a nutrimental-server
+## git subtree push --prefix server heroku master  

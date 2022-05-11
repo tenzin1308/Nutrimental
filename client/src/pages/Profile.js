@@ -1,11 +1,11 @@
 import axios from "axios";
+import { Image } from "cloudinary-react"; // profile image
 import React from "react";
 import toast from "react-hot-toast";
 import UnisexAvatar from "../assets/profile_pic/UnisexAvatar.jpg";
 import AccountLayout from "../components/AccountLayout";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-import { Image } from "cloudinary-react"; // profile image
 
 // "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
 const TABS = ["Account Information"];
