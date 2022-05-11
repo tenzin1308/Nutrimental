@@ -12,51 +12,36 @@ const columns = [
     field: "vitamin_name",
     property: "Macro Name",
     minWidth: 170,
-    // align: "center",
   },
   {
     field: "nutrient_quantity",
     property: "Amount Consumed",
     minWidth: 170,
-    // align: "center",
   },
   {
     field: "recommended_amount",
     property: "Recommended Amount",
     minWidth: 170,
-    // align: "center",
-    // editable: true,
   },
   {
     field: "amount_remaining",
     property: "Amount Remaining",
     minWidth: 170,
-    // align: "center",
   },
   {
     field: "upper_tolerable_limit",
     property: "Upper Tolerable Limit",
     minWidth: 170,
-    // align: "center",
   },
 ];
 
-// const sampleRow = [
-//   {
-//     amount_remaining: 640,
-//     id: 1,
-//     nutrient_quantity: 360,
-//     recommended_amount: "1000",
-//     upper_tolerable_limit: "2500",
-//     vitamin_name: "Calcium",
-//   },
-// ];
-
-export default function MacroTracker({ authProps, date }) {
+export default function MacroTracker({ authProps, date, role, clientEmail }) {
   const [intakeHistory, setIntakeHistory] = useState([]);
   const [dailyIntake, setDailyIntake] = useState([]);
   const [finalData, setFinalData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {}, [clientEmail]);
 
   const getIntakeHistory = (resData) => {
     let intaken_list = [];
@@ -75,7 +60,7 @@ export default function MacroTracker({ authProps, date }) {
           vitamin_name: nut_item.nutrient_name
             .split(",")[0]
             .replaceAll("-", ""),
-          nutrient_quantity: parseFloat(nut_item.nutrient_quantity).toFixed(1), //
+          nutrient_quantity: parseFloat(nut_item.nutrient_quantity).toFixed(1),
         };
         single_food.push(intaken_item);
       });
@@ -89,7 +74,7 @@ export default function MacroTracker({ authProps, date }) {
               (acc[vitamin_name] ??= {
                 vitamin_name,
                 nutrient_quantity: 0,
-              }).nutrient_quantity += parseFloat(nutrient_quantity); //
+              }).nutrient_quantity += parseFloat(nutrient_quantity);
               return acc;
             }, {})
         );
@@ -104,8 +89,10 @@ export default function MacroTracker({ authProps, date }) {
     await axios
       .get(
         `https://nutrimental-server.herokuapp.com/api/food-history/get-date?user_email=${
-          authProps.user.user_email
-        }&date=${date.toLocaleDateString().replaceAll("/", "-")}/`
+          role ? clientEmail : authProps.user.user_email
+        }&date=${date
+          .toLocaleString("en-US", { timeZone: "UTC" })
+          .replaceAll("/", "-")}/`
       )
       .then((res) => {
         setIntakeHistory(getIntakeHistory(res.data));
@@ -114,7 +101,6 @@ export default function MacroTracker({ authProps, date }) {
         toast.error(err.message);
       });
   };
-
 
   const getDailyIntakeData = async () => {
     await axios
@@ -144,9 +130,6 @@ export default function MacroTracker({ authProps, date }) {
         if (!("nutrient_quantity" in obj)) {
           obj["nutrient_quantity"] = 0;
         }
-        // if (!obj.hasOwnProperty("nutrient_quantity")) {
-        //   obj["nutrient_quantity"] = 0;
-        // }
         obj["amount_remaining"] =
           obj.recommended_amount - obj.nutrient_quantity;
       });
@@ -160,13 +143,9 @@ export default function MacroTracker({ authProps, date }) {
   }, [date]);
 
   useEffect(() => {
-    // if (intakeHistory.length > 0) {
-    //   getFinalData(dailyIntake, intakeHistory);
-    // }
-
     getFinalData(dailyIntake, intakeHistory);
     setLoading(false);
-  }, [dailyIntake, intakeHistory]);
+  }, [dailyIntake, intakeHistory, clientEmail]);
 
   useEffect(() => {}, [finalData]);
 
@@ -175,13 +154,7 @@ export default function MacroTracker({ authProps, date }) {
       {dailyIntake.length < 35 ? (
         <div className="flex items-center justify-center content-center">
           <div className="flex flex-col items-center">
-            <Audio
-              height="100"
-              width="100"
-              //  color="grey"
-
-              ariaLabel="loading"
-            />
+            <Audio height="100" width="100" ariaLabel="loading" />
             <h3 className="flex justify-center py-4">Populating Data</h3>
           </div>
         </div>

@@ -16,8 +16,8 @@ export default function SignIn({ authProps, setAuthProps }) {
     authenticate(email, password)
       .then((data) => {
         toast.success("Login Successful");
-        // window.location.href = "/tracker";
-        window.location.reload(false);
+        window.location.href = "/tracker";
+        // window.location.reload(false);
       })
       .catch((err) => {
         toast.error(err.message);

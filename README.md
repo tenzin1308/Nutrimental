@@ -15,6 +15,24 @@
 - npm i
 - npm start
 
+## Login in
+[x] User
+- user1@test.com
+- User!2345
+
+- user2@test.com
+- User!2345
+
+- user3@test.com
+- User!2345
+
+[x] Dietitian
+- dietitian1@test.com
+- Dietitian!2345
+
+- dietitian2@test.com
+- Dietitian!2345
+
 
 ## https://nutrimental-server.herokuapp.com/
 ## 
