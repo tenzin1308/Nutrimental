@@ -69,6 +69,7 @@ const Tracker = ({ authProps }) => {
 
         }
         {isSelected ? (
+
           <div className="w-screen h-auto">
             <AccountLayout
               tabsLst={["Nutrient Tracker", "Food History"]}
@@ -113,7 +114,7 @@ const Tracker = ({ authProps }) => {
             </AccountLayout>
           </div>
         ) : (
-          //<div>isSelected is currently false so this is being displayed instead</div>
+          //<div>isSelected is currently false so this is being displayed instead</div>f34ceb088936caf02957a5d956e55a025a96b23
           <div></div>
         )}
       </div>
