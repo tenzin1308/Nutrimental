@@ -58,6 +58,8 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
   const [finalData, setFinalData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {}, [clientEmail]);
+
   const getIntakeHistory = (resData) => {
     let intaken_list = [];
     // for each food in the day's food history

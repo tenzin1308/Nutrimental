@@ -387,40 +387,46 @@ export default function Profile({ authProps, setAuthProps }) {
                         <div className="px-4 py-2">{authProps.user.diet}</div>
                       )}
                     </div>
-                    <FormControl size="small">
-                      <InputLabel>
-                        {authProps.user.whoDietitian === "false"
-                          ? "Select Dietitian"
-                          : authProps.user.whoDietitian}
-                      </InputLabel>
-                      <Select
-                        value={dietitian}
-                        label={
-                          authProps.user.whoDietitian === "false"
-                            ? "Select Dietitian"
-                            : authProps.user.whoDietitian
-                        }
-                        onChange={(event) => {
-                          setDietitian(event.target.value);
-                        }}
-                      >
-                        {dietitians.map((dietitian) => {
-                          return (
-                            <MenuItem
-                              value={dietitian.user_email}
-                              key={dietitian.id}
-                            >
-                              {dietitian.user_email}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                    <div className="px-4 py-2 font-semibold">
-                      <button onClick={() => changeDietitian()}>
-                        <b>Add Dietitian</b>
-                      </button>
-                    </div>
+                    {authProps.user.isdietitian ? (
+                      <div></div>
+                    ) : (
+                      <>
+                        <FormControl size="small">
+                          <InputLabel>
+                            {authProps.user.whoDietitian === "false"
+                              ? "Select Dietitian"
+                              : authProps.user.whoDietitian}
+                          </InputLabel>
+                          <Select
+                            value={dietitian}
+                            label={
+                              authProps.user.whoDietitian === "false"
+                                ? "Select Dietitian"
+                                : authProps.user.whoDietitian
+                            }
+                            onChange={(event) => {
+                              setDietitian(event.target.value);
+                            }}
+                          >
+                            {dietitians.map((dietitian) => {
+                              return (
+                                <MenuItem
+                                  value={dietitian.user_email}
+                                  key={dietitian.id}
+                                >
+                                  {dietitian.user_email}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                        <div className="px-4 py-2 font-semibold">
+                          <button onClick={() => changeDietitian()}>
+                            <b>Add Dietitian</b>
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
                 {editingInfo ? (

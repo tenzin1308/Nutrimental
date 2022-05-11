@@ -1,5 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
@@ -37,7 +37,11 @@ const Tracker = ({ authProps }) => {
       <div>
         <FormControl fullWidth={true}>
           <InputLabel>Please select a user</InputLabel>
-          <Select value="" label="Place Holder" onChange={handleSelectedUser}>
+          <Select
+            value={selectedUser}
+            label="Place Holder"
+            onChange={handleSelectedUser}
+          >
             {authProps.user.whoUser.map((item, i) => {
               return (
                 <MenuItem value={item} index={i} key={i}>
@@ -98,7 +102,6 @@ const Tracker = ({ authProps }) => {
             </AccountLayout>
           </div>
         ) : (
-          //<div>UserSelected is currently false so this is being displayed instead</div>
           <div></div>
         )}
       </div>
