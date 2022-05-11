@@ -56,6 +56,7 @@ export default function FAQ() {
       <div style={{ width: "80%" }}>
         {QuestionList.map((item, index) => (
           <Accordion
+            key={index}
             expanded={expanded === panels[index]}
             onChange={handleChange(panels[index])}
           >

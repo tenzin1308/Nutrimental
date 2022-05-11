@@ -12,8 +12,6 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import SuccessfulSignUp from "./pages/SuccessfulSignUp";
 import Tracker from "./pages/Tracker";
-import FAQ from "./pages/FAQ";
-import Contact from "./pages/Contact";
 import { Navigate } from "react-router";
 
 function App() {
@@ -75,16 +73,19 @@ function App() {
                   <Home authProps={authProps} setAuthProps={setAuthProps} />
                 }
               />
-               <Route
+              <Route
                 exact
                 path="/login"
                 element={
                   !authProps.isAuthenticated || !authProps.session ? (
                     <Account>
-                      <SignIn authProps={authProps} setAuthProps={setAuthProps} />
-                  </Account>
+                      <SignIn
+                        authProps={authProps}
+                        setAuthProps={setAuthProps}
+                      />
+                    </Account>
                   ) : (
-                    <Navigate to ="/tracker" />
+                    <Navigate to="/tracker" />
                   )
                 }
               />
@@ -92,10 +93,13 @@ function App() {
                 exact
                 path="/signup"
                 element={
-                 !authProps.isAuthenticated || !authProps.session ? (
-                  <Account>
-                    <SignUp authProps={authProps} setAuthProps={setAuthProps} />
-                  </Account>
+                  !authProps.isAuthenticated || !authProps.session ? (
+                    <Account>
+                      <SignUp
+                        authProps={authProps}
+                        setAuthProps={setAuthProps}
+                      />
+                    </Account>
                   ) : (
                     <Navigate to="/tracker" />
                   )

@@ -7,27 +7,27 @@ import { Audio } from "react-loader-spinner";
 const columns = [
   {
     field: "vitamin_name",
-    property: "Macro Name",
+    headerName: "Macro Name",
     minWidth: 170,
   },
   {
     field: "nutrient_quantity",
-    property: "Amount Consumed",
+    headerName: "Amount Consumed",
     minWidth: 170,
   },
   {
     field: "recommended_amount",
-    property: "Recommended Amount",
+    headerName: "Recommended Amount",
     minWidth: 170,
   },
   {
     field: "amount_remaining",
-    property: "Amount Remaining",
+    headerName: "Amount Remaining",
     minWidth: 170,
   },
   {
     field: "upper_tolerable_limit",
-    property: "Upper Tolerable Limit",
+    headerName: "Upper Tolerable Limit",
     minWidth: 170,
   },
 ];
@@ -36,7 +36,6 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
   const [intakeHistory, setIntakeHistory] = useState([]);
   const [dailyIntake, setDailyIntake] = useState([]);
   const [finalData, setFinalData] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {}, [clientEmail]);
 
@@ -61,7 +60,6 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
         };
         single_food.push(intaken_item);
       });
-
       // accumulating foods
       if (intaken_list.length > 0) {
         intaken_list = Object.values(
@@ -113,7 +111,6 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
   };
 
   const getFinalData = (arr1, arr2) => {
-    setLoading(true);
     let id = 0;
     let merged = arr1.map((itm) => ({
       ...arr2.find((item) => item.vitamin_name === itm.vitamin_name && item),
@@ -141,7 +138,6 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
 
   useEffect(() => {
     getFinalData(dailyIntake, intakeHistory);
-    setLoading(false);
   }, [dailyIntake, intakeHistory, clientEmail]);
 
   useEffect(() => {}, [finalData]);
