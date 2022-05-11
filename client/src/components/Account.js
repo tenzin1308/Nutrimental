@@ -26,9 +26,7 @@ const Account = (props) => {
   const authenticate = async (Username, Password) => {
     return await new Promise((resolve, reject) => {
       const user = new CognitoUser({ Username, Pool });
-
       const authDetails = new AuthenticationDetails({ Username, Password });
-
       user.authenticateUser(authDetails, {
         onSuccess: (data) => {
           resolve(data);

@@ -24,12 +24,12 @@ const Tracker = ({ authProps }) => {
     setIsSelected(!isSelected);
   };
 
-  useEffect(() => { }, [isSelected]);
+  useEffect(() => {}, [isSelected]);
 
   return authProps.isAuthenticated && authProps.session ? (
     authProps.user.isdietitian ? (
       <div className="w-screen h-auto">
-        {!isSelected ?
+        {!isSelected ? (
           <FormControl fullWidth={true}>
             <InputLabel>Please select a user</InputLabel>
             <Select value="" label="Place Holder" onChange={handleSelectedUser}>
@@ -42,7 +42,8 @@ const Tracker = ({ authProps }) => {
               })}
             </Select>
           </FormControl>
-          : <>
+        ) : (
+          <>
             {/* display the selected User at the center of the screen and cross button next to it which reset the isSelected to false */}
             <div className="flex justify-center">
               <div className="flex flex-col items-center">
@@ -66,10 +67,8 @@ const Tracker = ({ authProps }) => {
               </div>
             </div>
           </>
-
-        }
+        )}
         {isSelected ? (
-
           <div className="w-screen h-auto">
             <AccountLayout
               tabsLst={["Nutrient Tracker", "Food History"]}
@@ -114,7 +113,6 @@ const Tracker = ({ authProps }) => {
             </AccountLayout>
           </div>
         ) : (
-          //<div>isSelected is currently false so this is being displayed instead</div>f34ceb088936caf02957a5d956e55a025a96b23
           <div></div>
         )}
       </div>

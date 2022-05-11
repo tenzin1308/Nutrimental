@@ -1,24 +1,12 @@
 import React, { useEffect } from "react";
-import { Oval } from 'react-loader-spinner';
+import { Oval } from "react-loader-spinner";
 import { useLocation } from "react-router-dom";
 import AccountLayout from "../components/AccountLayout";
 import SearchedItem from "../components/SearchedItem";
 
 const Searched = ({ authProps }) => {
   const [loading, setLoading] = React.useState(true);
-  const [data, setData] = React.useState([
-    // {
-    //   food_name: "{%FOOD_NAME%}",
-    //   calories: "{%CALORIES%}",
-    //   amount: "{%QUANTITY_IN_GRAMS%}",
-    //   nutrients: [
-    //     {
-    //       nutrient_name: "{%NAME%}",
-    //       nutrient_quantity: "{%QUANTITY%}",
-    //     },
-    //   ],
-    // },
-  ]);
+  const [data, setData] = React.useState([]);
   const location = useLocation();
 
   useEffect(() => {

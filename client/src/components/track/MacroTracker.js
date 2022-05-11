@@ -1,11 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Audio } from "react-loader-spinner";
-
-// import ProgressBar from "react-bootstrap/ProgressBar";
 
 const columns = [
   {
@@ -160,7 +157,6 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
         </div>
       ) : (
         <DataGrid
-          // rows={loading ? sampleRow : finalData}
           rows={finalData}
           columns={columns}
           pageSize={15}

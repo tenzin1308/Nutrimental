@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -32,7 +31,6 @@ const SearchBar = () => {
   const getGovApiData = async () => {
     await axios
       .get(
-        // pageSize range = [1, 200]
         `https://api.nal.usda.gov/fdc/v1/foods/search?query=${searchTxt}&pageSize=200&api_key=8lipwf66SSWRVtn5S063QWheTJMSbN0ZySSf73Xv`
       )
       .then((res) => {
@@ -46,7 +44,9 @@ const SearchBar = () => {
 
   const getVitaminDbData = async () => {
     await axios
-      .get(`https://nutrimental-server.herokuapp.com/api/vitamin/get?vitamin_name=${searchTxt}`)
+      .get(
+        `https://nutrimental-server.herokuapp.com/api/vitamin/get?vitamin_name=${searchTxt}`
+      )
       .then((res) => {
         setVitaminData(res.data);
       })

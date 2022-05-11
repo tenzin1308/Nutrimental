@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import toast from "react-hot-toast";
 import Table from "./Table";
 
@@ -8,7 +8,9 @@ function FoodHistory({ user_email }) {
 
   useEffect(() => {
     axios
-      .get(`https://nutrimental-server.herokuapp.com/api/food-history/get?user_email=${user_email}`)
+      .get(
+        `https://nutrimental-server.herokuapp.com/api/food-history/get?user_email=${user_email}`
+      )
       .then((res) => {
         setFoodHistory(res.data);
       })
