@@ -12,45 +12,28 @@ const columns = [
     field: "vitamin_name",
     property: "Macro Name",
     minWidth: 170,
-    // align: "center",
   },
   {
     field: "nutrient_quantity",
     property: "Amount Consumed",
     minWidth: 170,
-    // align: "center",
   },
   {
     field: "recommended_amount",
     property: "Recommended Amount",
     minWidth: 170,
-    // align: "center",
-    // editable: true,
   },
   {
     field: "amount_remaining",
     property: "Amount Remaining",
     minWidth: 170,
-    // align: "center",
   },
   {
     field: "upper_tolerable_limit",
     property: "Upper Tolerable Limit",
     minWidth: 170,
-    // align: "center",
   },
 ];
-
-// const sampleRow = [
-//   {
-//     amount_remaining: 640,
-//     id: 1,
-//     nutrient_quantity: 360,
-//     recommended_amount: "1000",
-//     upper_tolerable_limit: "2500",
-//     vitamin_name: "Calcium",
-//   },
-// ];
 
 export default function MacroTracker({ authProps, date, role, clientEmail }) {
   const [intakeHistory, setIntakeHistory] = useState([]);
@@ -143,9 +126,6 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
         if (!("nutrient_quantity" in obj)) {
           obj["nutrient_quantity"] = 0;
         }
-        // if (!obj.hasOwnProperty("nutrient_quantity")) {
-        //   obj["nutrient_quantity"] = 0;
-        // }
         obj["amount_remaining"] =
           obj.recommended_amount - obj.nutrient_quantity;
       });
@@ -159,13 +139,10 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
   }, [date]);
 
   useEffect(() => {
-    // if (intakeHistory.length > 0) {
-    //   getFinalData(dailyIntake, intakeHistory);
-    // }
 
     getFinalData(dailyIntake, intakeHistory);
     setLoading(false);
-  }, [dailyIntake, intakeHistory]);
+  }, [dailyIntake, intakeHistory, clientEmail]);
 
   useEffect(() => {}, [finalData]);
 
@@ -177,7 +154,6 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
             <Audio
               height="100"
               width="100"
-              //  color="grey"
 
               ariaLabel="loading"
             />

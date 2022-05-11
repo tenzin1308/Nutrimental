@@ -1,8 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import toast from "react-hot-toast";
 import AccountLayout from "../components/AccountLayout";
 import FoodHistory from "../components/historyTab/FoodHistory";
 import MacroTracker from "../components/track/MacroTracker";
@@ -14,46 +13,62 @@ const Tracker = ({ authProps }) => {
   const [selectedTab, setSelectedTab] = useState(TABS[0]);
   const [dateState, setDateState] = useState(new Date());
   const [selectedUser, setSelectedUser] = useState("");
-  const [userSelected, setUserSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
   const changeDate = (e) => {
     setDateState(e);
   };
 
-  const buttonHandler = () => {
-    if (selectedUser === "") {
-      toast.error("You have not selected a user. Please choose a user.");
-    } else {
-      setUserSelected(true);
-    }
-  };
-
   const handleSelectedUser = (e) => {
     setSelectedUser(e.target.value);
+    setIsSelected(!isSelected);
   };
+
+  useEffect(() => { }, [isSelected]);
 
   return authProps.isAuthenticated && authProps.session ? (
     authProps.user.isdietitian ? (
-      <div>
-        <FormControl fullWidth={true}>
-          <InputLabel>Please select a user</InputLabel>
-          <Select value="" label="Place Holder" onChange={handleSelectedUser}>
-            {authProps.user.whoUser.map((item, i) => {
-              return (
-                <MenuItem value={item} index={i} key={i}>
-                  {item}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
-        <button
-          className="text px-4 rounded-lg hover:bg-gray-300 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-2 my-3"
-          onClick={buttonHandler}
-        >
-          View Dietary Information
-        </button>
-        {userSelected ? (
+      <div className="w-screen h-auto">
+        {!isSelected ?
+          <FormControl fullWidth={true}>
+            <InputLabel>Please select a user</InputLabel>
+            <Select value="" label="Place Holder" onChange={handleSelectedUser}>
+              {authProps.user.whoUser.map((item, i) => {
+                return (
+                  <MenuItem value={item} index={i} key={i}>
+                    {item}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          : <>
+            {/* display the selected User at the center of the screen and cross button next to it which reset the isSelected to false */}
+            <div className="flex justify-center">
+              <div className="flex flex-col items-center">
+                <h3 className="text-center">{selectedUser}</h3>
+                <button
+                  className="flex items-center justify-center"
+                  onClick={() => setIsSelected(false)}
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7a1 1 0 011.414-1.414L10 14.586l6.293-6.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </>
+
+        }
+        {isSelected ? (
           <div className="w-screen h-auto">
             <AccountLayout
               tabsLst={["Nutrient Tracker", "Food History"]}
@@ -98,7 +113,7 @@ const Tracker = ({ authProps }) => {
             </AccountLayout>
           </div>
         ) : (
-          //<div>UserSelected is currently false so this is being displayed instead</div>
+          //<div>isSelected is currently false so this is being displayed instead</div>
           <div></div>
         )}
       </div>
