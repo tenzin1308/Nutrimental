@@ -4,32 +4,37 @@ import React from "react";
 import toast from "react-hot-toast";
 import UnisexAvatar from "../assets/profile_pic/UnisexAvatar.jpg";
 import AccountLayout from "../components/AccountLayout";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-
-// "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
 const TABS = ["Account Information"];
-
-const getDate = (date) => {
-  return Date(date).split(" ").splice(1, 3).join(" ");
-};
 
 export default function Profile({ authProps, setAuthProps }) {
   const [selectedTab, setSelectedTab] = React.useState(TABS[0]);
   const [editingInfo, setEditingInfo] = React.useState(false);
-
+  const [dietitian, setDietitian] = React.useState("");
+  const [dietitians, setDietitians] = React.useState([]);
   const [changedFirstName, setChangedFirstName] = React.useState("");
   const [changedLastName, setChangedLastName] = React.useState("");
   const [changedWeight, setChangedWeight] = React.useState("");
   const [changedHeight, setChangedHeight] = React.useState("");
   const [changedDiet, setChangedDiet] = React.useState("");
-
   const [imageSelected, setImageSelected] = React.useState("");
   const [profilePic, setProfilePic] = React.useState("");
+
+  React.useEffect(() => {
+    fetch("https://nutrimental-server.herokuapp.com/api/user/get-dietitian")
+      .then((res) => res.json())
+      .then((data) => {
+        setDietitians(data);
+      });
+  }, []);
 
   // initial render
   const getUser = async () => {
     await axios
-      .get(`https://nutrimental-server.herokuapp.com/api/user/get/?user_email=${authProps.user.user_email}`)
+      .get(
+        `https://nutrimental-server.herokuapp.com/api/user/get/?user_email=${authProps.user.user_email}`
+      )
       .then((res) => {
         setProfilePic(res.data.image_url);
       });
@@ -59,9 +64,12 @@ export default function Profile({ authProps, setAuthProps }) {
 
   const putImageUserDB = async (imageStr) => {
     await axios
-      .put(`https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`, {
-        image_url: imageStr,
-      })
+      .put(
+        `https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`,
+        {
+          image_url: imageStr,
+        }
+      )
       .then((res) => {
         console.log("Successful profile image upload");
       })
@@ -105,13 +113,16 @@ export default function Profile({ authProps, setAuthProps }) {
         toast.error(err.message);
       } else {
         await axios
-          .put(`https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`, {
-            first_name: authProps.user.first_name,
-            last_name: authProps.user.last_name,
-            weight: authProps.user.weight,
-            height: authProps.user.height,
-            diet: authProps.user.diet,
-          })
+          .put(
+            `https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`,
+            {
+              first_name: authProps.user.first_name,
+              last_name: authProps.user.last_name,
+              weight: authProps.user.weight,
+              height: authProps.user.height,
+              diet: authProps.user.diet,
+            }
+          )
           .then((res) => {
             toast.success("Successfully updated your profile");
           })
@@ -123,6 +134,46 @@ export default function Profile({ authProps, setAuthProps }) {
 
     updateDBInfo();
     setEditingInfo(false);
+  };
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const changeDietitian = async (err, data) => {
+    if (err) {
+      toast.error(err.message);
+    } else {
+      await axios
+        .put(
+          `https://nutrimental-server.herokuapp.com/api/user/put?user_email=${authProps.user.user_email}`,
+          {
+            whoDietitian: dietitian,
+          }
+        )
+        .then((res) => {
+          axios
+            .post(
+              `https://nutrimental-server.herokuapp.com/api/user/post-Dietitian?dietitian=${dietitian}`,
+              {
+                oldDietitianEmail: authProps.user.whoDietitian,
+                whoUser: authProps.user.user_email,
+              }
+            )
+            .then((res) => {
+              console.log("post Reponse", res);
+            })
+            .catch((err) => {
+              console.log("post Error", err);
+            });
+
+          toast.success("Successfully Selected Dietitian");
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+
+      await delay(700);
+      window.location.reload();
+    }
   };
 
   return (
@@ -166,6 +217,7 @@ export default function Profile({ authProps, setAuthProps }) {
                     Upload Image
                   </button>
                 </div>
+                <div className="image overflow-hidden"></div>
                 <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
                   {authProps.user.first_name} {authProps.user.last_name}
                 </h1>
@@ -182,7 +234,15 @@ export default function Profile({ authProps, setAuthProps }) {
                   <li className="flex items-center py-3">
                     <span>Member since</span>
                     <span className="ml-auto">
-                      {getDate(authProps.user.signup_date.slice(0, 10))}
+                      {new Date(authProps.user.signup_date).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "short",
+                          day: "2-digit",
+                          timeZone: "America/New_York",
+                        }
+                      )}
                     </span>
                   </li>
                 </ul>
@@ -299,12 +359,27 @@ export default function Profile({ authProps, setAuthProps }) {
                       {editingInfo ? (
                         <input
                           type="text"
-                          placeholder={getDate(authProps.user.dob.slice(0, 10))}
+                          placeholder={new Date(
+                            authProps.user.dob
+                          ).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "2-digit",
+                            timeZone: "America/New_York",
+                          })}
                           disabled
                         ></input>
                       ) : (
                         <div className="px-4 py-2">
-                          {getDate(authProps.user.dob.slice(0, 10))}
+                          {new Date(authProps.user.dob).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "2-digit",
+                              timeZone: "America/New_York",
+                            }
+                          )}
                         </div>
                       )}
                     </div>
@@ -321,6 +396,46 @@ export default function Profile({ authProps, setAuthProps }) {
                         <div className="px-4 py-2">{authProps.user.diet}</div>
                       )}
                     </div>
+                    {authProps.user.isdietitian ? (
+                      <div></div>
+                    ) : (
+                      <>
+                        <FormControl size="small">
+                          <InputLabel>
+                            {authProps.user.whoDietitian === "false"
+                              ? "Select Dietitian"
+                              : authProps.user.whoDietitian}
+                          </InputLabel>
+                          <Select
+                            value={dietitian}
+                            label={
+                              authProps.user.whoDietitian === "false"
+                                ? "Select Dietitian"
+                                : authProps.user.whoDietitian
+                            }
+                            onChange={(event) => {
+                              setDietitian(event.target.value);
+                            }}
+                          >
+                            {dietitians.map((dietitian, indx) => {
+                              return (
+                                <MenuItem
+                                  value={dietitian.user_email}
+                                  key={indx}
+                                >
+                                  {dietitian.user_email}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                        <div className="px-4 py-2 font-semibold">
+                          <button onClick={() => changeDietitian()}>
+                            <b>Add Dietitian</b>
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
                 {editingInfo ? (

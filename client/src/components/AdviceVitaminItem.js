@@ -45,7 +45,6 @@ const AdviceVitaminItem = ({ data }) => {
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
-
       {data && (
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent className="border-t-2 border-dashed">
@@ -53,8 +52,6 @@ const AdviceVitaminItem = ({ data }) => {
           </CardContent>
         </Collapse>
       )}
-
-
     </Card>
   );
 };

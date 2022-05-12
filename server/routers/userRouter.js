@@ -11,6 +11,17 @@ userRouter.route("/get/").get(async (req, res) => {
   res.json(user);
 });
 
+userRouter.route("/get-dietitian/").get(async (req, res) => {
+  try {
+    const dietitian = await userModel.find({
+      isdietitian: true,
+    });
+    return res.status(200).json(dietitian);
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+});
+
 userRouter.post(
   "/post/",
   expressAsyncHandler(async (req, res, err) => {
@@ -26,6 +37,33 @@ userRouter.post(
       return res.sendStatus(400).send(err);
     }
     return res.status(200).send("A Ok");
+  })
+);
+
+userRouter.post(
+  "/post-Dietitian",
+  expressAsyncHandler(async (req, res, err) => {
+    // Removing user's email from his OLD dietitian's whoUser
+    userModel.findOneAndUpdate(
+      { user_email: req.body.oldDietitianEmail },
+      { $pull: { whoUser: req.body.whoUser } },
+      function (err) {
+        if (err) return res.status(400);
+      }
+    );
+
+    // Adding current user email to NEW dietitian's whoUser array
+    userModel.findOneAndUpdate(
+      { user_email: req.query.dietitian },
+      { $addToSet: { whoUser: req.body.whoUser } },
+      { upsert: true, new: true, setDefaultsOnInsert: true },
+
+      function (err) {
+        if (err) return res.status(400);
+      }
+    );
+
+    return res.status(200);
   })
 );
 
@@ -45,7 +83,7 @@ userRouter.put(
     } catch (err) {
       return res.sendStatus(400).send(err);
     }
-    return res.sendStatus(200).send("A Ok");
+    return res.status(200).send("A Ok");
   })
 );
 

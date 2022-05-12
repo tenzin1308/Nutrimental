@@ -25,9 +25,9 @@ const ExpandMore = styled((props) => {
 const SearchedItem = ({ data, authProps }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [nutrient, setNutrient] = React.useState({
-    nutrient_name: "", 
-    nutrient_quantity: "", 
-  })
+    nutrient_name: "",
+    nutrient_quantity: "",
+  });
   const [serving, setServing] = React.useState(0);
   const [dosageAmount, setDosageAmount] = React.useState(0);
   const [unit, setUnit] = React.useState("mg");
@@ -63,24 +63,29 @@ const SearchedItem = ({ data, authProps }) => {
 
   const dbData = newData?.map((item) => ({
     nutrient_name: item.nutrientName,
-    nutrient_quantity: item.value * serving, 
+    nutrient_quantity: item.value * serving,
   }));
 
   const submitHandler = async (event) => {
     setExpanded(false);
     event.preventDefault();
-    if (authProps.isAuthenticated) {
+    if (authProps.isAuthenticated && authProps.user.isdietitian === false) {
       await axios
-        .post("https://nutrimental-server.herokuapp.com/api/food-history/post/", {
-          user_email: authProps.user.user_email,
-          history: {
-            food_name: data.description ? data.description : data.vitamin_name,
-            calories: data.score ? parseFloat(data.score).toFixed(2) : "", // changed data.score to parseFloat(data.score).toFixed(2)           
-            amount: serving,
-            nutrients: dbData ? dbData : [],    
-            date: new Date(),
-          },
-        })
+        .post(
+          "https://nutrimental-server.herokuapp.com/api/food-history/post/",
+          {
+            user_email: authProps.user.user_email,
+            history: {
+              food_name: data.description
+                ? data.description
+                : data.vitamin_name,
+              calories: data.score ? parseFloat(data.score).toFixed(2) : "", //changed data.score to parseFloat(data.score).toFixed(2)
+              amount: serving,
+              nutrients: dbData ? dbData : [],
+              date: new Date(),
+            },
+          }
+        )
         .then(async (res) => {
           await delay(2000);
           toast.success("Food added to history");
@@ -90,13 +95,15 @@ const SearchedItem = ({ data, authProps }) => {
         });
     } else {
       // ask to login or signup if not logged in yet and then add food to tracker
-      toast.error("You must be logged in to add a food to your tracker");
+      toast.error(
+        "You must be logged in as a user to add a food to your tracker"
+      );
     }
   };
 
   const dosageSubmitHandler = async (event) => {
     setExpanded(false);
-    event.preventDefault(); 
+    event.preventDefault();
     let finalAmount = 0;
     if (unit === "g") {
       finalAmount = dosageAmount * 1000;
@@ -110,11 +117,13 @@ const SearchedItem = ({ data, authProps }) => {
           food_name: data.vitamin_name,
           calories: data.score ? data.score : "",
           amount: finalAmount,
-          nutrients: 
-            unit === "g" ? {
-              nutrient_name: data.vitamin_name,
-              nutrient_quantity: finalAmount,
-            } : nutrient,
+          nutrients:
+            unit === "g"
+              ? {
+                  nutrient_name: data.vitamin_name,
+                  nutrient_quantity: finalAmount,
+                }
+              : nutrient,
           date: new Date(),
         },
       })
@@ -124,7 +133,7 @@ const SearchedItem = ({ data, authProps }) => {
       })
       .catch((err) => {
         toast.error("Something went wrong");
-      })
+      });
   };
 
   return (
@@ -165,7 +174,6 @@ const SearchedItem = ({ data, authProps }) => {
               type="number"
               min={0}
               step={0.1}
-              // value={1}
               className="m-1"
               placeholder="Input servings"
               onChange={handleServingChange}
@@ -183,7 +191,10 @@ const SearchedItem = ({ data, authProps }) => {
 
       {data.vitamin_name && (
         <>
-          <form className="flex items-center p-2" onSubmit={dosageSubmitHandler}>
+          <form
+            className="flex items-center p-2"
+            onSubmit={dosageSubmitHandler}
+          >
             <input
               required
               type="number"
@@ -210,7 +221,6 @@ const SearchedItem = ({ data, authProps }) => {
           </form>
         </>
       )}
-        
     </Card>
   );
 };

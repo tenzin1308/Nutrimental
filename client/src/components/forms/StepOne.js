@@ -22,12 +22,6 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
   // after form submit validating the form data using validator
   const submitFormData = (e) => {
     e.preventDefault();
-
-    // // RegExp for password validation
-    // var pattern = new RegExp(
-    //   "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
-    // );
-
     // checking if value of first name and last name is empty show error else take to step 2
     if (
       validator.equals(values.password, values.confirmPassword) &&
@@ -66,7 +60,6 @@ const StepOne = ({ nextStep, handleFormData, values }) => {
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 required
-                // style={{ border: emptyError ? "2px solid red" : "" }}
                 name="firstName"
                 defaultValue={values.firstName}
                 type="text"

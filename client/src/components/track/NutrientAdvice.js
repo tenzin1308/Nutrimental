@@ -38,22 +38,21 @@ export default function NutrientAdvice() {
   // useEffect to run on hook change (nutrients)
   useEffect(() => {
     const searchKeywords = keywords.join(",");
-       axios
-        .get(`https://nutrimental-server.herokuapp.com/api/advice/get?search=${searchKeywords}`)
-        .then((res) => {
-          res.data.forEach((advice) => {
+    axios
+      .get(
+        `https://nutrimental-server.herokuapp.com/api/advice/get?search=${searchKeywords}`
+      )
+      .then((res) => {
+        res.data.forEach((advice) => {
           let aux_obj = {
             keyword: advice.body_part,
             vitamins: [],
           };
-
           //Capitalize vitamin(s) from res.data in order to be prepared to search in our vitaminList
           advice.vitamins.forEach((item) => {
             aux_obj.vitamins.push(capitalizeFirstLetter(item));
           });
-
           let aux_vitamins = [];
-
           //We are now comparing vitamins in our aux_obj with vitamins in vitamin_list.
           //If match then grab whole OBJECT and store in aux_vitamins
           aux_obj.vitamins.forEach((vitamin) => {
@@ -71,9 +70,9 @@ export default function NutrientAdvice() {
           setFinalData((oldArray) => [...oldArray, aux_obj]);
         });
       })
-        .catch((err) => {
-          toast.error(err.message);
-    });
+      .catch((err) => {
+        toast.error(err.message);
+      });
   }, [vitaminList]);
 
   useEffect(() => {
@@ -120,7 +119,6 @@ export default function NutrientAdvice() {
     } else {
       toast.error("No nutrient advice found. Please rephrase your input");
     }
-
     setKeywords(matchedWords);
   };
   const clearTextHandler = () => {
@@ -129,7 +127,7 @@ export default function NutrientAdvice() {
 
   return (
     <>
-      <form onSubmit={searchHandler} className="2px 4px flex center border-2" >
+      <form onSubmit={searchHandler} className="2px 4px flex center border-2">
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           id="how-can-i-help-you"

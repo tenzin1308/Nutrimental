@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Account } from "./components/Account";
 import NavBar from "./components/NavBar";
 import AboutUs from "./pages/AboutUs";
-import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Home from "./pages/Home.js";
 import Profile from "./pages/Profile";
@@ -13,6 +12,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import SuccessfulSignUp from "./pages/SuccessfulSignUp";
 import Tracker from "./pages/Tracker";
+import { Navigate } from "react-router";
 
 function App() {
   const [authProps, setAuthProps] = useState({
@@ -27,7 +27,7 @@ function App() {
     } catch (error) {
       toast.error(error.message);
     }
-  }, []); 
+  }, []);
 
   return (
     <>
@@ -77,18 +77,32 @@ function App() {
                 exact
                 path="/login"
                 element={
-                  <Account>
-                    <SignIn authProps={authProps} setAuthProps={setAuthProps} />
-                  </Account>
+                  !authProps.isAuthenticated || !authProps.session ? (
+                    <Account>
+                      <SignIn
+                        authProps={authProps}
+                        setAuthProps={setAuthProps}
+                      />
+                    </Account>
+                  ) : (
+                    <Navigate to="/tracker" />
+                  )
                 }
               />
               <Route
                 exact
                 path="/signup"
                 element={
-                  <Account>
-                    <SignUp authProps={authProps} setAuthProps={setAuthProps} />
-                  </Account>
+                  !authProps.isAuthenticated || !authProps.session ? (
+                    <Account>
+                      <SignUp
+                        authProps={authProps}
+                        setAuthProps={setAuthProps}
+                      />
+                    </Account>
+                  ) : (
+                    <Navigate to="/tracker" />
+                  )
                 }
               />
               <Route
@@ -114,16 +128,7 @@ function App() {
                 path="/successfulsignup"
                 element={<SuccessfulSignUp />}
               />
-              <Route
-                exact
-                path="/faq"
-                element={<FAQ />}
-              />
-              <Route
-                exact
-                path="/contact"
-                element={<Contact />}
-              />
+              <Route exact path="/faq" element={<FAQ />} />
             </Routes>
           </div>
         </div>
