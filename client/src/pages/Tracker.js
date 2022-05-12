@@ -1,5 +1,5 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AccountLayout from "../components/AccountLayout";
@@ -30,28 +30,47 @@ const Tracker = ({ authProps }) => {
     authProps.user.isdietitian ? (
       <div className="w-screen h-auto">
         {!isSelected ? (
-          <FormControl fullWidth={true}>
-            <InputLabel>Please select a user</InputLabel>
-            <Select value="" label="Place Holder" onChange={handleSelectedUser}>
-              {authProps.user.whoUser.map((item, i) => {
-                return (
-                  <MenuItem value={item} index={i} key={i}>
-                    {item}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
+          <div className="flex flex-col w-full p-8 gap-y-8">
+            <div className="">
+              <p className="font-serif text-2xl">
+                Please use the dropdown menu below to view the specific user's
+                stats.
+              </p>
+            </div>
+            <div className="w-2/3">
+              <FormControl fullWidth={true}>
+                <InputLabel>Please select a user</InputLabel>
+                <Select
+                  value=""
+                  label="Place Holder"
+                  onChange={handleSelectedUser}
+                >
+                  {authProps.user.whoUser.map((item, i) => {
+                    return (
+                      <MenuItem value={item} index={i} key={i}>
+                        {item}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </div>
+          </div>
         ) : (
           <>
             {/* display the selected User at the center of the screen and cross button next to it which reset the isSelected to false */}
             <div className="flex justify-center">
-              <div className="flex flex-col items-center">
-                <h3 className="text-center">{selectedUser}</h3>
+              <div className="flex flex-col items-center pt-4 -mb-4">
                 <button
-                  className="flex items-center justify-center"
+                  className="flex items-center justify-center flex-col p-4 border w-full gap-4 bg-gray-300"
                   onClick={() => setIsSelected(false)}
                 >
+                  <p className="text-center text-lg">
+                    Currently viewing{" "}
+                    <span className="font-semibold">{selectedUser}</span>'s
+                    stats
+                  </p>
+                  <p className="text-lg">Click here to change user</p>
                   <svg
                     className="w-6 h-6"
                     fill="currentColor"
