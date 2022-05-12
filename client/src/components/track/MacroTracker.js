@@ -144,7 +144,7 @@ export default function MacroTracker({ authProps, date, role, clientEmail }) {
 
   return (
     <div className=" h-[70vh] w-full mx-auto overflow-scroll">
-      {dailyIntake.length < 35 ? (
+      {dailyIntake.length < 34 ? (
         <div className="flex items-center justify-center content-center">
           <div className="flex flex-col items-center">
             <Audio height="100" width="100" ariaLabel="loading" />
